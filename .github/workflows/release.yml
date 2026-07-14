@@ -29,8 +29,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # The frontend (src/) is a git submodule.
+          # The frontend (src/) is a git submodule. Its repository is private,
+          # and the workflow's default GITHUB_TOKEN can only read THIS repo —
+          # so submodule cloning needs SUBMODULE_TOKEN, a PAT with read access
+          # to both this repo and Decumano/officesuite-frontend (see the repo
+          # secret). Falls back to the default token, which is enough if the
+          # frontend repo is ever made public.
           submodules: recursive
+          token: ${{ secrets.SUBMODULE_TOKEN || github.token }}
 
       - name: Install Linux build dependencies
         if: matrix.platform == 'ubuntu-22.04'
