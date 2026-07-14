@@ -32,11 +32,11 @@ static LOOP_RUNNING: AtomicBool = AtomicBool::new(false);
 const SYNC_DIR: &str = ".officesuite-sync";
 const WORK_FILE_EXTENSIONS: [&str; 8] = ["mdp", "mds", "mdg", "mdn", "mdl", "mdc", "mde", "mdb"];
 
-/// Root-level sidecars that sync alongside work files. Currently just the
-/// custom-templates store, so templates follow the account across devices
-/// (the server's workspace listing exposes the same set — see
+/// Root-level sidecars that sync alongside work files: the custom-templates
+/// store and roaming UI preferences (theme), so both follow the account
+/// across devices (the server's workspace listing exposes the same set — see
 /// officesuite-web workspace.rs SYNC_SIDECAR_FILES).
-const SYNC_SIDECAR_FILES: [&str; 1] = ["_lktpl.json"];
+const SYNC_SIDECAR_FILES: [&str; 2] = ["_lktpl.json", "_lkprefs.json"];
 const POLL_INTERVAL_SECS: u64 = 45;
 
 // ── Config (which server/account/folder we're connected to) ──
