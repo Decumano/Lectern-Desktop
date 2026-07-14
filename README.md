@@ -1,7 +1,3 @@
-# Tauri + Vanilla
-
-This template should help get you started developing with Tauri in vanilla HTML, CSS and Javascript.
-
 ## Getting the code
 
 The frontend (`src/`) lives in its own repo,
