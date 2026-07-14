@@ -1,0 +1,101 @@
+# Builds the desktop app for Windows, Linux and macOS and publishes the
+# bundles as a GitHub Release. The web app's Download page
+# (officesuite-frontend: download.html) reads the latest release from the
+# GitHub API, so publishing here is all it takes for downloads to show up
+# on every officesuite-web instance.
+#
+# Trigger a release by pushing a version tag:
+#   git tag v0.1.0 && git push origin v0.1.0
+#
+# A manual run (workflow_dispatch) builds everything without publishing a
+# release; the bundles are attached to the run as workflow artifacts instead.
+name: Release desktop app
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-latest, ubuntu-22.04, macos-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The frontend (src/) is a git submodule.
+          submodules: recursive
+
+      - name: Install Linux build dependencies
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file \
+            libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install the Tauri CLI
+        run: npm ci
+
+      # On a tag push this also creates (or appends to) the GitHub Release
+      # for that tag; on manual runs tagName is empty and it only builds.
+      - name: Build bundles (and publish release on tag)
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+          releaseName: "OfficeSuite ${{ github.ref_name }}"
+          releaseBody: |
+            Desktop builds of OfficeSuite.
+
+            - **Windows**: `-setup.exe` (installer, recommended), `.msi`, or the
+              `portable` zip — unzip and run, no install needed (requires the
+              [WebView2 runtime](https://developer.microsoft.com/microsoft-edge/webview2/),
+              preinstalled on Windows 10/11).
+            - **Linux**: `.AppImage` (portable), `.deb`, or `.rpm`.
+            - **macOS**: `.dmg`.
+          releaseDraft: false
+          prerelease: false
+
+      # Tauri's Windows bundles are installers; the bare exe is fully
+      # self-contained (assets embedded), so zipping it gives a portable build.
+      - name: Package portable Windows build
+        if: matrix.platform == 'windows-latest'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path src-tauri/target/release/officesuite.exe `
+            -DestinationPath "OfficeSuite_${{ github.ref_name }}_windows-x64_portable.zip"
+
+      - name: Attach portable build to the release
+        if: matrix.platform == 'windows-latest' && github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          gh release upload "${{ github.ref_name }}" `
+            "OfficeSuite_${{ github.ref_name }}_windows-x64_portable.zip" --clobber
+
+      - name: Upload bundles as workflow artifacts (manual runs)
+        if: github.ref_type != 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundles-${{ matrix.platform }}
+          path: |
+            src-tauri/target/release/bundle/
+            OfficeSuite_*_portable.zip

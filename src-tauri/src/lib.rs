@@ -1,4 +1,6 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+mod cloud;
+
 use serde::Serialize;
 use std::fs;
 use std::path::Path;
@@ -96,7 +98,7 @@ struct FsEntry {
     children: Vec<FsEntry>,
 }
 
-const WORK_FILE_EXTENSIONS: [&str; 7] = ["mdp", "mds", "mdg", "mdn", "mdl", "mdc", "mde"];
+const WORK_FILE_EXTENSIONS: [&str; 8] = ["mdp", "mds", "mdg", "mdn", "mdl", "mdc", "mde", "mdb"];
 
 fn modified_ms(metadata: &fs::Metadata) -> u64 {
     metadata
@@ -114,6 +116,14 @@ fn walk_work_dir(dir: &Path, rel_prefix: &str) -> Result<Vec<FsEntry>, String> {
         let entry = entry.map_err(|e| e.to_string())?;
         let path = entry.path();
         let name = entry.file_name().to_string_lossy().to_string();
+
+        // Skip dot-prefixed entries (e.g. `.officesuite-sync/`, the cloud sync
+        // engine's metadata folder) so internal bookkeeping never shows up in
+        // the file tree.
+        if name.starts_with('.') {
+            continue;
+        }
+
         let metadata = entry.metadata().map_err(|e| e.to_string())?;
 
         let rel_path = if rel_prefix.is_empty() {
@@ -180,34 +190,45 @@ fn read_work_file(root: String, rel_path: String) -> Result<String, String> {
 }
 
 #[tauri::command]
-fn write_work_file(root: String, rel_path: String, content: String) -> Result<(), String> {
+fn write_work_file(app: AppHandle, root: String, rel_path: String, content: String) -> Result<(), String> {
     let path = Path::new(&root).join(&rel_path);
 
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent).map_err(|e| e.to_string())?;
     }
 
-    fs::write(path, content).map_err(|e| e.to_string())
+    fs::write(path, content).map_err(|e| e.to_string())?;
+    cloud::nudge_sync(&app);
+    Ok(())
 }
 
 #[tauri::command]
-fn create_work_folder(root: String, rel_path: String) -> Result<(), String> {
-    fs::create_dir_all(Path::new(&root).join(&rel_path)).map_err(|e| e.to_string())
+fn create_work_folder(app: AppHandle, root: String, rel_path: String) -> Result<(), String> {
+    fs::create_dir_all(Path::new(&root).join(&rel_path)).map_err(|e| e.to_string())?;
+    cloud::nudge_sync(&app);
+    Ok(())
 }
 
 #[tauri::command]
-fn delete_work_entry(root: String, rel_path: String, is_dir: bool) -> Result<(), String> {
+fn delete_work_entry(app: AppHandle, root: String, rel_path: String, is_dir: bool) -> Result<(), String> {
     let path = Path::new(&root).join(&rel_path);
 
     if is_dir {
-        fs::remove_dir_all(path).map_err(|e| e.to_string())
+        fs::remove_dir_all(path).map_err(|e| e.to_string())?;
     } else {
-        fs::remove_file(path).map_err(|e| e.to_string())
+        fs::remove_file(path).map_err(|e| e.to_string())?;
     }
+    cloud::nudge_sync(&app);
+    Ok(())
 }
 
 #[tauri::command]
-fn move_work_entry(root: String, from_rel_path: String, to_rel_path: String) -> Result<(), String> {
+fn move_work_entry(
+    app: AppHandle,
+    root: String,
+    from_rel_path: String,
+    to_rel_path: String,
+) -> Result<(), String> {
     let from = Path::new(&root).join(&from_rel_path);
     let to = Path::new(&root).join(&to_rel_path);
 
@@ -215,7 +236,9 @@ fn move_work_entry(root: String, from_rel_path: String, to_rel_path: String) -> 
         fs::create_dir_all(parent).map_err(|e| e.to_string())?;
     }
 
-    fs::rename(from, to).map_err(|e| e.to_string())
+    fs::rename(from, to).map_err(|e| e.to_string())?;
+    cloud::nudge_sync(&app);
+    Ok(())
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -223,6 +246,10 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
+        .setup(|app| {
+            cloud::resume_on_startup(app.handle());
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             greet,
             defaultFile,
@@ -233,7 +260,13 @@ pub fn run() {
             write_work_file,
             create_work_folder,
             delete_work_entry,
-            move_work_entry
+            move_work_entry,
+            cloud::cloud_connect,
+            cloud::cloud_disconnect,
+            cloud::cloud_status,
+            cloud::cloud_sync_now,
+            cloud::cloud_list_conflicts,
+            cloud::cloud_resolve_conflict
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
