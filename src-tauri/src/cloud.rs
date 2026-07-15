@@ -831,6 +831,84 @@ pub async fn cloud_resolve_conflict(app: AppHandle, rel_path: String, choice: St
     resolve_conflict_impl(&cfg, rel_path, choice).await
 }
 
+// ── Custom fonts (account-level; see officesuite-web src/fonts.rs) ──
+// The desktop app has no session/account of its own, so it can't hit
+// /api/fonts/:id directly the way a logged-in browser tab does — instead,
+// when cloud-connected, it fetches the bytes through the same authenticated
+// reqwest client the sync engine uses and hands the JS side a base64
+// data: URI, which needs no further request at all once injected into a
+// @font-face rule.
+
+#[derive(Deserialize, Serialize, Clone)]
+pub struct FontView {
+    id: String,
+    #[serde(rename = "familyName")]
+    family_name: String,
+    #[serde(rename = "contentType")]
+    content_type: String,
+    #[serde(rename = "byteSize")]
+    byte_size: u64,
+}
+
+#[tauri::command]
+pub async fn cloud_list_fonts(app: AppHandle) -> Result<Vec<FontView>, String> {
+    let cfg = match load_config(&app) {
+        Some(cfg) => cfg,
+        None => return Ok(Vec::new()), // not connected: no account, no fonts
+    };
+    let client = reqwest::Client::new();
+    let url = format!("{}/api/fonts", cfg.server_url);
+    let resp = client
+        .get(&url)
+        .header("Authorization", auth_header(&cfg))
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    if !resp.status().is_success() {
+        return Err(format!("list fonts failed: {}", resp.status()));
+    }
+    resp.json().await.map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub async fn cloud_font_data_url(app: AppHandle, font_id: String) -> Result<String, String> {
+    let cfg = load_config(&app).ok_or("not connected")?;
+    let client = reqwest::Client::new();
+    let url = format!("{}/api/fonts/{}", cfg.server_url, font_id);
+    let resp = client
+        .get(&url)
+        .header("Authorization", auth_header(&cfg))
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    if !resp.status().is_success() {
+        return Err(format!("font fetch failed: {}", resp.status()));
+    }
+    let content_type = resp
+        .headers()
+        .get(reqwest::header::CONTENT_TYPE)
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("font/ttf")
+        .to_string();
+    let bytes = resp.bytes().await.map_err(|e| e.to_string())?;
+    Ok(format!("data:{};base64,{}", content_type, base64_encode(&bytes)))
+}
+
+fn base64_encode(data: &[u8]) -> String {
+    const CHARS: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let mut out = String::with_capacity((data.len() + 2) / 3 * 4);
+    for chunk in data.chunks(3) {
+        let b0 = chunk[0];
+        let b1 = *chunk.get(1).unwrap_or(&0);
+        let b2 = *chunk.get(2).unwrap_or(&0);
+        out.push(CHARS[(b0 >> 2) as usize] as char);
+        out.push(CHARS[(((b0 & 0x03) << 4) | (b1 >> 4)) as usize] as char);
+        out.push(if chunk.len() > 1 { CHARS[(((b1 & 0x0f) << 2) | (b2 >> 6)) as usize] as char } else { '=' });
+        out.push(if chunk.len() > 2 { CHARS[(b2 & 0x3f) as usize] as char } else { '=' });
+    }
+    out
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

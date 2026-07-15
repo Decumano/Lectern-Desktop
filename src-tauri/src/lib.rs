@@ -266,7 +266,9 @@ pub fn run() {
             cloud::cloud_status,
             cloud::cloud_sync_now,
             cloud::cloud_list_conflicts,
-            cloud::cloud_resolve_conflict
+            cloud::cloud_resolve_conflict,
+            cloud::cloud_list_fonts,
+            cloud::cloud_font_data_url
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
