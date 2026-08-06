@@ -233,6 +233,38 @@ fn auth_header(cfg: &CloudConfig) -> String {
     format!("Bearer {}", cfg.api_token)
 }
 
+#[derive(Deserialize)]
+struct RemoteTombstone {
+    #[serde(rename = "relPath")]
+    rel_path: String,
+    #[serde(rename = "deletedAt")]
+    deleted_at: u64,
+}
+
+/// Files the server knows were deleted, and when (see the server's
+/// /api/workspace/deleted). An older server without the endpoint yields an
+/// empty map, which simply disables tombstone handling.
+async fn remote_tombstones(
+    client: &reqwest::Client,
+    cfg: &CloudConfig,
+) -> Result<HashMap<String, u64>, String> {
+    let url = format!("{}/api/workspace/deleted", cfg.server_url);
+    let resp = client
+        .get(&url)
+        .header("Authorization", auth_header(cfg))
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    if resp.status() == reqwest::StatusCode::NOT_FOUND {
+        return Ok(HashMap::new());
+    }
+    if !resp.status().is_success() {
+        return Err(format!("tombstone list failed: {}", resp.status()));
+    }
+    let rows: Vec<RemoteTombstone> = resp.json().await.map_err(|e| e.to_string())?;
+    Ok(rows.into_iter().map(|t| (t.rel_path, t.deleted_at)).collect())
+}
+
 fn workspace_file_url(cfg: &CloudConfig, rel_path: &str) -> Result<reqwest::Url, String> {
     let base = format!("{}/api/workspace/file", cfg.server_url);
     let mut url = reqwest::Url::parse(&base).map_err(|e| e.to_string())?;
@@ -501,6 +533,7 @@ async fn sync_once(cfg: &CloudConfig) -> Result<(), String> {
     let mut state = load_state(&cfg.root);
 
     let remote_hashes = remote_list(&client, cfg).await?;
+    let tombstones = remote_tombstones(&client, cfg).await.unwrap_or_default();
     let local_paths = local_file_paths(&cfg.root);
 
     let mut all_paths: HashSet<String> = local_paths;
@@ -509,7 +542,17 @@ async fn sync_once(cfg: &CloudConfig) -> Result<(), String> {
 
     for rel_path in all_paths {
         if state.conflicts.contains_key(&rel_path) {
-            // Leave conflicted files alone until the user resolves them.
+            // A conflict whose file is gone on both sides has nothing left to
+            // resolve; dropping it un-wedges the path (a lingering entry
+            // would block syncing a future file under the same name forever).
+            let local_gone = !Path::new(&cfg.root).join(&rel_path).is_file();
+            if local_gone && !remote_hashes.contains_key(&rel_path) {
+                state.conflicts.remove(&rel_path);
+                remove_remote_snapshot(&cfg.root, &rel_path);
+                remove_base(&cfg.root, &rel_path);
+                state.files.remove(&rel_path);
+            }
+            // Otherwise leave conflicted files alone until the user resolves them.
             continue;
         }
 
@@ -530,6 +573,31 @@ async fn sync_once(cfg: &CloudConfig) -> Result<(), String> {
             (false, false) => {}
             (true, false) => {
                 if let Some(content) = &local_content {
+                    // A local file the sync state has never seen, on a path
+                    // the server remembers deleting more recently than this
+                    // copy was written: that's a stale copy resurfacing
+                    // (lost state.json, a machine that was offline through
+                    // the delete, a restored backup) — honor the deletion
+                    // instead of pushing it back onto every other device.
+                    // A genuine re-creation has a newer mtime than the
+                    // tombstone and still syncs up normally (the server
+                    // clears the tombstone on write).
+                    if base_hash.is_none() {
+                        if let Some(deleted_at) = tombstones.get(&rel_path) {
+                            let local_mtime = fs::metadata(&local_full)
+                                .ok()
+                                .and_then(|m| m.modified().ok())
+                                .and_then(|t| t.duration_since(UNIX_EPOCH).ok())
+                                .map(|d| d.as_millis() as u64)
+                                .unwrap_or(0);
+                            if *deleted_at > local_mtime {
+                                let _ = fs::remove_file(&local_full);
+                                remove_base(&cfg.root, &rel_path);
+                                state.files.remove(&rel_path);
+                                continue;
+                            }
+                        }
+                    }
                     remote_write(&client, cfg, &rel_path, content).await?;
                     write_base(&cfg.root, &rel_path, content)?;
                     state
@@ -635,11 +703,19 @@ async fn resolve_conflict_impl(cfg: &CloudConfig, rel_path: String, choice: Stri
 
     match choice.as_str() {
         "local" => {
-            remote_write(&client, cfg, &rel_path, &local_text).await?;
-            write_base(&cfg.root, &rel_path, &local_text)?;
-            state
-                .files
-                .insert(rel_path.clone(), SyncFileState { hash: hash_bytes(local_text.as_bytes()) });
+            // "Keep mine" when my side deleted the file means delete it
+            // remotely too — pushing local_text would upload an empty file.
+            if !local_full.is_file() {
+                remote_delete(&client, cfg, &rel_path).await?;
+                remove_base(&cfg.root, &rel_path);
+                state.files.remove(&rel_path);
+            } else {
+                remote_write(&client, cfg, &rel_path, &local_text).await?;
+                write_base(&cfg.root, &rel_path, &local_text)?;
+                state
+                    .files
+                    .insert(rel_path.clone(), SyncFileState { hash: hash_bytes(local_text.as_bytes()) });
+            }
         }
         "remote" => {
             write_local(&local_full, &remote_text)?;
@@ -1054,6 +1130,83 @@ mod tests {
         sync_once(&cfg).await.expect("delete sync");
         assert!(remote_read(&client, &cfg, &rel).await.is_err());
 
+        let _ = fs::remove_dir_all(&root_dir);
+    }
+
+    /// The resurrection scenario tombstones exist for: a client that still
+    /// holds a copy of a deleted file but has no sync state for it (lost
+    /// state.json, offline machine, restored backup) must honor the server's
+    /// deletion instead of re-uploading the file — while a file genuinely
+    /// re-created after the deletion still syncs up. Same env vars as
+    /// live_sync_round_trip; run with --ignored.
+    #[tokio::test]
+    #[ignore]
+    async fn live_sync_tombstone_blocks_resurrection() {
+        let server = std::env::var("OFFICESUITE_TEST_SERVER").expect("OFFICESUITE_TEST_SERVER");
+        let email = std::env::var("OFFICESUITE_TEST_EMAIL").expect("OFFICESUITE_TEST_EMAIL");
+        let password = std::env::var("OFFICESUITE_TEST_PASSWORD").expect("OFFICESUITE_TEST_PASSWORD");
+
+        let client = reqwest::Client::new();
+        let api_token = match login(&client, &server, &email, &password).await {
+            Ok(token) => token,
+            Err(_) => {
+                let resp = client
+                    .post(format!("{}/api/auth/register", server))
+                    .json(&Credentials { email: &email, password: &password })
+                    .send()
+                    .await
+                    .expect("register request");
+                assert!(resp.status().is_success(), "register failed: {}", resp.status());
+                let user: UserView = resp.json().await.expect("register response");
+                user.api_token
+            }
+        };
+
+        let root_dir =
+            std::env::temp_dir().join(format!("officesuite-tomb-test-{}", uuid::Uuid::new_v4()));
+        fs::create_dir_all(&root_dir).unwrap();
+        let cfg = CloudConfig {
+            server_url: server,
+            email,
+            api_token,
+            root: root_dir.to_string_lossy().to_string(),
+        };
+
+        // 1. Normal create + sync.
+        let rel = format!("tomb-test-{}.mdp", uuid::Uuid::new_v4());
+        fs::write(root_dir.join(&rel), "# doomed\n").unwrap();
+        sync_once(&cfg).await.expect("push sync");
+        assert!(remote_read(&client, &cfg, &rel).await.is_ok());
+
+        // 2. Deleted elsewhere (another device / the web UI) → tombstone.
+        tokio::time::sleep(Duration::from_millis(50)).await;
+        remote_delete(&client, &cfg, &rel).await.expect("remote delete");
+
+        // 3. This client loses its sync state while still holding the copy —
+        //    the classic resurrection setup.
+        fs::remove_dir_all(sync_dir(&cfg.root)).unwrap();
+        sync_once(&cfg).await.expect("resurrection sync");
+        assert!(
+            !root_dir.join(&rel).is_file(),
+            "stale local copy should have been deleted, not kept"
+        );
+        assert!(
+            remote_read(&client, &cfg, &rel).await.is_err(),
+            "deleted file must not be re-uploaded to the server"
+        );
+
+        // 4. A genuine re-creation (newer than the tombstone) still syncs up.
+        tokio::time::sleep(Duration::from_millis(50)).await;
+        fs::write(root_dir.join(&rel), "# reborn on purpose\n").unwrap();
+        sync_once(&cfg).await.expect("recreate sync");
+        assert_eq!(
+            remote_read(&client, &cfg, &rel).await.expect("recreated remote read"),
+            "# reborn on purpose\n"
+        );
+
+        // Clean up the server-side copy so the account isn't left with junk.
+        fs::remove_file(root_dir.join(&rel)).unwrap();
+        sync_once(&cfg).await.expect("cleanup sync");
         let _ = fs::remove_dir_all(&root_dir);
     }
 
