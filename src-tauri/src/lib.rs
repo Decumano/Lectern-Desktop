@@ -2,11 +2,91 @@
 mod cloud;
 
 use serde::Serialize;
+use std::collections::HashSet;
 use std::fs;
-use std::path::Path;
+use std::path::{Component, Path, PathBuf};
+use std::sync::Mutex;
 use std::time::UNIX_EPOCH;
-use tauri::AppHandle;
+use tauri::{AppHandle, Manager};
 use tauri_plugin_dialog::DialogExt;
+
+// ── Path validation (the commands must not trust the webview) ──
+//
+// Every work-folder command takes `root` and `rel_path` straight from
+// JavaScript. The folder-picker dialog gates the UI, but not the IPC layer:
+// any script that reaches `invoke` (e.g. via markup injected from a shared
+// document) could otherwise read, overwrite or delete arbitrary paths —
+// `Path::join` with an absolute `rel_path` even discards `root` entirely.
+// So the commands themselves enforce two rules:
+//   1. `rel_path` must be strictly relative: no absolute paths, drive
+//      letters, or `..` components (same rule as officesuite-web's
+//      workspace.rs `safe_rel_path`).
+//   2. `root` must be a folder the user actually picked in the OS dialog at
+//      some point — the picked set persists in authorized_roots.json so
+//      restarts keep working without re-picking.
+
+pub(crate) fn safe_rel_path(rel_path: &str) -> Result<PathBuf, String> {
+    let mut buf = PathBuf::new();
+    for component in Path::new(rel_path).components() {
+        match component {
+            Component::Normal(seg) => buf.push(seg),
+            Component::CurDir => {}
+            _ => return Err("invalid path".to_string()),
+        }
+    }
+    if buf.as_os_str().is_empty() {
+        return Err("invalid path".to_string());
+    }
+    Ok(buf)
+}
+
+pub(crate) struct AuthorizedRoots(Mutex<HashSet<PathBuf>>);
+
+fn roots_file(app: &AppHandle) -> Result<PathBuf, String> {
+    let dir = app.path().app_config_dir().map_err(|e| e.to_string())?;
+    fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
+    Ok(dir.join("authorized_roots.json"))
+}
+
+fn load_authorized_roots(app: &AppHandle) -> HashSet<PathBuf> {
+    roots_file(app)
+        .ok()
+        .and_then(|p| fs::read_to_string(p).ok())
+        .and_then(|data| serde_json::from_str::<Vec<String>>(&data).ok())
+        .map(|v| v.into_iter().map(PathBuf::from).collect())
+        .unwrap_or_default()
+}
+
+fn authorize_root(app: &AppHandle, picked: &Path) -> Result<(), String> {
+    let canon = fs::canonicalize(picked).map_err(|e| e.to_string())?;
+    let state = app.state::<AuthorizedRoots>();
+    let mut roots = state.0.lock().unwrap();
+    if roots.insert(canon) {
+        let list: Vec<String> = roots.iter().map(|p| p.to_string_lossy().to_string()).collect();
+        let path = roots_file(app)?;
+        let data = serde_json::to_string_pretty(&list).map_err(|e| e.to_string())?;
+        fs::write(path, data).map_err(|e| e.to_string())?;
+    }
+    Ok(())
+}
+
+/// Canonicalized `root` if (and only if) it's a folder the user has picked
+/// through the OS dialog; anything else is refused.
+pub(crate) fn check_root(app: &AppHandle, root: &str) -> Result<PathBuf, String> {
+    let canon = fs::canonicalize(root).map_err(|e| e.to_string())?;
+    let state = app.state::<AuthorizedRoots>();
+    if state.0.lock().unwrap().contains(&canon) {
+        Ok(canon)
+    } else {
+        Err("folder is not an authorized work folder — pick it again via the folder dialog".to_string())
+    }
+}
+
+fn resolve_work_path(app: &AppHandle, root: &str, rel_path: &str) -> Result<PathBuf, String> {
+    let root = check_root(app, root)?;
+    let rel = safe_rel_path(rel_path)?;
+    Ok(root.join(rel))
+}
 
 #[derive(Serialize)]
 struct MyData {
@@ -172,26 +252,32 @@ fn walk_work_dir(dir: &Path, rel_prefix: &str) -> Result<Vec<FsEntry>, String> {
 
 #[tauri::command]
 fn pick_work_folder(app: AppHandle) -> Option<String> {
-    app.dialog()
+    let picked = app
+        .dialog()
         .file()
         .blocking_pick_folder()
-        .and_then(|p| p.into_path().ok())
-        .map(|p| p.to_string_lossy().to_string())
+        .and_then(|p| p.into_path().ok())?;
+    // The dialog is the trust boundary: only folders that passed through it
+    // are ever accepted as `root` by the other commands.
+    authorize_root(&app, &picked).ok()?;
+    Some(picked.to_string_lossy().to_string())
 }
 
 #[tauri::command]
-fn list_work_folder(root: String) -> Result<Vec<FsEntry>, String> {
-    walk_work_dir(Path::new(&root), "")
+fn list_work_folder(app: AppHandle, root: String) -> Result<Vec<FsEntry>, String> {
+    let root = check_root(&app, &root)?;
+    walk_work_dir(&root, "")
 }
 
 #[tauri::command]
-fn read_work_file(root: String, rel_path: String) -> Result<String, String> {
-    fs::read_to_string(Path::new(&root).join(&rel_path)).map_err(|e| e.to_string())
+fn read_work_file(app: AppHandle, root: String, rel_path: String) -> Result<String, String> {
+    let path = resolve_work_path(&app, &root, &rel_path)?;
+    fs::read_to_string(path).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 fn write_work_file(app: AppHandle, root: String, rel_path: String, content: String) -> Result<(), String> {
-    let path = Path::new(&root).join(&rel_path);
+    let path = resolve_work_path(&app, &root, &rel_path)?;
 
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent).map_err(|e| e.to_string())?;
@@ -204,14 +290,15 @@ fn write_work_file(app: AppHandle, root: String, rel_path: String, content: Stri
 
 #[tauri::command]
 fn create_work_folder(app: AppHandle, root: String, rel_path: String) -> Result<(), String> {
-    fs::create_dir_all(Path::new(&root).join(&rel_path)).map_err(|e| e.to_string())?;
+    let path = resolve_work_path(&app, &root, &rel_path)?;
+    fs::create_dir_all(path).map_err(|e| e.to_string())?;
     cloud::nudge_sync(&app);
     Ok(())
 }
 
 #[tauri::command]
 fn delete_work_entry(app: AppHandle, root: String, rel_path: String, is_dir: bool) -> Result<(), String> {
-    let path = Path::new(&root).join(&rel_path);
+    let path = resolve_work_path(&app, &root, &rel_path)?;
 
     if is_dir {
         fs::remove_dir_all(path).map_err(|e| e.to_string())?;
@@ -229,8 +316,8 @@ fn move_work_entry(
     from_rel_path: String,
     to_rel_path: String,
 ) -> Result<(), String> {
-    let from = Path::new(&root).join(&from_rel_path);
-    let to = Path::new(&root).join(&to_rel_path);
+    let from = resolve_work_path(&app, &root, &from_rel_path)?;
+    let to = resolve_work_path(&app, &root, &to_rel_path)?;
 
     if let Some(parent) = to.parent() {
         fs::create_dir_all(parent).map_err(|e| e.to_string())?;
@@ -247,6 +334,8 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
+            let roots = load_authorized_roots(app.handle());
+            app.manage(AuthorizedRoots(Mutex::new(roots)));
             cloud::resume_on_startup(app.handle());
             Ok(())
         })

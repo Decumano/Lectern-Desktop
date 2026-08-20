@@ -219,11 +219,20 @@ struct RemoteEntry {
     children: Vec<RemoteEntry>,
 }
 
+/// The server's listings/tombstones supply rel paths that this client joins
+/// onto its local root and writes/deletes at. A malicious or compromised
+/// server must not be able to reach outside the synced folder with an
+/// absolute path, a drive prefix, or `..` — every server-supplied path is
+/// checked here before it's used, and invalid ones are simply ignored.
+fn valid_remote_rel_path(rel_path: &str) -> bool {
+    crate::safe_rel_path(rel_path).is_ok()
+}
+
 fn flatten_remote(entries: &[RemoteEntry], out: &mut HashMap<String, String>) {
     for e in entries {
         if e.is_dir {
             flatten_remote(&e.children, out);
-        } else {
+        } else if valid_remote_rel_path(&e.rel_path) {
             out.insert(e.rel_path.clone(), e.hash.clone());
         }
     }
@@ -262,7 +271,11 @@ async fn remote_tombstones(
         return Err(format!("tombstone list failed: {}", resp.status()));
     }
     let rows: Vec<RemoteTombstone> = resp.json().await.map_err(|e| e.to_string())?;
-    Ok(rows.into_iter().map(|t| (t.rel_path, t.deleted_at)).collect())
+    Ok(rows
+        .into_iter()
+        .filter(|t| valid_remote_rel_path(&t.rel_path))
+        .map(|t| (t.rel_path, t.deleted_at))
+        .collect())
 }
 
 fn workspace_file_url(cfg: &CloudConfig, rel_path: &str) -> Result<reqwest::Url, String> {
@@ -834,6 +847,9 @@ pub async fn cloud_connect(
     root: String,
 ) -> Result<CloudStatus, String> {
     let server_url = server_url.trim_end_matches('/').to_string();
+    // Only a folder the user actually picked in the OS dialog may become the
+    // sync root the engine writes into.
+    crate::check_root(&app, &root)?;
     let client = reqwest::Client::new();
     let api_token = login(&client, &server_url, &email, &password).await?;
 
@@ -903,6 +919,9 @@ pub fn cloud_list_conflicts(app: AppHandle) -> Result<Vec<ConflictView>, String>
 
 #[tauri::command]
 pub async fn cloud_resolve_conflict(app: AppHandle, rel_path: String, choice: String) -> Result<(), String> {
+    if !valid_remote_rel_path(&rel_path) {
+        return Err("invalid path".to_string());
+    }
     let cfg = load_config(&app).ok_or("not connected")?;
     resolve_conflict_impl(&cfg, rel_path, choice).await
 }
@@ -948,6 +967,14 @@ pub async fn cloud_list_fonts(app: AppHandle) -> Result<Vec<FontView>, String> {
 
 #[tauri::command]
 pub async fn cloud_font_data_url(app: AppHandle, font_id: String) -> Result<String, String> {
+    // The id becomes a URL path segment; keep it to the UUID alphabet so a
+    // hostile value can't rewrite the request path.
+    if font_id.is_empty()
+        || font_id.len() > 64
+        || !font_id.chars().all(|c| c.is_ascii_alphanumeric() || c == '-')
+    {
+        return Err("invalid font id".to_string());
+    }
     let cfg = load_config(&app).ok_or("not connected")?;
     let client = reqwest::Client::new();
     let url = format!("{}/api/fonts/{}", cfg.server_url, font_id);
@@ -960,12 +987,21 @@ pub async fn cloud_font_data_url(app: AppHandle, font_id: String) -> Result<Stri
     if !resp.status().is_success() {
         return Err(format!("font fetch failed: {}", resp.status()));
     }
-    let content_type = resp
+    // The data: URL this returns is spliced into a <style> @font-face rule by
+    // the JS side. A server-controlled Content-Type header would be raw text
+    // inside that stylesheet, so it's constrained to the known font MIME
+    // types rather than trusted verbatim.
+    let content_type = match resp
         .headers()
         .get(reqwest::header::CONTENT_TYPE)
         .and_then(|v| v.to_str().ok())
-        .unwrap_or("font/ttf")
-        .to_string();
+        .unwrap_or("")
+    {
+        "font/otf" => "font/otf",
+        "font/woff" => "font/woff",
+        "font/woff2" => "font/woff2",
+        _ => "font/ttf",
+    };
     let bytes = resp.bytes().await.map_err(|e| e.to_string())?;
     Ok(format!("data:{};base64,{}", content_type, base64_encode(&bytes)))
 }
