@@ -27,16 +27,21 @@ jobs:
         platform: [windows-latest, ubuntu-22.04, macos-latest]
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
-          # The frontend (src/) is a git submodule. Its repository is private,
-          # and the workflow's default GITHUB_TOKEN can only read THIS repo —
-          # so submodule cloning needs SUBMODULE_TOKEN, a PAT with read access
-          # to both this repo and Decumano/officesuite-frontend (see the repo
-          # secret). Falls back to the default token, which is enough if the
-          # frontend repo is ever made public.
+          # The frontend (src/) is a git submodule. Both this repo and
+          # Decumano/officesuite-frontend are public, so the run's default
+          # GITHUB_TOKEN can clone both and no PAT is needed.
+          #
+          # This step used to pass `token: ${{ secrets.SUBMODULE_TOKEN || github.token }}`
+          # from when the frontend repo was private. Once that PAT expired the
+          # override started failing checkout outright ("could not read
+          # Username for 'https://github.com'"): an invalid Authorization
+          # header makes GitHub reject even anonymous-readable public repos,
+          # and the `||` fallback can't help because a set-but-expired secret
+          # is still truthy. If the frontend is ever made private again, add a
+          # valid PAT back here rather than reinstating an expiring one blind.
           submodules: recursive
-          token: ${{ secrets.SUBMODULE_TOKEN || github.token }}
 
       - name: Install Linux build dependencies
         if: matrix.platform == 'ubuntu-22.04'
