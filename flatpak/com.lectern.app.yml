@@ -23,8 +23,8 @@ modules:
       - type: file
         path: com.lectern.app.metainfo.xml
       - type: file
-        url: https://github.com/Decumano/Lectern-Desktop/releases/download/v0.12.10/Lectern_0.12.10_amd64.deb
-        sha256: e70670ccf26261607aff1854253e5cfb7d65946d8c1a49b15a6e285dfd4595be
+        url: https://github.com/Decumano/Lectern-Desktop/releases/download/v0.12.11/Lectern_0.12.11_amd64.deb
+        sha256: b8b31d52a65b32a71ea176d36b8dfecfebdab76ce1d85ed8ffd9619584dec0a7
         only-arches: [x86_64]
     build-commands:
       - mkdir deb-extract
