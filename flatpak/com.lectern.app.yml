@@ -2,14 +2,18 @@ id: com.lectern.app
 runtime: org.gnome.Platform
 runtime-version: '47'
 sdk: org.gnome.Sdk
-command: Lectern
+command: lectern
 
 finish-args:
   - --socket=wayland
   - --socket=fallback-x11
   - --device=dri
   - --share=ipc
+  # Cloud sync (src-tauri/src/cloud.rs)
   - --share=network
+  # Required: the folder picker is rfd's GTK3 backend, not an XDG portal, so it
+  # can only show paths mounted into the sandbox. Use --filesystem=host if
+  # workspaces may live outside $HOME.
   - --filesystem=home
 
 modules:
@@ -19,17 +23,18 @@ modules:
       - type: file
         path: com.lectern.app.metainfo.xml
       - type: file
-        url: https://github.com/Decumano/Lectern-Desktop/releases/download/v0.12.10/lectern_0.12.10_amd64.deb
-        sha256: 0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5
+        url: https://github.com/Decumano/Lectern-Desktop/releases/download/v0.12.10/Lectern_0.12.10_amd64.deb
+        sha256: e70670ccf26261607aff1854253e5cfb7d65946d8c1a49b15a6e285dfd4595be
         only-arches: [x86_64]
-    build-command:
-      - set -e
+    build-commands:
       - mkdir deb-extract
-      - ar -x *-deb --output deb-extract
+      - ar -x *.deb --output deb-extract
       - tar -C deb-extract -xf deb-extract/data.tar.gz
-      - install -Dm755 deb-extract/usr/bin/Lectern /app/bin/Lectern
-      - sed -i 's/^Icon=.*/Icon=com.lectern.app/' deb-extract/usr/share/applications/lectern.desktop
-      - install -Dm644 deb-extract/usr/share/applications/lectern.desktop /app/share/applications/com.lectern.app.desktop
+      - install -Dm755 deb-extract/usr/bin/lectern /app/bin/lectern
+      - sed -i 's/^Icon=.*/Icon=com.lectern.app/' deb-extract/usr/share/applications/Lectern.desktop
+      - sed -i 's/^Categories=.*/Categories=Office;/' deb-extract/usr/share/applications/Lectern.desktop
+      - install -Dm644 deb-extract/usr/share/applications/Lectern.desktop /app/share/applications/com.lectern.app.desktop
       - install -Dm644 deb-extract/usr/share/icons/hicolor/32x32/apps/lectern.png /app/share/icons/hicolor/32x32/apps/com.lectern.app.png
       - install -Dm644 deb-extract/usr/share/icons/hicolor/128x128/apps/lectern.png /app/share/icons/hicolor/128x128/apps/com.lectern.app.png
+      - install -Dm644 deb-extract/usr/share/icons/hicolor/256x256@2/apps/lectern.png /app/share/icons/hicolor/256x256@2/apps/com.lectern.app.png
       - install -Dm644 com.lectern.app.metainfo.xml /app/share/metainfo/com.lectern.app.metainfo.xml
