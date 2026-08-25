@@ -18,18 +18,10 @@ modules:
     sources:
       - type: file
         path: com.lectern.app.metainfo.xml
-      # TODO: point this at the first release published under the Lectern name
-      # and refresh the checksum. The v0.12.6 asset below still carries the old
-      # `officesuite` names, so the paths under `deb-extract/` will not match
-      # until that release exists.
       - type: file
-        url: https://github.com/Decumano/OfficeSuite/releases/download/v0.12.6/officesuite_0.12.6_amd64.deb
-        sha256: 9b6cca1b817711d703213a4ef9385a5487589430e23b5613217c810b171b4170
+        url: https://github.com/Decumano/Lectern-Desktop/releases/download/v0.12.10/lectern_0.12.10_amd64.deb
+        sha256: 0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5
         only-arches: [x86_64]
-    # Paths under deb-extract/ follow Tauri's Debian layout for productName
-    # "Lectern": the binary keeps the product name, the .desktop file and the
-    # icons use the lowercased package name. Verify against the first Lectern
-    # .deb before trusting a build.
     build-command:
       - set -e
       - mkdir deb-extract
