@@ -1,5 +1,5 @@
 // Cloud sync engine: connects the desktop app's active work folder to an
-// officesuite-web server, always over HTTP - even when the server happens to
+// lectern-web server, always over HTTP - even when the server happens to
 // be on the same machine, so the app's folder never has to change out from
 // under the user. A background loop + push-on-write reconcile the local
 // folder against the server, using a Git-style three-way merge: edits to
@@ -29,13 +29,16 @@ fn sync_lock() -> &'static tokio::sync::Mutex<()> {
 /// on the next tick after the config disappears).
 static LOOP_RUNNING: AtomicBool = AtomicBool::new(false);
 
+// Deliberately keeps its pre-rename name: the directory already exists in
+// every synced work folder, and the server side matches on it too, so
+// renaming it would orphan existing sync state.
 const SYNC_DIR: &str = ".officesuite-sync";
 const WORK_FILE_EXTENSIONS: [&str; 8] = ["mdp", "mds", "mdg", "mdn", "mdl", "mdc", "mde", "mdb"];
 
 /// Root-level sidecars that sync alongside work files: the custom-templates
 /// store and roaming UI preferences (theme), so both follow the account
 /// across devices (the server's workspace listing exposes the same set — see
-/// officesuite-web workspace.rs SYNC_SIDECAR_FILES).
+/// lectern-web workspace.rs SYNC_SIDECAR_FILES).
 const SYNC_SIDECAR_FILES: [&str; 2] = ["_lktpl.json", "_lkprefs.json"];
 const POLL_INTERVAL_SECS: u64 = 45;
 
@@ -205,7 +208,7 @@ fn local_file_paths(root: &str) -> HashSet<String> {
     out
 }
 
-// ── HTTP client against officesuite-web ──
+// ── HTTP client against lectern-web ──
 
 #[derive(Deserialize)]
 struct RemoteEntry {
@@ -926,7 +929,7 @@ pub async fn cloud_resolve_conflict(app: AppHandle, rel_path: String, choice: St
     resolve_conflict_impl(&cfg, rel_path, choice).await
 }
 
-// ── Custom fonts (account-level; see officesuite-web src/fonts.rs) ──
+// ── Custom fonts (account-level; see lectern-web src/fonts.rs) ──
 // The desktop app has no session/account of its own, so it can't hit
 // /api/fonts/:id directly the way a logged-in browser tab does — instead,
 // when cloud-connected, it fetches the bytes through the same authenticated
@@ -1092,19 +1095,19 @@ mod tests {
         assert_eq!(clean(base, local, remote), "one\ntwo\nthree\n");
     }
 
-    /// Live end-to-end check against a running officesuite-web server.
+    /// Live end-to-end check against a running lectern-web server.
     /// Ignored by default; run with:
-    ///   OFFICESUITE_TEST_SERVER=http://localhost:8080 \
-    ///   OFFICESUITE_TEST_EMAIL=sync-test@example.com \
-    ///   OFFICESUITE_TEST_PASSWORD=some-password \
+    ///   LECTERN_TEST_SERVER=http://localhost:8080 \
+    ///   LECTERN_TEST_EMAIL=sync-test@example.com \
+    ///   LECTERN_TEST_PASSWORD=some-password \
     ///   cargo test --lib live_sync_round_trip -- --ignored
     /// Registers the account if it doesn't exist yet.
     #[tokio::test]
     #[ignore]
     async fn live_sync_round_trip() {
-        let server = std::env::var("OFFICESUITE_TEST_SERVER").expect("OFFICESUITE_TEST_SERVER");
-        let email = std::env::var("OFFICESUITE_TEST_EMAIL").expect("OFFICESUITE_TEST_EMAIL");
-        let password = std::env::var("OFFICESUITE_TEST_PASSWORD").expect("OFFICESUITE_TEST_PASSWORD");
+        let server = std::env::var("LECTERN_TEST_SERVER").expect("LECTERN_TEST_SERVER");
+        let email = std::env::var("LECTERN_TEST_EMAIL").expect("LECTERN_TEST_EMAIL");
+        let password = std::env::var("LECTERN_TEST_PASSWORD").expect("LECTERN_TEST_PASSWORD");
 
         let client = reqwest::Client::new();
         let api_token = match login(&client, &server, &email, &password).await {
@@ -1123,7 +1126,7 @@ mod tests {
         };
 
         let root_dir =
-            std::env::temp_dir().join(format!("officesuite-sync-test-{}", uuid::Uuid::new_v4()));
+            std::env::temp_dir().join(format!("lectern-sync-test-{}", uuid::Uuid::new_v4()));
         fs::create_dir_all(&root_dir).unwrap();
         let cfg = CloudConfig {
             server_url: server,
@@ -1178,9 +1181,9 @@ mod tests {
     #[tokio::test]
     #[ignore]
     async fn live_sync_tombstone_blocks_resurrection() {
-        let server = std::env::var("OFFICESUITE_TEST_SERVER").expect("OFFICESUITE_TEST_SERVER");
-        let email = std::env::var("OFFICESUITE_TEST_EMAIL").expect("OFFICESUITE_TEST_EMAIL");
-        let password = std::env::var("OFFICESUITE_TEST_PASSWORD").expect("OFFICESUITE_TEST_PASSWORD");
+        let server = std::env::var("LECTERN_TEST_SERVER").expect("LECTERN_TEST_SERVER");
+        let email = std::env::var("LECTERN_TEST_EMAIL").expect("LECTERN_TEST_EMAIL");
+        let password = std::env::var("LECTERN_TEST_PASSWORD").expect("LECTERN_TEST_PASSWORD");
 
         let client = reqwest::Client::new();
         let api_token = match login(&client, &server, &email, &password).await {
@@ -1199,7 +1202,7 @@ mod tests {
         };
 
         let root_dir =
-            std::env::temp_dir().join(format!("officesuite-tomb-test-{}", uuid::Uuid::new_v4()));
+            std::env::temp_dir().join(format!("lectern-tomb-test-{}", uuid::Uuid::new_v4()));
         fs::create_dir_all(&root_dir).unwrap();
         let cfg = CloudConfig {
             server_url: server,
@@ -1252,15 +1255,15 @@ mod tests {
     #[tokio::test]
     #[ignore]
     async fn live_sync_templates_sidecar() {
-        let server = std::env::var("OFFICESUITE_TEST_SERVER").expect("OFFICESUITE_TEST_SERVER");
-        let email = std::env::var("OFFICESUITE_TEST_EMAIL").expect("OFFICESUITE_TEST_EMAIL");
-        let password = std::env::var("OFFICESUITE_TEST_PASSWORD").expect("OFFICESUITE_TEST_PASSWORD");
+        let server = std::env::var("LECTERN_TEST_SERVER").expect("LECTERN_TEST_SERVER");
+        let email = std::env::var("LECTERN_TEST_EMAIL").expect("LECTERN_TEST_EMAIL");
+        let password = std::env::var("LECTERN_TEST_PASSWORD").expect("LECTERN_TEST_PASSWORD");
 
         let client = reqwest::Client::new();
         let api_token = login(&client, &server, &email, &password).await.expect("login");
 
         let root_dir =
-            std::env::temp_dir().join(format!("officesuite-tpl-test-{}", uuid::Uuid::new_v4()));
+            std::env::temp_dir().join(format!("lectern-tpl-test-{}", uuid::Uuid::new_v4()));
         fs::create_dir_all(&root_dir).unwrap();
         let cfg = CloudConfig {
             server_url: server,

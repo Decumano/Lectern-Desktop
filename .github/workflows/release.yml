@@ -71,9 +71,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
-          releaseName: "OfficeSuite ${{ github.ref_name }}"
+          releaseName: "Lectern ${{ github.ref_name }}"
           releaseBody: |
-            Desktop builds of OfficeSuite.
+            Desktop builds of Lectern.
 
             - **Windows**: `-setup.exe` (installer, recommended), `.msi`, or the
               `portable` zip — unzip and run, no install needed (requires the
@@ -90,8 +90,8 @@ jobs:
         if: matrix.platform == 'windows-latest'
         shell: pwsh
         run: |
-          Compress-Archive -Path src-tauri/target/release/officesuite.exe `
-            -DestinationPath "OfficeSuite_${{ github.ref_name }}_windows-x64_portable.zip"
+          Compress-Archive -Path src-tauri/target/release/Lectern.exe `
+            -DestinationPath "Lectern_${{ github.ref_name }}_windows-x64_portable.zip"
 
       - name: Attach portable build to the release
         if: matrix.platform == 'windows-latest' && github.ref_type == 'tag'
@@ -100,7 +100,7 @@ jobs:
         shell: pwsh
         run: |
           gh release upload "${{ github.ref_name }}" `
-            "OfficeSuite_${{ github.ref_name }}_windows-x64_portable.zip" --clobber
+            "Lectern_${{ github.ref_name }}_windows-x64_portable.zip" --clobber
 
       - name: Upload bundles as workflow artifacts (manual runs)
         if: github.ref_type != 'tag'
@@ -109,4 +109,4 @@ jobs:
           name: bundles-${{ matrix.platform }}
           path: |
             src-tauri/target/release/bundle/
-            OfficeSuite_*_portable.zip
+            Lectern_*_portable.zip

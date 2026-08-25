@@ -19,7 +19,7 @@ use tauri_plugin_dialog::DialogExt;
 // `Path::join` with an absolute `rel_path` even discards `root` entirely.
 // So the commands themselves enforce two rules:
 //   1. `rel_path` must be strictly relative: no absolute paths, drive
-//      letters, or `..` components (same rule as officesuite-web's
+//      letters, or `..` components (same rule as lectern-web's
 //      workspace.rs `safe_rel_path`).
 //   2. `root` must be a folder the user actually picked in the OS dialog at
 //      some point — the picked set persists in authorized_roots.json so
@@ -107,12 +107,12 @@ fn defaultFile(name: &str) -> Result<MyData, String> {
     (
         MyData
         {
-            name: format!("Welcome to Lore Keep {}", name),
+            name: format!("Welcome to Lectern {}", name),
             docType: "doc".to_string(),
             content: concat!
             (
-                "# Welcome to Lore Keep\n\n",
-                "Lore Keep is a lightweight office suite that stores everything in **Markdown**.\n\n",
+                "# Welcome to Lectern\n\n",
+                "Lectern is a lightweight office suite that stores everything in **Markdown**.\n\n",
                 "## Features\n\n",
                 "**Documents** rich markdown editing with live preview\n",
                 "**Spreadsheets** formula-capable grid stored as cell=value pairs\n",

@@ -1,4 +1,4 @@
-# Lore Keep
+# Lectern
 
 A Markdown-native office suite for worldbuilding, packaged as a Tauri desktop app
 for Windows, Linux and macOS.

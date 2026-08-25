@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "officesuite-static",
+      "name": "lectern-static",
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "8123", "-d", "src"],
       "port": 8123

@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "officesuite",
+  "productName": "Lectern",
   "version": "0.12.6",
-  "identifier": "com.officesuite.app",
+  "identifier": "com.lectern.app",
   "build": {
     "frontendDist": "../src"
   },
@@ -10,7 +10,7 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "officesuite",
+        "title": "Lectern",
         "width": 800,
         "height": 600,
         "dragDropEnabled": false
