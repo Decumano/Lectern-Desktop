@@ -1,6 +1,6 @@
 [package]
 name = "officesuite"
-version = "0.1.0"
+version = "0.12.4"
 description = "Lore Keep — a Markdown-native office suite for worldbuilding"
 authors = ["Decumano"]
 edition = "2021"
