@@ -281,15 +281,12 @@ void walk_local_files(const fs::path &dir,
             continue;
         }
 
-        const bool is_root_sidecar =
-            rel_prefix.empty() &&
-            std::find(workfolder::kSyncSidecarFiles.begin(),
-                      workfolder::kSyncSidecarFiles.end(),
-                      name) != workfolder::kSyncSidecarFiles.end();
-        if (workfolder::is_work_file(name) || is_root_sidecar)
-        {
-            out.insert(rel);
-        }
+        // Everything that is not a dotfile syncs, not only the eight app
+        // formats. A work folder holds maps, images and plain notes beside
+        // the documents, and silently leaving those behind was indis-
+        // tinguishable from the sync losing them. Dotfiles are skipped
+        // above, which is what keeps the sync's own metadata out.
+        out.insert(rel);
     }
 }
 
@@ -318,6 +315,15 @@ uint64_t local_mtime_ms(const fs::path &path)
 }
 
 // ── HTTP client against the Lectern server ──
+
+/// A line-based three-way merge is meaningless on binary content and would
+/// happily produce a corrupt file, so anything holding a NUL byte is treated
+/// as unmergeable and raised as a conflict for the user to settle instead.
+bool looks_binary(std::string_view content)
+{
+    const size_t window = std::min<size_t>(content.size(), 8192);
+    return content.substr(0, window).find('\0') != std::string_view::npos;
+}
 
 /// The server's listings/tombstones supply rel paths that this client joins
 /// onto its local root and writes/deletes at. A malicious or compromised
@@ -446,7 +452,8 @@ void remote_write(const CloudConfig &config,
                   const std::string &content)
 {
     cpr::Header headers = auth_header(config);
-    headers["Content-Type"] = "text/plain;charset=utf-8";
+    // Bytes, not text: a synced folder now carries images and PDFs too.
+    headers["Content-Type"] = "application/octet-stream";
 
     const auto response =
         cpr::Put(cpr::Url{config.server_url + "/api/workspace/file"},
@@ -671,9 +678,14 @@ void sync_one_path(const CloudConfig &config,
             const std::string base_text =
                 read_base(config.root, rel_path).value_or("");
 
-            const auto merge = diff::three_way_merge(
-                base_text, *local_content, remote_text);
-            if (merge.clean)
+            const bool mergeable = !looks_binary(base_text) &&
+                                   !looks_binary(*local_content) &&
+                                   !looks_binary(remote_text);
+            const auto merge =
+                mergeable ? diff::three_way_merge(base_text, *local_content,
+                                                  remote_text)
+                          : diff::MergeResult{};
+            if (mergeable && merge.clean)
             {
                 util::write_file_atomic(local_full, merge.text);
                 remote_write(config, rel_path, merge.text);
@@ -683,7 +695,8 @@ void sync_one_path(const CloudConfig &config,
             else
             {
                 write_remote_snapshot(config.root, rel_path, remote_text);
-                state.conflicts[rel_path] = "edit-edit";
+                state.conflicts[rel_path] =
+                    mergeable ? "edit-edit" : "edit-edit (binary)";
             }
         }
         else if (local_hash == remote_hash)

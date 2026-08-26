@@ -91,10 +91,9 @@ json walk_work_dir(const fs::path &dir, const std::string &rel_prefix)
             continue;
         }
 
-        if (!is_work_file(name))
-        {
-            continue;
-        }
+        // Listed whatever its extension, to match what sync now carries and
+        // what the server lists. is_work_file still exists and still gates
+        // sharing, which stays document-only.
 
         entries.push_back({name,
                            false,
