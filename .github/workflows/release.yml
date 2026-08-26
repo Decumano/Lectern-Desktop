@@ -1,112 +1,346 @@
-# Builds the desktop app for Windows, Linux and macOS and publishes the
-# bundles as a GitHub Release. The web app's Download page
-# (officesuite-frontend: download.html) reads the latest release from the
-# GitHub API, so publishing here is all it takes for downloads to show up
-# on every officesuite-web instance.
+# Builds installers for Windows, Linux and macOS, signs them where credentials
+# are configured, publishes them as a GitHub Release, and writes the signed
+# update manifest the in-app updater reads.
 #
 # Trigger a release by pushing a version tag:
-#   git tag v0.1.0 && git push origin v0.1.0
+#   git tag v0.12.11 && git push origin v0.12.11
 #
-# A manual run (workflow_dispatch) builds everything without publishing a
-# release; the bundles are attached to the run as workflow artifacts instead.
+# A manual run (workflow_dispatch) builds and packages everything without
+# publishing; the installers are attached to the run as artifacts instead.
+#
+# ── Secrets ──
+# Every one is optional. A missing secret skips its step rather than failing
+# the build, so a fork can produce working (unsigned) installers with no setup.
+#
+#   LECTERN_UPDATE_PUBLIC_KEY   Ed25519 public key compiled into the app
+#   LECTERN_UPDATE_SECRET_KEY   its private half; signs the update manifest
+#   WINDOWS_CERT_THUMBPRINT     code-signing cert in the runner's store, or…
+#   WINDOWS_PFX_BASE64          …a base64 .pfx, with
+#   WINDOWS_PFX_PASSWORD
+#   MACOS_CERT_P12_BASE64       Developer ID cert, with
+#   MACOS_CERT_PASSWORD
+#   MACOS_IDENTITY              "Developer ID Application: … (TEAMID)"
+#   MACOS_TEAM_ID
+#   MACOS_APPLE_ID
+#   MACOS_APP_PASSWORD          app-specific password for notarization
 name: Release desktop app
 
 on:
   push:
-    tags:
-      - "v*"
+    tags: ["v*"]
   workflow_dispatch:
+
+env:
+  # vcpkg builds are cached into the Actions cache; without this every run
+  # rebuilds Drogon-scale dependency trees from source.
+  VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
 
 jobs:
   build:
-    permissions:
-      contents: write
     strategy:
       fail-fast: false
       matrix:
-        platform: [windows-latest, ubuntu-22.04, macos-latest]
+        include:
+          - platform: windows-latest
+            name: windows
+          # 24.04 is the first Ubuntu with webkitgtk-6.0 (GTK 4), which
+          # saucer 6 requires. 22.04 only has webkit2gtk-4.1 (GTK 3).
+          - platform: ubuntu-24.04
+            name: linux
+          - platform: macos-latest
+            name: macos
     runs-on: ${{ matrix.platform }}
+
     steps:
       - uses: actions/checkout@v5
         with:
-          # The frontend (src/) is a git submodule. Both this repo and
-          # Decumano/officesuite-frontend are public, so the run's default
-          # GITHUB_TOKEN can clone both and no PAT is needed.
-          #
-          # This step used to pass `token: ${{ secrets.SUBMODULE_TOKEN || github.token }}`
-          # from when the frontend repo was private. Once that PAT expired the
-          # override started failing checkout outright ("could not read
-          # Username for 'https://github.com'"): an invalid Authorization
-          # header makes GitHub reject even anonymous-readable public repos,
-          # and the `||` fallback can't help because a set-but-expired secret
-          # is still truthy. If the frontend is ever made private again, add a
-          # valid PAT back here rather than reinstating an expiring one blind.
+          # The frontend (frontend/) is a git submodule shared with the
+          # server. Both repos are public, so the default token can clone it.
           submodules: recursive
 
+      - name: Determine the version
+        shell: bash
+        run: |
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            # A manual run has no tag; CMake requires MAJOR.MINOR.PATCH.
+            VERSION="0.0.0"
+          fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "Building version $VERSION"
+
+      - name: Export GitHub Actions cache environment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
       - name: Install Linux build dependencies
-        if: matrix.platform == 'ubuntu-22.04'
+        if: matrix.name == 'linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file \
-            libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake ninja-build pkg-config curl zip unzip tar \
+            libgtk-4-dev libwebkitgtk-6.0-dev libssl-dev \
+            rpm file desktop-file-utils
+          # vcpkg's own dependencies for building its Linux ports.
+          sudo apt-get install -y --no-install-recommends \
+            autoconf automake libtool python3-jinja2
 
-      - uses: dtolnay/rust-toolchain@stable
+      - name: Install NSIS (Windows installer generator)
+        if: matrix.name == 'windows'
+        run: choco install nsis --no-progress -y
 
-      - uses: swatinem/rust-cache@v2
+      - name: Set up vcpkg
+        uses: lukka/run-vcpkg@v11
         with:
-          workspaces: src-tauri
+          # Pinned so a vcpkg registry change can't silently alter what ships.
+          vcpkgGitCommitId: "4e39a8622e56a113c89228e4e13944dce8654da7"
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install the Tauri CLI
-        run: npm ci
-
-      # On a tag push this also creates (or appends to) the GitHub Release
-      # for that tag; on manual runs tagName is empty and it only builds.
-      - name: Build bundles (and publish release on tag)
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tagName: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
-          releaseName: "Lectern ${{ github.ref_name }}"
-          releaseBody: |
-            Desktop builds of Lectern.
-
-            - **Windows**: `-setup.exe` (installer, recommended), `.msi`, or the
-              `portable` zip — unzip and run, no install needed (requires the
-              [WebView2 runtime](https://developer.microsoft.com/microsoft-edge/webview2/),
-              preinstalled on Windows 10/11).
-            - **Linux**: `.AppImage` (portable), `.deb`, or `.rpm`.
-            - **macOS**: `.dmg`.
-          releaseDraft: false
-          prerelease: false
-
-      # Tauri's Windows bundles are installers; the bare exe is fully
-      # self-contained (assets embedded), so zipping it gives a portable build.
-      - name: Package portable Windows build
-        if: matrix.platform == 'windows-latest'
-        shell: pwsh
+      - name: Configure
+        shell: bash
         run: |
-          Compress-Archive -Path src-tauri/target/release/Lectern.exe `
-            -DestinationPath "Lectern_${{ github.ref_name }}_windows-x64_portable.zip"
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
+            -DLECTERN_VERSION="$VERSION" \
+            -DLECTERN_UPDATE_PUBLIC_KEY="${{ secrets.LECTERN_UPDATE_PUBLIC_KEY }}" \
+            -DLECTERN_UPDATE_MANIFEST_URL="https://github.com/${{ github.repository }}/releases/latest/download/latest.json"
 
-      - name: Attach portable build to the release
-        if: matrix.platform == 'windows-latest' && github.ref_type == 'tag'
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Test
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      # ── Sign the executable before packaging it ──
+      # Order matters: an installer built from an unsigned exe contains an
+      # unsigned exe no matter how the installer itself is signed.
+
+      - name: Sign the Windows executable
+        if: matrix.name == 'windows'
         shell: pwsh
+        env:
+          THUMBPRINT: ${{ secrets.WINDOWS_CERT_THUMBPRINT }}
+          PFX_BASE64: ${{ secrets.WINDOWS_PFX_BASE64 }}
+          PFX_PASSWORD: ${{ secrets.WINDOWS_PFX_PASSWORD }}
         run: |
-          gh release upload "${{ github.ref_name }}" `
-            "Lectern_${{ github.ref_name }}_windows-x64_portable.zip" --clobber
+          if (-not $env:THUMBPRINT -and -not $env:PFX_BASE64) {
+            Write-Host '::warning::No Windows signing credentials; shipping unsigned.'
+            exit 0
+          }
+          $exe = 'build/Release/lectern.exe'
+          if ($env:THUMBPRINT) {
+            ./scripts/sign-windows.ps1 -Path $exe -Thumbprint $env:THUMBPRINT
+          } else {
+            [IO.File]::WriteAllBytes("$env:RUNNER_TEMP/cert.pfx",
+              [Convert]::FromBase64String($env:PFX_BASE64))
+            ./scripts/sign-windows.ps1 -Path $exe `
+              -PfxPath "$env:RUNNER_TEMP/cert.pfx" -PfxPassword $env:PFX_PASSWORD
+          }
 
-      - name: Upload bundles as workflow artifacts (manual runs)
-        if: github.ref_type != 'tag'
+      - name: Import the macOS signing certificate
+        if: matrix.name == 'macos'
+        env:
+          MACOS_CERT_P12_BASE64: ${{ secrets.MACOS_CERT_P12_BASE64 }}
+          MACOS_CERT_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+        run: |
+          if [ -z "$MACOS_CERT_P12_BASE64" ]; then
+            echo "::warning::No macOS signing credentials; shipping unsigned and un-notarized."
+            exit 0
+          fi
+          # A dedicated keychain, unlocked only for this job. It stays
+          # available to the later signing steps in the same job.
+          KEYCHAIN="$RUNNER_TEMP/build.keychain"
+          PASSWORD="$(openssl rand -base64 24)"
+          security create-keychain -p "$PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$PASSWORD" "$KEYCHAIN"
+          echo "$MACOS_CERT_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          security import "$RUNNER_TEMP/cert.p12" -k "$KEYCHAIN"             -P "$MACOS_CERT_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign:             -s -k "$PASSWORD" "$KEYCHAIN" > /dev/null
+          security list-keychains -d user -s "$KEYCHAIN" login.keychain
+
+      - name: Sign the macOS app
+        if: matrix.name == 'macos'
+        env:
+          MACOS_IDENTITY: ${{ secrets.MACOS_IDENTITY }}
+        run: |
+          # Must happen before cpack: the .dmg is built from this bundle, so
+          # signing afterwards would leave an unsigned app inside a signed image.
+          if [ -z "$MACOS_IDENTITY" ]; then exit 0; fi
+          ./scripts/sign-macos.sh app "build/Lectern.app"
+
+      - name: Package
+        shell: bash
+        working-directory: build
+        run: cpack -C Release
+
+      - name: Build the AppImage
+        if: matrix.name == 'linux'
+        run: |
+          sudo apt-get install -y --no-install-recommends libfuse2t64 || \
+            sudo apt-get install -y --no-install-recommends libfuse2
+          ./scripts/build-appimage.sh build "$VERSION" "$PWD/build"
+
+      # ── Single-file portable build (Windows) ──
+      #
+      # Linux and macOS already have a portable format: the AppImage and the
+      # .app bundle. Windows has no such convention, so this is the equivalent
+      # — one .exe with the frontend linked in and the C runtime and every
+      # library statically linked, depending on nothing but Windows itself.
+      - name: Build the portable single-file executable
+        if: matrix.name == 'windows'
+        shell: bash
+        run: |
+          cmake -S . -B build-portable             -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"             -DVCPKG_TARGET_TRIPLET=x64-windows-static             -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded             -DLECTERN_EMBED_FRONTEND=ON             -DLECTERN_VERSION="$VERSION"             -DBUILD_TESTING=OFF             -DLECTERN_UPDATE_PUBLIC_KEY="${{ secrets.LECTERN_UPDATE_PUBLIC_KEY }}"             -DLECTERN_UPDATE_MANIFEST_URL="https://github.com/${{ github.repository }}/releases/latest/download/latest.json"
+          cmake --build build-portable --config Release
+          cp build-portable/Release/lectern.exe              "build/Lectern-$VERSION-windows-x64-portable.exe"
+
+      - name: Sign the portable executable
+        if: matrix.name == 'windows'
+        shell: pwsh
+        env:
+          THUMBPRINT: ${{ secrets.WINDOWS_CERT_THUMBPRINT }}
+          PFX_PASSWORD: ${{ secrets.WINDOWS_PFX_PASSWORD }}
+        run: |
+          if (-not $env:THUMBPRINT -and -not (Test-Path "$env:RUNNER_TEMP/cert.pfx")) { exit 0 }
+          $portable = Get-ChildItem build -Filter '*portable.exe' |
+            ForEach-Object { $_.FullName }
+          if ($portable) {
+            if ($env:THUMBPRINT) {
+              ./scripts/sign-windows.ps1 -Path $portable -Thumbprint $env:THUMBPRINT
+            } else {
+              ./scripts/sign-windows.ps1 -Path $portable `
+                -PfxPath "$env:RUNNER_TEMP/cert.pfx" -PfxPassword $env:PFX_PASSWORD
+            }
+          }
+
+      # ── Sign the installers ──
+
+      - name: Sign the Windows installers
+        if: matrix.name == 'windows'
+        shell: pwsh
+        env:
+          THUMBPRINT: ${{ secrets.WINDOWS_CERT_THUMBPRINT }}
+          PFX_PASSWORD: ${{ secrets.WINDOWS_PFX_PASSWORD }}
+        run: |
+          if (-not $env:THUMBPRINT -and -not (Test-Path "$env:RUNNER_TEMP/cert.pfx")) {
+            Write-Host '::warning::No Windows signing credentials; installers unsigned.'
+            exit 0
+          }
+          $targets = Get-ChildItem build -Include *.exe,*.msi -Recurse -Depth 1 |
+            Where-Object { $_.Name -notlike 'lectern.exe' -and $_.Name -notlike '*portable.exe' } |
+            ForEach-Object { $_.FullName }
+          if ($targets) {
+            if ($env:THUMBPRINT) {
+              ./scripts/sign-windows.ps1 -Path $targets -Thumbprint $env:THUMBPRINT
+            } else {
+              ./scripts/sign-windows.ps1 -Path $targets `
+                -PfxPath "$env:RUNNER_TEMP/cert.pfx" -PfxPassword $env:PFX_PASSWORD
+            }
+          }
+
+      - name: Notarize the macOS disk image
+        if: matrix.name == 'macos'
+        env:
+          MACOS_IDENTITY: ${{ secrets.MACOS_IDENTITY }}
+          MACOS_TEAM_ID: ${{ secrets.MACOS_TEAM_ID }}
+          MACOS_APPLE_ID: ${{ secrets.MACOS_APPLE_ID }}
+          MACOS_APP_PASSWORD: ${{ secrets.MACOS_APP_PASSWORD }}
+        run: |
+          if [ -z "$MACOS_IDENTITY" ]; then exit 0; fi
+          DMG="$(find build -maxdepth 1 -name '*.dmg' | head -1)"
+          ./scripts/sign-macos.sh dmg "$DMG"
+
+      - name: Collect the installers
+        shell: bash
+        run: |
+          mkdir -p dist
+          # CPack writes into build/; take only the packages, not the tree.
+          find build -maxdepth 1 -type f \
+            \( -name '*.exe' -o -name '*.msi' -o -name '*.zip' \
+               -o -name '*.deb' -o -name '*.rpm' -o -name '*.tar.gz' \
+               -o -name '*.dmg' -o -name '*.AppImage' \) \
+            -exec cp {} dist/ \;
+          ls -la dist
+
+      - name: Upload the updater tool (Linux only)
+        if: matrix.name == 'linux'
         uses: actions/upload-artifact@v4
         with:
-          name: bundles-${{ matrix.platform }}
-          path: |
-            src-tauri/target/release/bundle/
-            Lectern_*_portable.zip
+          name: updater-tool
+          path: build/lectern-updater-tool
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: installers-${{ matrix.name }}
+          path: dist/
+
+  publish:
+    needs: build
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: installers-*
+          path: dist
+          merge-multiple: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: updater-tool
+          path: tool
+
+      - name: Generate checksums
+        working-directory: dist
+        run: |
+          sha256sum * > SHA256SUMS
+          cat SHA256SUMS
+
+      # Linux has no equivalent of Authenticode or notarization, so the
+      # convention is a detached GPG signature over the checksum file: verify
+      # the signature, then verify the file against the list.
+      - name: Sign the checksums with GPG
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          if [ -z "$GPG_PRIVATE_KEY" ]; then
+            echo "::warning::No GPG key; SHA256SUMS will be unsigned."
+            exit 0
+          fi
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+          gpg --batch --yes --pinentry-mode loopback \
+            --passphrase "$GPG_PASSPHRASE" \
+            --detach-sign --armor -o dist/SHA256SUMS.asc dist/SHA256SUMS
+          gpg --verify dist/SHA256SUMS.asc dist/SHA256SUMS
+
+      - name: Build and sign the update manifest
+        env:
+          LECTERN_UPDATE_SECRET_KEY: ${{ secrets.LECTERN_UPDATE_SECRET_KEY }}
+          LECTERN_UPDATE_PUBLIC_KEY: ${{ secrets.LECTERN_UPDATE_PUBLIC_KEY }}
+        run: |
+          if [ -z "$LECTERN_UPDATE_SECRET_KEY" ]; then
+            echo "::warning::No updater key; skipping the manifest. Installed apps will not see this release."
+            exit 0
+          fi
+          chmod +x tool/lectern-updater-tool
+          ./scripts/make-update-manifest.sh \
+            "${GITHUB_REF_NAME#v}" \
+            dist \
+            "https://github.com/${{ github.repository }}/releases/download/${GITHUB_REF_NAME}" \
+            "$PWD/tool/lectern-updater-tool" \
+            "Lectern ${GITHUB_REF_NAME#v}"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME"             --title "Lectern $GITHUB_REF_NAME"             --notes-file packaging/release-notes.md             dist/*

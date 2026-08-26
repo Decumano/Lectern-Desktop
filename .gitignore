@@ -28,3 +28,7 @@ dist-ssr
 .flatpak-builder/
 build-dir/
 flatpak-repo/
+
+build/
+build-portable/
+build-static/

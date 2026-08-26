@@ -1,3 +1,13 @@
+# Flatpak manifest for the C++ build.
+#
+# Like the Tauri build's manifest, this repackages the published .deb rather
+# than compiling from source: the app's dependencies come from vcpkg, which
+# does not exist inside a Flatpak build sandbox, and rebuilding Drogon-scale
+# dependency trees here would be a second, divergent build system.
+#
+# Update `url` and `sha256` for each release; `flatpak-builder` refuses a
+# mismatched digest, so a wrong hash fails loudly rather than shipping the
+# wrong binary.
 id: com.lectern.app
 runtime: org.gnome.Platform
 runtime-version: '47'
@@ -9,12 +19,15 @@ finish-args:
   - --socket=fallback-x11
   - --device=dri
   - --share=ipc
-  # Cloud sync (src-tauri/src/cloud.rs)
+  # Cloud sync (src/cloud.cpp) and the update check (src/updater.cpp).
   - --share=network
-  # Required: the folder picker is rfd's GTK3 backend, not an XDG portal, so it
-  # can only show paths mounted into the sandbox. Use --filesystem=host if
-  # workspaces may live outside $HOME.
-  - --filesystem=home
+  # The folder picker is GtkFileDialog, which routes through
+  # xdg-desktop-portal inside the sandbox — so the user's chosen folder is
+  # granted individually and this does NOT need --filesystem=host. The Tauri
+  # build required blanket home access because rfd's GTK3 backend was not a
+  # portal; this one does not.
+  - --filesystem=xdg-documents
+  - --talk-name=org.freedesktop.portal.Desktop
 
 modules:
   - name: lectern
@@ -23,18 +36,25 @@ modules:
       - type: file
         path: com.lectern.app.metainfo.xml
       - type: file
-        url: https://github.com/Decumano/Lectern-Desktop/releases/download/v0.12.11/Lectern_0.12.11_amd64.deb
-        sha256: b8b31d52a65b32a71ea176d36b8dfecfebdab76ce1d85ed8ffd9619584dec0a7
+        url: https://github.com/Decumano/Lectern-Desktop-Cpp/releases/download/v0.12.11/lectern_0.12.11_amd64.deb
+        sha256: 0000000000000000000000000000000000000000000000000000000000000000
         only-arches: [x86_64]
     build-commands:
       - mkdir deb-extract
       - ar -x *.deb --output deb-extract
-      - tar -C deb-extract -xf deb-extract/data.tar.gz
+      - tar -C deb-extract -xf deb-extract/data.tar.*
+      # The .deb already installs everything under the com.lectern.app name
+      # (see the install rules in CMakeLists.txt), so unlike the Tauri
+      # manifest nothing has to be renamed or rewritten on the way in.
       - install -Dm755 deb-extract/usr/bin/lectern /app/bin/lectern
-      - sed -i 's/^Icon=.*/Icon=com.lectern.app/' deb-extract/usr/share/applications/Lectern.desktop
-      - sed -i 's/^Categories=.*/Categories=Office;/' deb-extract/usr/share/applications/Lectern.desktop
-      - install -Dm644 deb-extract/usr/share/applications/Lectern.desktop /app/share/applications/com.lectern.app.desktop
-      - install -Dm644 deb-extract/usr/share/icons/hicolor/32x32/apps/lectern.png /app/share/icons/hicolor/32x32/apps/com.lectern.app.png
-      - install -Dm644 deb-extract/usr/share/icons/hicolor/128x128/apps/lectern.png /app/share/icons/hicolor/128x128/apps/com.lectern.app.png
-      - install -Dm644 deb-extract/usr/share/icons/hicolor/256x256@2/apps/lectern.png /app/share/icons/hicolor/256x256@2/apps/com.lectern.app.png
-      - install -Dm644 com.lectern.app.metainfo.xml /app/share/metainfo/com.lectern.app.metainfo.xml
+      - cp -r deb-extract/usr/share/lectern /app/share/lectern
+      - install -Dm644 deb-extract/usr/share/applications/com.lectern.app.desktop
+          /app/share/applications/com.lectern.app.desktop
+      - install -Dm644 deb-extract/usr/share/icons/hicolor/32x32/apps/com.lectern.app.png
+          /app/share/icons/hicolor/32x32/apps/com.lectern.app.png
+      - install -Dm644 deb-extract/usr/share/icons/hicolor/128x128/apps/com.lectern.app.png
+          /app/share/icons/hicolor/128x128/apps/com.lectern.app.png
+      - install -Dm644 deb-extract/usr/share/icons/hicolor/256x256/apps/com.lectern.app.png
+          /app/share/icons/hicolor/256x256/apps/com.lectern.app.png
+      - install -Dm644 com.lectern.app.metainfo.xml
+          /app/share/metainfo/com.lectern.app.metainfo.xml

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Lectern
+GenericName=Office Suite
+Comment=Markdown-native office suite for worldbuilding
+Exec=lectern %F
+Icon=com.lectern.app
+Terminal=false
+Categories=Office;
+Keywords=markdown;worldbuilding;notes;spreadsheet;diagram;
+StartupWMClass=lectern
+MimeType=text/markdown;

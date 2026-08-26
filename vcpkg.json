@@ -1,0 +1,14 @@
+{
+  "name": "lectern-desktop-cpp",
+  "version": "0.12.11",
+  "description": "Lectern desktop app (C++/saucer port of Lectern-Desktop)",
+  "license": "GPL-3.0-or-later",
+  "dependencies": [
+    "saucer",
+    "cpr",
+    "nlohmann-json",
+    "libsodium",
+    "spdlog",
+    "catch2"
+  ]
+}

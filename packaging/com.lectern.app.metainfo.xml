@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.lectern.app</id>
+  <name>Lectern</name>
+  <summary>Markdown-native office suite for worldbuilding</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <developer id="io.github.decumano">
+    <name>Decumano</name>
+  </developer>
+
+  <description>
+    <p>
+      Lectern is a Markdown-native office suite for worldbuilding: documents,
+      spreadsheets, diagrams, a drawing notebook and four structured
+      worldbuilding databases, all writing plain text files into a folder you
+      choose and control.
+    </p>
+    <p>
+      There is no project database and no proprietary container. The workspace
+      is a directory of readable files you can back up with git, sync with
+      anything, and open in any editor.
+    </p>
+    <p>Included apps:</p>
+    <ul>
+      <li>Documents — Markdown with live preview, math and diagrams</li>
+      <li>Sheets — spreadsheets with 79 functions and charts</li>
+      <li>Diagrams — a Mermaid editor with a live canvas</li>
+      <li>Notebook and Maps — freehand ink, PDF annotation and world maps</li>
+      <li>Glossary, Calendar, Economy and Bestiary — structured data types</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">com.lectern.app.desktop</launchable>
+
+  <url type="homepage">https://github.com/Decumano/Lectern-Desktop</url>
+  <url type="bugtracker">https://github.com/Decumano/Lectern-Desktop/issues</url>
+
+  <content_rating type="oars-1.1"/>
+
+  <releases>
+    <release version="0.12.11" date="2026-08-25"/>
+    <release version="0.12.10" date="2026-08-25"/>
+  </releases>
+</component>

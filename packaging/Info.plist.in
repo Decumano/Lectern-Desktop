@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleName</key>                 <string>Lectern</string>
+  <key>CFBundleDisplayName</key>          <string>Lectern</string>
+  <key>CFBundleExecutable</key>           <string>Lectern</string>
+  <key>CFBundleIdentifier</key>           <string>com.lectern.app</string>
+  <key>CFBundleIconFile</key>             <string>lectern.icns</string>
+  <key>CFBundlePackageType</key>          <string>APPL</string>
+  <key>CFBundleShortVersionString</key>   <string>${MACOSX_BUNDLE_SHORT_VERSION_STRING}</string>
+  <key>CFBundleVersion</key>              <string>${MACOSX_BUNDLE_BUNDLE_VERSION}</string>
+  <key>LSMinimumSystemVersion</key>       <string>11.0</string>
+  <key>NSHighResolutionCapable</key>      <true/>
+  <!-- The app reads and writes the workspace folder the user picks. -->
+  <key>NSDocumentsFolderUsageDescription</key>
+  <string>Lectern stores your workspace in a folder you choose.</string>
+  <key>NSDesktopFolderUsageDescription</key>
+  <string>Lectern stores your workspace in a folder you choose.</string>
+</dict>
+</plist>
