@@ -249,6 +249,18 @@ void remove_remote_snapshot(const std::string &root,
 
 // ── Local scanning ──
 
+/// Undo-history sidecars are derived state, not content: the editor rebuilds
+/// <doc>.history.json as you type, its oldest entry is re-based into a "diff
+/// from empty" holding the whole document, so it routinely outgrows the
+/// document itself, and two divergently-edited copies line-merge into
+/// nonsense. It stays on the machine that produced it.
+bool excluded_from_sync(std::string_view name)
+{
+    constexpr std::string_view kHistorySuffix = ".history.json";
+    return name.size() > kHistorySuffix.size() &&
+           name.substr(name.size() - kHistorySuffix.size()) == kHistorySuffix;
+}
+
 void walk_local_files(const fs::path &dir,
                       const std::string &rel_prefix,
                       std::set<std::string> &out,
@@ -286,7 +298,10 @@ void walk_local_files(const fs::path &dir,
         // the documents, and silently leaving those behind was indis-
         // tinguishable from the sync losing them. Dotfiles are skipped
         // above, which is what keeps the sync's own metadata out.
-        out.insert(rel);
+        if (!excluded_from_sync(name))
+        {
+            out.insert(rel);
+        }
     }
 }
 
@@ -372,7 +387,7 @@ void flatten_remote(const json &entries,
             continue;
         }
         const std::string rel = entry.value("relPath", "");
-        if (valid_remote_rel_path(rel))
+        if (valid_remote_rel_path(rel) && !excluded_from_sync(rel))
         {
             out[rel] = entry.value("hash", "");
         }
@@ -868,6 +883,20 @@ std::vector<std::string> sync_once(const CloudConfig &config)
     for (const auto &[rel, _] : state.files)
     {
         all_paths.insert(rel);
+    }
+    // Sidecars an earlier build already recorded: forget them rather than
+    // acting on them, so nothing is uploaded and nothing is deleted locally.
+    for (auto it = all_paths.begin(); it != all_paths.end();)
+    {
+        if (excluded_from_sync(*it))
+        {
+            state.files.erase(*it);
+            it = all_paths.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
     }
 
     for (const auto &rel_path : all_paths)
