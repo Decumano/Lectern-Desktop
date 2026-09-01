@@ -1,0 +1,121 @@
+# Flatpak manifest that builds from THIS working tree.
+#
+# The sibling manifest, com.lectern.app.yml, repackages a published .deb and is
+# the Flathub-publishable one. This is the counterpart for sideloading: it
+# compiles the checkout you have, so a local change reaches an installable
+# .flatpak without cutting a release.
+#
+# Two consequences of building here rather than repackaging:
+#
+#   * vcpkg downloads source archives while it builds, so the module needs
+#     --share=network. Flathub forbids that, which is exactly why the .deb
+#     manifest exists alongside this one. Sideloading and `flatpak
+#     build-bundle` do not care.
+#
+#   * The binary is built against the SDK's toolchain and the runtime's GTK,
+#     WebKitGTK and libadwaita, not the host's. That is the point: a binary
+#     built on a rolling distro links a glibc far newer than the runtime's and
+#     will not start inside it.
+#
+# Build and install:
+#   flatpak install -y flathub org.gnome.Platform//48 org.gnome.Sdk//48
+#   flatpak-builder --force-clean --user --install build-flatpak \
+#       flatpak/com.lectern.app.local.yml
+#   flatpak run com.lectern.app
+#
+# Produce a single file to hand to someone else:
+#   flatpak-builder --force-clean --repo=flatpak-repo build-flatpak \
+#       flatpak/com.lectern.app.local.yml
+#   flatpak build-bundle flatpak-repo Lectern.flatpak com.lectern.app
+id: com.lectern.app
+runtime: org.gnome.Platform
+runtime-version: '48'
+sdk: org.gnome.Sdk
+command: lectern
+
+finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  - --share=ipc
+  # Cloud sync (src/cloud.cpp) and the update check (src/updater.cpp).
+  - --share=network
+  # The folder picker is GtkFileDialog, which routes through
+  # xdg-desktop-portal inside the sandbox, so the folder the user picks is
+  # granted individually and this does NOT need --filesystem=host.
+  - --filesystem=xdg-documents
+  - --talk-name=org.freedesktop.portal.Desktop
+
+modules:
+  - name: lectern
+    buildsystem: simple
+
+    build-options:
+      build-args:
+        # vcpkg fetches each port's source archive during the build.
+        - --share=network
+
+    sources:
+      - type: dir
+        path: ..
+        skip:
+          - .git
+          - build
+          - build-flatpak
+          - build-portable
+          - flatpak-repo
+          - .linuxdeploy
+
+      # Pinned to the same commit .github/workflows/release.yml uses, so a
+      # vcpkg registry change cannot silently alter what this produces.
+      - type: git
+        url: https://github.com/microsoft/vcpkg
+        commit: 4e39a8622e56a113c89228e4e13944dce8654da7
+        dest: vcpkg
+
+    build-commands:
+      - ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+
+      # ── An overlay port for saucer, generated from the pinned tree ──
+      #
+      # Three departures from vcpkg's saucer 6.0.1#8, none of which change what
+      # the library does:
+      #
+      #   1. Drop the `gtk` dependency. The port builds its own GTK 4, but the
+      #      WebKitGTK it links against is the runtime's, built against the
+      #      runtime's GTK. Two GTKs in one process do not work; the runtime's
+      #      has to win, and the SDK provides its headers.
+      #   2. Replace -Werror with -Wno-subobject-linkage. saucer compiles
+      #      itself with -Werror -Wfatal-errors, and GCC (unlike Clang, which
+      #      upstream uses) reports its `eraser::method<0, lambda>` bases as
+      #      having internal linkage.
+      #   3. Swap the argument order in glaze.inl's concepts. saucer 6.0.1
+      #      writes glz::read_supported<Format, T>; glaze >= 5.1 declares it
+      #      <T, Format>. Same skew that put src/bridge.h on nlohmann — the
+      #      glaze path is compiled but never used.
+      - mkdir -p overlay-ports
+      - cp -r vcpkg/ports/saucer overlay-ports/saucer
+      - sed -i '/"name": "gtk"/,/},/d' overlay-ports/saucer/vcpkg.json
+      - sed -i '/^vcpkg_cmake_configure(/i vcpkg_replace_string("${SOURCE_PATH}/CMakeLists.txt"
+          "-Werror" "-Wno-subobject-linkage")' overlay-ports/saucer/portfile.cmake
+      - sed -i '/^vcpkg_cmake_configure(/i vcpkg_replace_string("${SOURCE_PATH}/include/saucer/serializers/glaze/glaze.inl"
+          "glz::read_supported<opts.format, T>" "glz::read_supported<T, opts.format>")'
+          overlay-ports/saucer/portfile.cmake
+      - sed -i '/^vcpkg_cmake_configure(/i vcpkg_replace_string("${SOURCE_PATH}/include/saucer/serializers/glaze/glaze.inl"
+          "glz::write_supported<opts.format, T>" "glz::write_supported<T, opts.format>")'
+          overlay-ports/saucer/portfile.cmake
+
+      # BUILD_TESTING=OFF keeps Catch2 and the test binary out of the sandbox
+      # build; the tests are run from the ordinary build tree, not from here.
+      - cmake -S . -B build-flatpak-tree -G Ninja
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=/app
+          -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+          -DVCPKG_OVERLAY_PORTS=overlay-ports
+          -DLECTERN_VERSION=0.12.11
+          -DBUILD_TESTING=OFF
+      - cmake --build build-flatpak-tree
+      - cmake --install build-flatpak-tree
+
+      # appstreamcli looks for <id>.appdata.xml or <id>.metainfo.xml; the
+      # install rule already places the latter in /app/share/metainfo.
