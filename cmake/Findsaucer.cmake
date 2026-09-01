@@ -108,6 +108,16 @@ if(saucer_FOUND AND NOT TARGET saucer::saucer)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(WEBKITGTK REQUIRED IMPORTED_TARGET webkitgtk-6.0)
     target_link_libraries(saucer::saucer INTERFACE PkgConfig::WEBKITGTK)
+
+    # saucer's GTK backend calls into libadwaita (adw_application_new,
+    # adw_header_bar_new, adw_style_manager_get_default). webkitgtk-6.0.pc
+    # brings in its headers but not the library, so the final link has to name
+    # it. Optional rather than REQUIRED: a saucer built without libadwaita
+    # present references none of those symbols.
+    pkg_check_modules(ADWAITA IMPORTED_TARGET libadwaita-1)
+    if(TARGET PkgConfig::ADWAITA)
+      target_link_libraries(saucer::saucer INTERFACE PkgConfig::ADWAITA)
+    endif()
   endif()
 endif()
 
