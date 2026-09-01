@@ -127,5 +127,15 @@ modules:
 
       - install -Dm755 lectern-wrapper /app/bin/lectern-wrapper
 
+      # `command:` only covers `flatpak run com.lectern.app`. Launching from a
+      # desktop menu goes through the exported .desktop file, whose Exec line
+      # Flatpak rewrites into `flatpak run --command=<Exec> …` — so an
+      # Exec=lectern would run the binary directly and skip the wrapper. This
+      # is why the app worked from a terminal but still died from the
+      # launcher. Patched here rather than in packaging/lectern.desktop.in,
+      # which the .deb and AppImage share and where no wrapper exists.
+      - sed -i 's|^Exec=lectern |Exec=lectern-wrapper |'
+          /app/share/applications/com.lectern.app.desktop
+
       # appstreamcli looks for <id>.appdata.xml or <id>.metainfo.xml; the
       # install rule already places the latter in /app/share/metainfo.

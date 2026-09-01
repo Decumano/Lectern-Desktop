@@ -79,3 +79,9 @@ modules:
       - install -Dm644 com.lectern.app.metainfo.xml
           /app/share/metainfo/com.lectern.app.metainfo.xml
       - install -Dm755 lectern-wrapper /app/bin/lectern-wrapper
+      # `command:` only covers `flatpak run com.lectern.app`; a desktop-menu
+      # launch goes through the exported .desktop file, whose Exec Flatpak
+      # turns into `flatpak run --command=<Exec> …`. Without this the launcher
+      # would run the binary directly and skip the wrapper.
+      - sed -i 's|^Exec=lectern |Exec=lectern-wrapper |'
+          /app/share/applications/com.lectern.app.desktop
