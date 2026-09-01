@@ -81,7 +81,10 @@ modules:
       # process, and patches saucer's -Werror and its glaze concepts. The
       # script documents why each is needed; it is the same overlay a host
       # build wants, which is why it is not inlined here.
-      - ./scripts/make-saucer-overlay.sh vcpkg overlay-ports
+      # Invoked through bash rather than directly: `type: dir` copies whatever
+      # mode the file has in the working tree, and a checkout that lost the
+      # executable bit would fail here with a bare "Permission denied".
+      - bash ./scripts/make-saucer-overlay.sh vcpkg overlay-ports
 
       # BUILD_TESTING=OFF keeps Catch2 and the test binary out of the sandbox
       # build; the tests are run from the ordinary build tree, not from here.
