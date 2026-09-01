@@ -15,6 +15,18 @@
 #include <shlwapi.h>
 #endif
 
+#ifdef LECTERN_USE_GTK_DIALOGS
+// Included here, at global scope, and deliberately not from dialogs_gtk.inl:
+// that file is pulled in inside `namespace lectern::dialogs`, so an include
+// there nests everything these headers declare — GObject, and all of std::
+// via <memory> — inside that namespace. Whether it breaks depends only on
+// which libstdc++ headers an earlier include already happened to pull in, so
+// it built on GCC 13 and failed on GCC 16.
+#include <gtk/gtk.h>
+
+#include <memory>
+#endif
+
 namespace fs = std::filesystem;
 
 namespace lectern::dialogs {

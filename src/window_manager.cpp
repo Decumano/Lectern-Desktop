@@ -180,6 +180,8 @@ View *open(const std::shared_ptr<saucer::application> &app,
     }
 
     spdlog::debug("opened window at {} ({} open)", full_url, count());
+
+    return raw;
 }
 
 void close_all()

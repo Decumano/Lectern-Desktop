@@ -17,9 +17,8 @@
 // and quits it from the completion callback. That is the standard way to make
 // these modal, and it is safe here because the exposed functions that call
 // them run on the UI thread (launch::sync).
-#include <gtk/gtk.h>
-
-#include <memory>
+// <gtk/gtk.h> and <memory> are included by dialogs.cpp at global scope. They
+// cannot be included here: this file is pulled in inside a namespace.
 
 namespace {
 
