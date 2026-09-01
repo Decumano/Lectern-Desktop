@@ -12,7 +12,8 @@ id: com.lectern.app
 runtime: org.gnome.Platform
 runtime-version: '47'
 sdk: org.gnome.Sdk
-command: lectern
+# Not the binary directly — see the wrapper's comment in the sources below.
+command: lectern-wrapper
 
 finish-args:
   - --socket=wayland
@@ -39,6 +40,25 @@ modules:
         url: https://github.com/Decumano/Lectern-Desktop-Cpp/releases/download/v0.12.11/lectern_0.12.11_amd64.deb
         sha256: 0000000000000000000000000000000000000000000000000000000000000000
         only-arches: [x86_64]
+
+      # ── Why the app is not launched directly ──
+      #
+      # WebKitGTK promotes one of its media threads to SCHED_RR. Inside the
+      # Flatpak sandbox that call succeeds and the kernel then SIGKILLs the
+      # whole process a second later — every thread at once, nothing in the
+      # journal, exit status 137. The rlimits are identical inside and outside
+      # the sandbox, so the limits are not the difference; the likeliest cause
+      # is the systemd scope a Flatpak app runs in having no realtime
+      # bandwidth allocated.
+      #
+      # RLIMIT_RTPRIO of 0 makes the promotion fail with EPERM, which WebKit
+      # handles by leaving the thread at normal priority. Flatpak only — the
+      # .deb this manifest repackages runs fine when installed normally.
+      - type: script
+        dest-filename: lectern-wrapper
+        commands:
+          - ulimit -r 0 2>/dev/null || true
+          - exec /app/bin/lectern "$@"
     build-commands:
       - mkdir deb-extract
       - ar -x *.deb --output deb-extract
@@ -58,3 +78,4 @@ modules:
           /app/share/icons/hicolor/256x256/apps/com.lectern.app.png
       - install -Dm644 com.lectern.app.metainfo.xml
           /app/share/metainfo/com.lectern.app.metainfo.xml
+      - install -Dm755 lectern-wrapper /app/bin/lectern-wrapper

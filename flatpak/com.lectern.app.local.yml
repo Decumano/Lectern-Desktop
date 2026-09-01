@@ -31,7 +31,8 @@ id: com.lectern.app
 runtime: org.gnome.Platform
 runtime-version: '48'
 sdk: org.gnome.Sdk
-command: lectern
+# Not the binary directly — see the wrapper's comment below.
+command: lectern-wrapper
 
 finish-args:
   - --socket=wayland
@@ -73,6 +74,32 @@ modules:
         commit: 4e39a8622e56a113c89228e4e13944dce8654da7
         dest: vcpkg
 
+      # ── Why the app is not launched directly ──
+      #
+      # WebKitGTK promotes one of its media threads to SCHED_RR:
+      #
+      #   sched_setscheduler(<tid>, SCHED_RR|SCHED_RESET_ON_FORK, prio 5)
+      #
+      # Inside the Flatpak sandbox that call succeeds and the kernel then
+      # SIGKILLs the whole process a second or so later — every thread at
+      # once, no core dump, nothing in the journal, exit status 137. The
+      # rlimits are identical inside and outside the sandbox (RTPRIO 99,
+      # RTTIME unlimited), so the limits are not what differs; the likeliest
+      # cause is the systemd scope a Flatpak app runs in having no realtime
+      # bandwidth allocated, unlike the desktop session's own scope.
+      #
+      # Setting RLIMIT_RTPRIO to 0 makes the promotion fail with EPERM, which
+      # WebKit treats as an ordinary condition — it simply keeps the thread at
+      # normal priority. Verified 8/8 runs with the limit, 0/5 without.
+      #
+      # This affects Flatpak only. The plain binary, the .deb and the AppImage
+      # all run unmodified.
+      - type: script
+        dest-filename: lectern-wrapper
+        commands:
+          - ulimit -r 0 2>/dev/null || true
+          - exec /app/bin/lectern "$@"
+
     build-commands:
       - ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
@@ -97,6 +124,8 @@ modules:
           -DBUILD_TESTING=OFF
       - cmake --build build-flatpak-tree
       - cmake --install build-flatpak-tree
+
+      - install -Dm755 lectern-wrapper /app/bin/lectern-wrapper
 
       # appstreamcli looks for <id>.appdata.xml or <id>.metainfo.xml; the
       # install rule already places the latter in /app/share/metainfo.
