@@ -76,34 +76,12 @@ modules:
     build-commands:
       - ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
-      # ── An overlay port for saucer, generated from the pinned tree ──
-      #
-      # Three departures from vcpkg's saucer 6.0.1#8, none of which change what
-      # the library does:
-      #
-      #   1. Drop the `gtk` dependency. The port builds its own GTK 4, but the
-      #      WebKitGTK it links against is the runtime's, built against the
-      #      runtime's GTK. Two GTKs in one process do not work; the runtime's
-      #      has to win, and the SDK provides its headers.
-      #   2. Replace -Werror with -Wno-subobject-linkage. saucer compiles
-      #      itself with -Werror -Wfatal-errors, and GCC (unlike Clang, which
-      #      upstream uses) reports its `eraser::method<0, lambda>` bases as
-      #      having internal linkage.
-      #   3. Swap the argument order in glaze.inl's concepts. saucer 6.0.1
-      #      writes glz::read_supported<Format, T>; glaze >= 5.1 declares it
-      #      <T, Format>. Same skew that put src/bridge.h on nlohmann — the
-      #      glaze path is compiled but never used.
-      - mkdir -p overlay-ports
-      - cp -r vcpkg/ports/saucer overlay-ports/saucer
-      - sed -i '/"name": "gtk"/,/},/d' overlay-ports/saucer/vcpkg.json
-      - sed -i '/^vcpkg_cmake_configure(/i vcpkg_replace_string("${SOURCE_PATH}/CMakeLists.txt"
-          "-Werror" "-Wno-subobject-linkage")' overlay-ports/saucer/portfile.cmake
-      - sed -i '/^vcpkg_cmake_configure(/i vcpkg_replace_string("${SOURCE_PATH}/include/saucer/serializers/glaze/glaze.inl"
-          "glz::read_supported<opts.format, T>" "glz::read_supported<T, opts.format>")'
-          overlay-ports/saucer/portfile.cmake
-      - sed -i '/^vcpkg_cmake_configure(/i vcpkg_replace_string("${SOURCE_PATH}/include/saucer/serializers/glaze/glaze.inl"
-          "glz::write_supported<opts.format, T>" "glz::write_supported<T, opts.format>")'
-          overlay-ports/saucer/portfile.cmake
+      # An overlay port for saucer, generated from the pinned vcpkg tree:
+      # drops the `gtk` dependency so the runtime's GTK is the only one in the
+      # process, and patches saucer's -Werror and its glaze concepts. The
+      # script documents why each is needed; it is the same overlay a host
+      # build wants, which is why it is not inlined here.
+      - ./scripts/make-saucer-overlay.sh vcpkg overlay-ports
 
       # BUILD_TESTING=OFF keeps Catch2 and the test binary out of the sandbox
       # build; the tests are run from the ordinary build tree, not from here.
