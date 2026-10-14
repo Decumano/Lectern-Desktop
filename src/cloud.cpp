@@ -293,7 +293,7 @@ void walk_local_files(const fs::path &dir,
             continue;
         }
 
-        // Everything that is not a dotfile syncs, not only the eight app
+        // Everything that is not a dotfile syncs, not only the app
         // formats. A work folder holds maps, images and plain notes beside
         // the documents, and silently leaving those behind was indis-
         // tinguishable from the sync losing them. Dotfiles are skipped

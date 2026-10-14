@@ -31,6 +31,9 @@ inline constexpr const char *kTauriShim = R"js(
     create_work_folder: ['root', 'relPath'],
     delete_work_entry: ['root', 'relPath', 'isDir'],
     move_work_entry: ['root', 'fromRelPath', 'toRelPath'],
+    read_work_file_base64: ['root', 'relPath'],
+    write_work_file_base64: ['root', 'relPath', 'data'],
+    fetch_remote_file: ['url'],
 
     cloud_connect: ['serverUrl', 'email', 'password', 'root'],
     cloud_disconnect: [],

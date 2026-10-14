@@ -248,6 +248,46 @@ void expose_commands(windows::View &webview,
                        });
                    });
 
+    // Binary files (presentation images) travel as base64: the bridge carries
+    // JSON, and a JSON string can't hold arbitrary bytes.
+    webview.expose(
+        "read_work_file_base64",
+        [](std::string root, std::string rel_path) -> Answer {
+            return answer([&] {
+                const auto content =
+                    util::read_file(paths::resolve_work_path(root, rel_path));
+                if (!content)
+                {
+                    throw std::runtime_error("cannot read file");
+                }
+                return json(util::base64_encode(std::string_view(*content)));
+            });
+        });
+
+    webview.expose("write_work_file_base64",
+                   [](std::string root, std::string rel_path,
+                      std::string data) -> Answer {
+                       return answer([&] {
+                           const auto bytes = util::base64_decode(data);
+                           if (!bytes)
+                           {
+                               throw std::runtime_error("malformed file data");
+                           }
+                           util::write_file_atomic(
+                               paths::resolve_work_path(root, rel_path),
+                               *bytes);
+                           cloud::nudge_sync();
+                           return json(nullptr);
+                       });
+                   });
+
+    webview.expose(
+        "fetch_remote_file",
+        [](std::string url) -> Answer {
+            return answer([&] { return workfolder::fetch_remote(url); });
+        },
+        saucer::launch::async);
+
     webview.expose(
         "create_work_folder",
         [](std::string root, std::string rel_path) -> Answer {

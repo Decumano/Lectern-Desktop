@@ -180,7 +180,7 @@ TEST_CASE("safe_rel_path refuses anything that could escape the root",
                       std::invalid_argument);
 }
 
-TEST_CASE("is_work_file recognises exactly the eight app extensions",
+TEST_CASE("is_work_file recognises exactly the nine app extensions",
           "[workfolder]")
 {
     for (const auto ext : workfolder::kWorkFileExtensions)
@@ -190,6 +190,18 @@ TEST_CASE("is_work_file recognises exactly the eight app extensions",
     REQUIRE(workfolder::is_work_file("DOC.MDP"));
     REQUIRE_FALSE(workfolder::is_work_file("notes.txt"));
     REQUIRE_FALSE(workfolder::is_work_file("_lktpl.json"));
+}
+
+TEST_CASE("fetch_remote only accepts http and https URLs", "[workfolder]")
+{
+    REQUIRE(workfolder::is_fetchable_url("https://example.com/a.png"));
+    REQUIRE(workfolder::is_fetchable_url("HTTP://example.com/a.png"));
+    REQUIRE_FALSE(workfolder::is_fetchable_url("file:///C:/Windows/win.ini"));
+    REQUIRE_FALSE(workfolder::is_fetchable_url("ftp://example.com/a.png"));
+    REQUIRE_FALSE(workfolder::is_fetchable_url("https://"));
+    REQUIRE_FALSE(workfolder::is_fetchable_url("https://exa mple.com/a.png"));
+    REQUIRE_FALSE(workfolder::is_fetchable_url("javascript:alert(1)"));
+    REQUIRE_THROWS(workfolder::fetch_remote("file:///etc/passwd"));
 }
 
 // ── Updater ──

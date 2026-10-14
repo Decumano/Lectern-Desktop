@@ -1,7 +1,10 @@
 #include "workfolder.h"
 
+#include <cpr/cpr.h>
+
 #include <algorithm>
 #include <chrono>
+#include <stdexcept>
 #include <vector>
 
 #include "util.h"
@@ -154,6 +157,80 @@ json default_file(const std::string &name)
     return json{{"name", "Welcome to Lectern " + name},
                 {"docType", "doc"},
                 {"content", kContent}};
+}
+
+bool is_fetchable_url(std::string_view url)
+{
+    const std::string lower = util::to_lower(std::string(url));
+    const bool http = lower.rfind("http://", 0) == 0;
+    const bool https = lower.rfind("https://", 0) == 0;
+    if (!http && !https)
+    {
+        return false;
+    }
+    // Something has to follow the scheme, and no whitespace or control
+    // characters anywhere: those never belong in a URL a user pasted.
+    const size_t host = http ? 7 : 8;
+    if (url.size() <= host)
+    {
+        return false;
+    }
+    return std::none_of(url.begin(), url.end(), [](char c) {
+        return static_cast<unsigned char>(c) <= 0x20 || c == 0x7f;
+    });
+}
+
+json fetch_remote(const std::string &url)
+{
+    if (!is_fetchable_url(url))
+    {
+        throw std::runtime_error("only http and https addresses can be fetched");
+    }
+
+    // Abort as soon as the body outgrows the limit instead of buffering
+    // whatever the server chooses to send.
+    std::string body;
+    bool too_large = false;
+    const auto response = cpr::Get(
+        cpr::Url{url},
+        cpr::Timeout{30000},
+        cpr::Redirect{10L},
+        cpr::WriteCallback{[&](std::string_view chunk, intptr_t) {
+            if (body.size() + chunk.size() > kMaxRemoteFetchBytes)
+            {
+                too_large = true;
+                return false;
+            }
+            body.append(chunk);
+            return true;
+        }});
+
+    if (too_large)
+    {
+        throw std::runtime_error(
+            "the file is too large (" +
+            std::to_string(kMaxRemoteFetchBytes / (1024 * 1024)) + " MB max)");
+    }
+    if (response.error)
+    {
+        throw std::runtime_error("could not download: " +
+                                 response.error.message);
+    }
+    if (response.status_code < 200 || response.status_code >= 300)
+    {
+        throw std::runtime_error("the server answered " +
+                                 std::to_string(response.status_code));
+    }
+
+    std::string content_type;
+    const auto it = response.header.find("content-type");
+    if (it != response.header.end())
+    {
+        content_type = it->second;
+    }
+
+    return json{{"data", util::base64_encode(std::string_view(body))},
+                {"contentType", content_type}};
 }
 
 }  // namespace lectern::workfolder
