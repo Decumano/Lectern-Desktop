@@ -35,8 +35,11 @@ sdk: org.gnome.Sdk
 command: lectern-wrapper
 
 finish-args:
-  - --socket=wayland
-  - --socket=fallback-x11
+  # X11 only (XWayland on a Wayland session). The GNOME 48 runtime's GTK
+  # segfaults in linux_dmabuf_tranche_done while opening the Wayland display
+  # on current compositors, before any window exists. Drop this back to
+  # wayland + fallback-x11 after moving to a newer runtime.
+  - --socket=x11
   - --device=dri
   - --share=ipc
   # Cloud sync (src/cloud.cpp) and the update check (src/updater.cpp).
