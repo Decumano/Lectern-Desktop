@@ -122,8 +122,22 @@ add_executable(lectern WIN32 MACOSX_BUNDLE
   src/bridge.cpp
   src/embedded.cpp
   src/window_manager.cpp
+  src/pdf_export.cpp
 )
 target_link_libraries(lectern PRIVATE lectern_desktop_core saucer::saucer)
+
+# WebKitGTK is already in the process on Linux, as saucer's backend. Linking it
+# directly lets PDF export print from a hidden view, the one path that honours
+# exact margins (see src/pdf_export.cpp). Without it, export uses the print dialog.
+if(UNIX AND NOT APPLE AND TARGET PkgConfig::GTK4)
+  pkg_check_modules(WEBKITGTK IMPORTED_TARGET webkitgtk-6.0)
+  pkg_check_modules(GTK4UNIXPRINT IMPORTED_TARGET gtk4-unix-print)
+  if(TARGET PkgConfig::WEBKITGTK AND TARGET PkgConfig::GTK4UNIXPRINT)
+    target_link_libraries(lectern PRIVATE PkgConfig::WEBKITGTK PkgConfig::GTK4UNIXPRINT)
+    target_compile_definitions(lectern PRIVATE LECTERN_USE_WEBKIT_PDF)
+    message(STATUS "PDF export: native (WebKitGTK)")
+  endif()
+endif()
 
 if(WIN32)
   # Gives the .exe its icon and version resource in Explorer.

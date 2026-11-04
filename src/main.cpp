@@ -19,6 +19,7 @@
 #include "dialogs.h"
 #include "embedded.h"
 #include "paths.h"
+#include "pdf_export.h"
 #include "tauri_shim.h"
 #include "updater.h"
 #include "util.h"
@@ -214,6 +215,35 @@ namespace
                         }
 
                         util::fWriteFileAtomic(*chosen, content);
+                        return json(true);
+                    }
+                );
+            }
+        );
+
+        // Desktop PDF export: the frontend has already laid out the pages.
+        webview.expose
+        (
+            "save_pdf",
+            [](std::string name, std::string html, double width_mm, double height_mm) -> Answer
+            {
+                return fAnswer
+                (
+                    [&]
+                    {
+                        if (!pdf::fSupported())
+                        {
+                            throw std::runtime_error("native PDF export is not available in this build");
+                        }
+
+                        const auto chosen = dialogs::fSaveFile("Save PDF", name, "pdf");
+
+                        if (!chosen)
+                        {
+                            return json(false);  // cancelled
+                        }
+
+                        pdf::fRender(html, *chosen, width_mm, height_mm);
                         return json(true);
                     }
                 );
