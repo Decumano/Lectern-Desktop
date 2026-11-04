@@ -1,6 +1,6 @@
 // Lectern desktop: a saucer webview hosting the shared frontend
 //
-// The frontend is served over a custom `lectern://` scheme
+// The frontend is served over a custom `app://lectern/` scheme
 // The editor imports ES modules (pdf.js) and Chromium blocks
 // module imports across file:// origins
 #include <saucer/smartview.hpp>
@@ -33,7 +33,7 @@ using namespace lectern;
 namespace
 {
     // custom URL scheme definition
-    constexpr const char *cScheme = "lectern";
+    constexpr const char *cScheme = "app";
     using Answer = std::expected<bridge::raw_json, std::string>;
 
     // Turns exceptions into rejected promises

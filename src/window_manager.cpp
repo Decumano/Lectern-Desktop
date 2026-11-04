@@ -55,7 +55,7 @@ std::filesystem::path fStoragePath()
 constexpr const char *cScheme = "app";
 constexpr const char *cHost = "lectern";
 
-/// Turns the frontend's relative `index.html?win=w1` into a full lectern:// URL,
+/// Turns the frontend's relative `index.html?win=w1` into a full app://lectern/ URL,
 /// refusing anything that is already absolute.
 std::string fResolveUrl(const std::string &url)
 {
