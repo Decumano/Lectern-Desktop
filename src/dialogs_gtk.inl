@@ -30,7 +30,7 @@ struct GtkDialogWait
     bool confirmed = false;
 };
 
-void on_select_folder(GObject *source, GAsyncResult *result, gpointer data)
+void fOnSelectFolder(GObject *source, GAsyncResult *result, gpointer data)
 {
     auto *wait = static_cast<GtkDialogWait *>(data);
     GError *error = nullptr;
@@ -53,7 +53,7 @@ void on_select_folder(GObject *source, GAsyncResult *result, gpointer data)
     g_main_loop_quit(wait->loop);
 }
 
-void on_save(GObject *source, GAsyncResult *result, gpointer data)
+void fOnSave(GObject *source, GAsyncResult *result, gpointer data)
 {
     auto *wait = static_cast<GtkDialogWait *>(data);
     GError *error = nullptr;
@@ -74,7 +74,7 @@ void on_save(GObject *source, GAsyncResult *result, gpointer data)
     g_main_loop_quit(wait->loop);
 }
 
-void on_alert(GObject *source, GAsyncResult *result, gpointer data)
+void fOnAlert(GObject *source, GAsyncResult *result, gpointer data)
 {
     auto *wait = static_cast<GtkDialogWait *>(data);
     GError *error = nullptr;
@@ -89,7 +89,7 @@ void on_alert(GObject *source, GAsyncResult *result, gpointer data)
 }
 
 /// Runs a nested main loop until the callback quits it.
-void pump(GtkDialogWait &wait)
+void fPump(GtkDialogWait &wait)
 {
     wait.loop = g_main_loop_new(nullptr, FALSE);
     g_main_loop_run(wait.loop);
@@ -97,22 +97,22 @@ void pump(GtkDialogWait &wait)
     wait.loop = nullptr;
 }
 
-std::optional<fs::path> gtk_pick_folder(const std::string &title)
+std::optional<fs::path> fGtkPickFolder(const std::string &title)
 {
     GtkFileDialog *dialog = gtk_file_dialog_new();
     gtk_file_dialog_set_title(dialog, title.c_str());
     gtk_file_dialog_set_modal(dialog, TRUE);
 
     GtkDialogWait wait;
-    gtk_file_dialog_select_folder(dialog, nullptr, nullptr, on_select_folder,
+    gtk_file_dialog_select_folder(dialog, nullptr, nullptr, fOnSelectFolder,
                                   &wait);
-    pump(wait);
+    fPump(wait);
 
     g_object_unref(dialog);
     return wait.path;
 }
 
-std::optional<fs::path> gtk_save_file(const std::string &title,
+std::optional<fs::path> fGtkSaveFile(const std::string &title,
                                       const std::string &suggested_name)
 {
     GtkFileDialog *dialog = gtk_file_dialog_new();
@@ -124,14 +124,14 @@ std::optional<fs::path> gtk_save_file(const std::string &title,
     }
 
     GtkDialogWait wait;
-    gtk_file_dialog_save(dialog, nullptr, nullptr, on_save, &wait);
-    pump(wait);
+    gtk_file_dialog_save(dialog, nullptr, nullptr, fOnSave, &wait);
+    fPump(wait);
 
     g_object_unref(dialog);
     return wait.path;
 }
 
-bool gtk_confirm(const std::string &title, const std::string &message)
+bool fGtkConfirm(const std::string &title, const std::string &message)
 {
     GtkAlertDialog *dialog = gtk_alert_dialog_new("%s", title.c_str());
     gtk_alert_dialog_set_detail(dialog, message.c_str());
@@ -143,8 +143,8 @@ bool gtk_confirm(const std::string &title, const std::string &message)
     gtk_alert_dialog_set_default_button(dialog, 1);
 
     GtkDialogWait wait;
-    gtk_alert_dialog_choose(dialog, nullptr, nullptr, on_alert, &wait);
-    pump(wait);
+    gtk_alert_dialog_choose(dialog, nullptr, nullptr, fOnAlert, &wait);
+    fPump(wait);
 
     g_object_unref(dialog);
     return wait.confirmed;

@@ -13,7 +13,7 @@ namespace {
 /// an overlapping edit and reports as a conflict for the user to resolve. The
 /// cap keeps the O(D^2) trace from turning a pathological diff into hundreds
 /// of megabytes.
-constexpr size_t kMaxEditDistance = 4000;
+constexpr size_t cMaxEditDistance = 4000;
 
 enum class OpKind
 {
@@ -30,14 +30,14 @@ struct Op
 };
 
 /// Myers' O(ND) diff with a recorded trace. Returns nullopt when the edit
-/// distance exceeds kMaxEditDistance.
-std::optional<std::vector<Op>> myers(const std::vector<std::string_view> &base,
+/// distance exceeds cMaxEditDistance.
+std::optional<std::vector<Op>> fMyers(const std::vector<std::string_view> &base,
                                      const std::vector<std::string_view> &other)
 {
     const auto n = static_cast<int>(base.size());
     const auto m = static_cast<int>(other.size());
     const int max_d =
-        std::min<int>(n + m, static_cast<int>(kMaxEditDistance));
+        std::min<int>(n + m, static_cast<int>(cMaxEditDistance));
 
     // v[k] is the furthest-right base index reached on diagonal k. Stored
     // offset so negative k is addressable.
@@ -106,12 +106,12 @@ std::optional<std::vector<Op>> myers(const std::vector<std::string_view> &base,
         const std::vector<int> &level = trace[static_cast<size_t>(d)];
         const int k = x - y;
 
-        const auto at = [&](int diagonal) {
+        const auto fAt = [&](int diagonal) {
             return level[static_cast<size_t>(diagonal + d)];
         };
 
         int prev_k = 0;
-        if (k == -d || (k != d && at(k - 1) < at(k + 1)))
+        if (k == -d || (k != d && fAt(k - 1) < fAt(k + 1)))
         {
             prev_k = k + 1;
         }
@@ -120,7 +120,7 @@ std::optional<std::vector<Op>> myers(const std::vector<std::string_view> &base,
             prev_k = k - 1;
         }
 
-        const int prev_x = at(prev_k);
+        const int prev_x = fAt(prev_k);
         const int prev_y = prev_x - prev_k;
 
         while (x > prev_x && y > prev_y)
@@ -163,7 +163,7 @@ std::optional<std::vector<Op>> myers(const std::vector<std::string_view> &base,
 
 }  // namespace
 
-std::vector<std::string_view> split_lines(std::string_view text)
+std::vector<std::string_view> fSplitLines(std::string_view text)
 {
     std::vector<std::string_view> lines;
     if (text.empty())
@@ -186,10 +186,10 @@ std::vector<std::string_view> split_lines(std::string_view text)
     return lines;
 }
 
-std::vector<Hunk> hunks_from_diff(const std::vector<std::string_view> &base,
+std::vector<Hunk> fHunksFromDiff(const std::vector<std::string_view> &base,
                                   const std::vector<std::string_view> &other)
 {
-    const auto ops = myers(base, other);
+    const auto ops = fMyers(base, other);
     if (!ops)
     {
         // Past the cap: one hunk replacing the whole file.
@@ -244,16 +244,16 @@ std::vector<Hunk> hunks_from_diff(const std::vector<std::string_view> &base,
     return hunks;
 }
 
-MergeResult three_way_merge(std::string_view base,
+MergeResult fThreeWayMerge(std::string_view base,
                             std::string_view local,
                             std::string_view remote)
 {
-    const auto base_lines = split_lines(base);
-    const auto local_lines = split_lines(local);
-    const auto remote_lines = split_lines(remote);
+    const auto base_lines = fSplitLines(base);
+    const auto local_lines = fSplitLines(local);
+    const auto remote_lines = fSplitLines(remote);
 
-    const auto local_hunks = hunks_from_diff(base_lines, local_lines);
-    const auto remote_hunks = hunks_from_diff(base_lines, remote_lines);
+    const auto local_hunks = fHunksFromDiff(base_lines, local_lines);
+    const auto remote_hunks = fHunksFromDiff(base_lines, remote_lines);
 
     enum class Side
     {
@@ -277,7 +277,7 @@ MergeResult three_way_merge(std::string_view base,
         tagged.push_back({Side::Remote, i});
     }
 
-    const auto hunk_of = [&](const Tagged &item) -> const Hunk & {
+    const auto fHunkOf = [&](const Tagged &item) -> const Hunk & {
         return item.side == Side::Local ? local_hunks[item.index]
                                         : remote_hunks[item.index];
     };
@@ -285,7 +285,7 @@ MergeResult three_way_merge(std::string_view base,
     std::stable_sort(tagged.begin(),
                      tagged.end(),
                      [&](const Tagged &a, const Tagged &b) {
-                         return hunk_of(a).start < hunk_of(b).start;
+                         return fHunkOf(a).start < fHunkOf(b).start;
                      });
 
     // Cluster hunks that touch the same region of base.
@@ -296,7 +296,7 @@ MergeResult three_way_merge(std::string_view base,
 
     for (const auto &item : tagged)
     {
-        const Hunk &hunk = hunk_of(item);
+        const Hunk &hunk = fHunkOf(item);
         const size_t start = hunk.start;
         const size_t end = hunk.end;
 
@@ -348,7 +348,7 @@ MergeResult three_way_merge(std::string_view base,
         for (const auto &item : cluster)
         {
             (item.side == Side::Local ? locals : remotes)
-                .push_back(&hunk_of(item));
+                .push_back(&fHunkOf(item));
         }
 
         if (remotes.empty() && locals.size() == 1)

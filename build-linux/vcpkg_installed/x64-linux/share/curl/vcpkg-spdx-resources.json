@@ -1,0 +1,19 @@
+{
+  "packages": [
+{
+  "SPDXID" : "SPDXRef-resource-0",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "e1003f374675a6ae50463995a6c705208c4247120093f1fcccf030847161235b3dfc0e40927114ccbc5b4530893990ccb96ec15400ffe4bcb275d26a0499f10e"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/curl/curl@curl-8_23_0",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "curl/curl"
+}
+  ]
+}

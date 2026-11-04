@@ -173,7 +173,7 @@ std::optional<fs::path> run_dialog(const std::string &title,
 /// Runs a command and returns its trimmed stdout, or nullopt when the command
 /// is missing or exits non-zero (which is also how a cancelled dialog reports
 /// itself).
-std::optional<std::string> capture(const std::string &command)
+std::optional<std::string> fCapture(const std::string &command)
 {
     FILE *pipe = popen(command.c_str(), "r");
     if (pipe == nullptr)
@@ -194,7 +194,7 @@ std::optional<std::string> capture(const std::string &command)
         return std::nullopt;
     }
 
-    const std::string trimmed = util::trim(out);
+    const std::string trimmed = util::fTrim(out);
     if (trimmed.empty())
     {
         return std::nullopt;
@@ -202,7 +202,7 @@ std::optional<std::string> capture(const std::string &command)
     return trimmed;
 }
 
-bool has_command(const std::string &name)
+bool fHasCommand(const std::string &name)
 {
     return std::system(("command -v " + name + " > /dev/null 2>&1").c_str()) ==
            0;
@@ -210,7 +210,7 @@ bool has_command(const std::string &name)
 
 /// Single-quotes a value for the shell, so a title or filename containing a
 /// quote can't break out into a command.
-std::string shell_quote(const std::string &value)
+std::string fShellQuote(const std::string &value)
 {
     std::string out = "'";
     for (const char c : value)
@@ -232,32 +232,32 @@ std::string shell_quote(const std::string &value)
 
 }  // namespace
 
-std::optional<fs::path> pick_folder(const std::string &title)
+std::optional<fs::path> fPickFolder(const std::string &title)
 {
 #ifdef _WIN32
     return run_dialog(title, /*folders=*/true, {}, {});
 #elif defined(__APPLE__)
     const auto chosen = capture(
         "osascript -e 'POSIX path of (choose folder with prompt " +
-        shell_quote(title) + ")' 2>/dev/null");
+        fShellQuote(title) + ")' 2>/dev/null");
     return chosen ? std::optional(fs::path(*chosen)) : std::nullopt;
 #else
 #ifdef LECTERN_USE_GTK_DIALOGS
     // GTK routes through xdg-desktop-portal inside a Flatpak sandbox, where
     // no external dialog helper exists.
-    return gtk_pick_folder(title);
+    return fGtkPickFolder(title);
 #else
-    if (has_command("zenity"))
+    if (fHasCommand("zenity"))
     {
         const auto chosen =
             capture("zenity --file-selection --directory --title=" +
-                    shell_quote(title) + " 2>/dev/null");
+                    fShellQuote(title) + " 2>/dev/null");
         return chosen ? std::optional(fs::path(*chosen)) : std::nullopt;
     }
-    if (has_command("kdialog"))
+    if (fHasCommand("kdialog"))
     {
         const auto chosen = capture("kdialog --getexistingdirectory . --title " +
-                                    shell_quote(title) + " 2>/dev/null");
+                                    fShellQuote(title) + " 2>/dev/null");
         return chosen ? std::optional(fs::path(*chosen)) : std::nullopt;
     }
     throw std::runtime_error(
@@ -266,7 +266,7 @@ std::optional<fs::path> pick_folder(const std::string &title)
 #endif
 }
 
-std::optional<fs::path> save_file(const std::string &title,
+std::optional<fs::path> fSaveFile(const std::string &title,
                                   const std::string &suggested_name,
                                   const std::string &extension)
 {
@@ -275,28 +275,28 @@ std::optional<fs::path> save_file(const std::string &title,
 #elif defined(__APPLE__)
     const auto chosen = capture(
         "osascript -e 'POSIX path of (choose file name with prompt " +
-        shell_quote(title) + " default name " + shell_quote(suggested_name) +
+        fShellQuote(title) + " default name " + fShellQuote(suggested_name) +
         ")' 2>/dev/null");
     return chosen ? std::optional(fs::path(*chosen)) : std::nullopt;
 #else
     (void)extension;
 #ifdef LECTERN_USE_GTK_DIALOGS
-    return gtk_save_file(title, suggested_name);
+    return fGtkSaveFile(title, suggested_name);
 #else
-    if (has_command("zenity"))
+    if (fHasCommand("zenity"))
     {
         const auto chosen =
             capture("zenity --file-selection --save --confirm-overwrite"
                     " --title=" +
-                    shell_quote(title) + " --filename=" +
-                    shell_quote(suggested_name) + " 2>/dev/null");
+                    fShellQuote(title) + " --filename=" +
+                    fShellQuote(suggested_name) + " 2>/dev/null");
         return chosen ? std::optional(fs::path(*chosen)) : std::nullopt;
     }
-    if (has_command("kdialog"))
+    if (fHasCommand("kdialog"))
     {
         const auto chosen = capture("kdialog --getsavefilename " +
-                                    shell_quote(suggested_name) + " --title " +
-                                    shell_quote(title) + " 2>/dev/null");
+                                    fShellQuote(suggested_name) + " --title " +
+                                    fShellQuote(title) + " 2>/dev/null");
         return chosen ? std::optional(fs::path(*chosen)) : std::nullopt;
     }
     throw std::runtime_error(
@@ -306,7 +306,7 @@ std::optional<fs::path> save_file(const std::string &title,
 }
 
 
-bool confirm(const std::string &title, const std::string &message)
+bool fConfirm(const std::string &title, const std::string &message)
 {
 #ifdef _WIN32
     return MessageBoxW(nullptr,
@@ -316,26 +316,26 @@ bool confirm(const std::string &title, const std::string &message)
 #elif defined(__APPLE__)
     // `display dialog` exits non-zero when the user cancels, which capture()
     // already reports as nullopt.
-    return capture("osascript -e 'display dialog " + shell_quote(message) +
-                   " with title " + shell_quote(title) +
+    return capture("osascript -e 'display dialog " + fShellQuote(message) +
+                   " with title " + fShellQuote(title) +
                    " buttons {\"Not now\", \"Install\"} default button 2' "
                    "2>/dev/null")
         .has_value();
 #else
 #ifdef LECTERN_USE_GTK_DIALOGS
-    return gtk_confirm(title, message);
+    return fGtkConfirm(title, message);
 #else
-    if (has_command("zenity"))
+    if (fHasCommand("zenity"))
     {
-        return std::system(("zenity --question --title=" + shell_quote(title) +
-                            " --text=" + shell_quote(message) +
+        return std::system(("zenity --question --title=" + fShellQuote(title) +
+                            " --text=" + fShellQuote(message) +
                             " > /dev/null 2>&1")
                                .c_str()) == 0;
     }
-    if (has_command("kdialog"))
+    if (fHasCommand("kdialog"))
     {
-        return std::system(("kdialog --yesno " + shell_quote(message) +
-                            " --title " + shell_quote(title) +
+        return std::system(("kdialog --yesno " + fShellQuote(message) +
+                            " --title " + fShellQuote(title) +
                             " > /dev/null 2>&1")
                                .c_str()) == 0;
     }
@@ -344,17 +344,17 @@ bool confirm(const std::string &title, const std::string &message)
 #endif
 }
 
-void reveal(const fs::path &path)
+void fReveal(const fs::path &path)
 {
 #ifdef _WIN32
     ShellExecuteW(nullptr, L"open", widen(path.string()).c_str(), nullptr,
                   nullptr, SW_SHOWNORMAL);
 #elif defined(__APPLE__)
-    (void)std::system(("open " + shell_quote(path.string()) +
+    (void)std::system(("open " + fShellQuote(path.string()) +
                        " > /dev/null 2>&1")
                           .c_str());
 #else
-    (void)std::system(("xdg-open " + shell_quote(path.string()) +
+    (void)std::system(("xdg-open " + fShellQuote(path.string()) +
                        " > /dev/null 2>&1")
                           .c_str());
 #endif

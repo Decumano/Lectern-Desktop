@@ -16,7 +16,7 @@ namespace lectern::workfolder {
 
 namespace {
 
-uint64_t modified_ms(const fs::path &path)
+uint64_t fModifiedMs(const fs::path &path)
 {
     std::error_code ec;
     const auto time = fs::last_write_time(path, ec);
@@ -34,15 +34,15 @@ uint64_t modified_ms(const fs::path &path)
 
 }  // namespace
 
-bool is_work_file(std::string_view name)
+bool fIsWorkFile(std::string_view name)
 {
-    const std::string ext = util::extension_of(name);
-    return std::find(kWorkFileExtensions.begin(),
-                     kWorkFileExtensions.end(),
-                     ext) != kWorkFileExtensions.end();
+    const std::string ext = util::fExtensionOf(name);
+    return std::find(cWorkFileExtensions.begin(),
+                     cWorkFileExtensions.end(),
+                     ext) != cWorkFileExtensions.end();
 }
 
-json walk_work_dir(const fs::path &dir, const std::string &rel_prefix)
+json fWalkWorkDir(const fs::path &dir, const std::string &rel_prefix)
 {
     std::error_code ec;
     fs::directory_iterator it(dir, ec);
@@ -90,12 +90,12 @@ json walk_work_dir(const fs::path &dir, const std::string &rel_prefix)
                       {"relPath", rel_path},
                       {"isDir", true},
                       {"modified", 0},
-                      {"children", walk_work_dir(entry.path(), rel_path)}}});
+                      {"children", fWalkWorkDir(entry.path(), rel_path)}}});
             continue;
         }
 
         // Listed whatever its extension, to match what sync now carries and
-        // what the server lists. is_work_file still exists and still gates
+        // what the server lists. fIsWorkFile still exists and still gates
         // sharing, which stays document-only.
 
         entries.push_back({name,
@@ -103,7 +103,7 @@ json walk_work_dir(const fs::path &dir, const std::string &rel_prefix)
                            json{{"name", name},
                                 {"relPath", rel_path},
                                 {"isDir", false},
-                                {"modified", modified_ms(entry.path())},
+                                {"modified", fModifiedMs(entry.path())},
                                 {"children", json::array()}}});
     }
 
@@ -114,7 +114,7 @@ json walk_work_dir(const fs::path &dir, const std::string &rel_prefix)
                   {
                       return a.is_dir;
                   }
-                  return util::to_lower(a.name) < util::to_lower(b.name);
+                  return util::fToLower(a.name) < util::fToLower(b.name);
               });
 
     json out = json::array();
@@ -125,9 +125,9 @@ json walk_work_dir(const fs::path &dir, const std::string &rel_prefix)
     return out;
 }
 
-json default_file(const std::string &name)
+json fDefaultFile(const std::string &name)
 {
-    static constexpr const char *kContent =
+    static constexpr const char *cContent =
         "# Welcome to Lectern\n\n"
         "Lectern is a lightweight office suite that stores everything in "
         "**Markdown**.\n\n"
@@ -156,12 +156,12 @@ json default_file(const std::string &name)
 
     return json{{"name", "Welcome to Lectern " + name},
                 {"docType", "doc"},
-                {"content", kContent}};
+                {"content", cContent}};
 }
 
-bool is_fetchable_url(std::string_view url)
+bool fIsFetchableUrl(std::string_view url)
 {
-    const std::string lower = util::to_lower(std::string(url));
+    const std::string lower = util::fToLower(std::string(url));
     const bool http = lower.rfind("http://", 0) == 0;
     const bool https = lower.rfind("https://", 0) == 0;
     if (!http && !https)
@@ -180,9 +180,9 @@ bool is_fetchable_url(std::string_view url)
     });
 }
 
-json fetch_remote(const std::string &url)
+json fFetchRemote(const std::string &url)
 {
-    if (!is_fetchable_url(url))
+    if (!fIsFetchableUrl(url))
     {
         throw std::runtime_error("only http and https addresses can be fetched");
     }
@@ -196,7 +196,7 @@ json fetch_remote(const std::string &url)
         cpr::Timeout{30000},
         cpr::Redirect{10L},
         cpr::WriteCallback{[&](std::string_view chunk, intptr_t) {
-            if (body.size() + chunk.size() > kMaxRemoteFetchBytes)
+            if (body.size() + chunk.size() > cMaxRemoteFetchBytes)
             {
                 too_large = true;
                 return false;
@@ -209,7 +209,7 @@ json fetch_remote(const std::string &url)
     {
         throw std::runtime_error(
             "the file is too large (" +
-            std::to_string(kMaxRemoteFetchBytes / (1024 * 1024)) + " MB max)");
+            std::to_string(cMaxRemoteFetchBytes / (1024 * 1024)) + " MB max)");
     }
     if (response.error)
     {
@@ -229,7 +229,7 @@ json fetch_remote(const std::string &url)
         content_type = it->second;
     }
 
-    return json{{"data", util::base64_encode(std::string_view(body))},
+    return json{{"data", util::fBase64Encode(std::string_view(body))},
                 {"contentType", content_type}};
 }
 

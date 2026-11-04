@@ -1,0 +1,19 @@
+{
+  "packages": [
+{
+  "SPDXID" : "SPDXRef-resource-0",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "083b92079bf324fb9e50b3d6291ee3654b8e4e2926c292c9dc092b1c4ce336ce4d4bbea7e14d52291340c692887b8ab92d1f9f3d50aed6092b5465242572bfdc"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/saucer/saucer@v6.0.1",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "saucer/saucer"
+}
+  ]
+}

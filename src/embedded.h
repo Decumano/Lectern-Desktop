@@ -17,13 +17,13 @@
 namespace lectern::embedded {
 
 /// True when this build has a frontend pack linked into it.
-bool available();
+bool fAvailable();
 
 /// One file's bytes, or nullopt when the pack has no such entry.
 /// `name` is a relative path with forward slashes, e.g. "vendor/katex.css".
-std::optional<std::string_view> read(std::string_view name);
+std::optional<std::string_view> fRead(std::string_view name);
 
 /// Number of files in the pack; 0 when there is none. For diagnostics.
-size_t count();
+size_t fCount();
 
 }  // namespace lectern::embedded

@@ -1,0 +1,4661 @@
+{
+  "$schema": "https://raw.githubusercontent.com/spdx/spdx-spec/v2.3/schemas/spdx-schema.json",
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "documentNamespace": "https://spdx.org/spdxdocs/glaze-x64-linux-9.0.0-ede1c29d-951c-4b66-a150-ca7932074364",
+  "name": "glaze:x64-linux@9.0.0 fc00126a41d173a20143c38ae271fe14e1d8c15a84e2e301a3d1d53697ac70d7",
+  "creationInfo": {
+    "creators": [
+      "Tool: vcpkg-2026-10-29-139f2e53438b1529e178f6295bc563f4e0de734f"
+    ],
+    "created": "2026-11-02T11:55:30Z"
+  },
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "GENERATES",
+      "relatedSpdxElement": "SPDXRef-binary"
+    },
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-port-file-0"
+    },
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-port-file-1"
+    },
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-port-file-2"
+    },
+    {
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-port-file-3"
+    },
+    {
+      "spdxElementId": "SPDXRef-port-file-3",
+      "relationshipType": "DEPENDENCY_MANIFEST_OF",
+      "relatedSpdxElement": "SPDXRef-port"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-0"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-1"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-2"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-3"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-4"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-5"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-6"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-7"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-8"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-9"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-10"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-11"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-12"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-13"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-14"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-15"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-16"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-17"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-18"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-19"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-20"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-21"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-22"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-23"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-24"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-25"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-26"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-27"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-28"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-29"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-30"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-31"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-32"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-33"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-34"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-35"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-36"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-37"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-38"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-39"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-40"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-41"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-42"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-43"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-44"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-45"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-46"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-47"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-48"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-49"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-50"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-51"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-52"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-53"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-54"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-55"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-56"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-57"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-58"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-59"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-60"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-61"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-62"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-63"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-64"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-65"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-66"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-67"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-68"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-69"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-70"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-71"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-72"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-73"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-74"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-75"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-76"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-77"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-78"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-79"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-80"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-81"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-82"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-83"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-84"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-85"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-86"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-87"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-88"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-89"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-90"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-91"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-92"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-93"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-94"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-95"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-96"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-97"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-98"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-99"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-100"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-101"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-102"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-103"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-104"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-105"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-106"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-107"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-108"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-109"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-110"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-111"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-112"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-113"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-114"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-115"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-116"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-117"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-118"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-119"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-120"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-121"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-122"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-123"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-124"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-125"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-126"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-127"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-128"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-129"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-130"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-131"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-132"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-133"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-134"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-135"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-136"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-137"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-138"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-139"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-140"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-141"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-142"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-143"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-144"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-145"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-146"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-147"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-148"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-149"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-150"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-151"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-152"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-153"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-154"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-155"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-156"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-157"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-158"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-159"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-160"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-161"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-162"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-163"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-164"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-165"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-166"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-167"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-168"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-169"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-170"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-171"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-172"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-173"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-174"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-175"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-176"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-177"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-178"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-179"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-180"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-181"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-182"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-183"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-184"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-185"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-186"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-187"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-188"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-189"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-190"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-191"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-192"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-193"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-194"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-195"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-196"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-197"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-198"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-199"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-200"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-201"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-202"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-203"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-204"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-205"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-206"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-207"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-208"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-209"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-210"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-211"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-212"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-213"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-214"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-215"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-216"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-217"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-218"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-219"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-220"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-221"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-222"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-223"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-224"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-225"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-226"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-227"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-228"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-229"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-230"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-231"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-232"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-233"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-234"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-235"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-236"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-237"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-238"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-239"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-240"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-241"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-242"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-243"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-244"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-245"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-246"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-247"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-248"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-249"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-250"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-251"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-252"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-253"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-254"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-255"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-256"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-257"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-258"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-259"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-260"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-261"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-262"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-263"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-264"
+    }
+  ],
+  "packages": [
+    {
+      "name": "glaze",
+      "SPDXID": "SPDXRef-port",
+      "versionInfo": "9.0.0",
+      "downloadLocation": "git+https://github.com/Microsoft/vcpkg#ports/glaze",
+      "homepage": "https://github.com/stephenberry/glaze",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "description": "One of the fastest JSON libraries in the world. Glaze reads and writes from C++ memory, simplifying interfaces and offering incredible performance.",
+      "comment": "This is the port (recipe) consumed by vcpkg.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:vcpkg/glaze@9.0.0?triplet=x64-linux&vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2FMicrosoft%2Fvcpkg%23ports%2Fglaze"
+        }
+      ]
+    },
+    {
+      "name": "glaze:x64-linux",
+      "SPDXID": "SPDXRef-binary",
+      "versionInfo": "fc00126a41d173a20143c38ae271fe14e1d8c15a84e2e301a3d1d53697ac70d7",
+      "downloadLocation": "NONE",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "This is a binary package built by vcpkg."
+    },
+    {
+      "SPDXID": "SPDXRef-resource-0",
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "39c8c00d02e30893268c6e830e772c8b2cb83f3d06f77c9d5e5b005a3c9ce66bf0534b346ea474a67f5ea9a9086f56086a8e063735eabd0089ba040197f0326d"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://github.com/stephenberry/glaze/commit/57d78dd5d330db6b75367d303970ffd2e46106e7.diff?full_index=1",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "name": "glaze-57d78dd5d330db6b75367d303970ffd2e46106e7.diff",
+      "packageFileName": "glaze-57d78dd5d330db6b75367d303970ffd2e46106e7.diff"
+    },
+    {
+      "SPDXID": "SPDXRef-resource-1",
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "5c20852e51fad9860a181a07ca8dd5b0d3654fc45836a8ba23129a1c1ab0dec2635d1f2da3a752be5dcee374df79ceffee6c60f29efc7cdfa4c45863d770fec0"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "git+https://github.com/stephenberry/glaze@v9.0.0",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "name": "stephenberry/glaze"
+    }
+  ],
+  "files": [
+    {
+      "fileName": "./001-fix-asio.patch",
+      "SPDXID": "SPDXRef-port-file-0",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "715b6f60622464b2d8630e20a589313fec363dc31155c350ee91c68595847f5d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./portfile.cmake",
+      "SPDXID": "SPDXRef-port-file-1",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6791b7679868eb6d48665d2d4d7195499257d67ed6e48cc6c6c8ef9292ba1dd2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./usage",
+      "SPDXID": "SPDXRef-port-file-2",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c44a7726a0a82839e38776fe78e3315c7752d77ad368fc29ac7350052327e9a6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./vcpkg.json",
+      "SPDXID": "SPDXRef-port-file-3",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1eda82a7eecb75c5e32de64fca7afdb80b5d5b347f04803b12b19196032b2662"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/api.hpp",
+      "SPDXID": "SPDXRef-binary-file-0",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e956f45044e378199040aa82851ac05c962393572b2bda51d9fb7d34368eb71e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/hash.hpp",
+      "SPDXID": "SPDXRef-binary-file-1",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a00bccd47f4a2a63456956348f7b93aa318e40dfb54195aa05b369d47d1b1495"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/impl.hpp",
+      "SPDXID": "SPDXRef-binary-file-2",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5ed9f18ad1dde05d13cf8156283a75d170191466f7576791eb1a0bc319704c79"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/lib.hpp",
+      "SPDXID": "SPDXRef-binary-file-3",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3247f68f6041be3662db8de85ab3cafd9a73f7219f322282c1806c144c72e720"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/array.hpp",
+      "SPDXID": "SPDXRef-binary-file-4",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "524db261a8e3f4d9b04d37df48f174e5867ee8e7ac197770699dfe6a11ac8346"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/deque.hpp",
+      "SPDXID": "SPDXRef-binary-file-5",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3e2fb427accd47d68d5ba1eb2d75eefea41b007b25c349ecef57c2a8a392946e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/functional.hpp",
+      "SPDXID": "SPDXRef-binary-file-6",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4d6a95ddecdfbe9f020af433427ab60ba7dd1971f985ea155253c0cef06ab8bd"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/list.hpp",
+      "SPDXID": "SPDXRef-binary-file-7",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f6d5b25cac321a812c007838a8b4012fe8c757fdf44d81cd1012018807e78d93"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/map.hpp",
+      "SPDXID": "SPDXRef-binary-file-8",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6bd253bb1325740fa80308a938d9fe622e2d997c5bc91153ea0c3d7eb4fdf80b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/optional.hpp",
+      "SPDXID": "SPDXRef-binary-file-9",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "898be448786ccaf5b73adeb08be5d5d25f58fee4462f6cc3b6b538c77fff14d6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/set.hpp",
+      "SPDXID": "SPDXRef-binary-file-10",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "504c33ea43071fd57d6ae30b6167cce3ce19140ba5b27e8c9db370528a67eae6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/shared_ptr.hpp",
+      "SPDXID": "SPDXRef-binary-file-11",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c8c89b6e36058876d27d2e7cb63bd319433a9cb09408ad0a1912ae7a0647a816"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/span.hpp",
+      "SPDXID": "SPDXRef-binary-file-12",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "395eedeaea44a9607ef1719be40a7aab28c79c9a7f597e9d5ec37d4270062261"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/string.hpp",
+      "SPDXID": "SPDXRef-binary-file-13",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6c3d0e9d8bb4ccf0cab17e291dc77f73fbee817303b9a07ecd54b62cc6992e84"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/tuple.hpp",
+      "SPDXID": "SPDXRef-binary-file-14",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "08f6cff74b3290d11b4f9f6bb3a46209d3cb2b0c8f46f06e934f440e4273501d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/unique_ptr.hpp",
+      "SPDXID": "SPDXRef-binary-file-15",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "aff3b16fc1624e9c610c0928878f46e6a9589e644bcc4c422ef3f8c6642fffc4"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/unordered_map.hpp",
+      "SPDXID": "SPDXRef-binary-file-16",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e824a6a8f9f984f3c962b8415027966e395edffcf9a977be57db6327fed0538c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/unordered_set.hpp",
+      "SPDXID": "SPDXRef-binary-file-17",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "652a4de4657bfe40c1fbda15d0584cd3269d9102fa8763c3aa5c05dacea03d29"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/variant.hpp",
+      "SPDXID": "SPDXRef-binary-file-18",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "820df8e1761b053b02611b8285874e036c0e61ae7dcdb391630e066d8aced8ef"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/std/vector.hpp",
+      "SPDXID": "SPDXRef-binary-file-19",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "67b7437ee10315bb1f62caa45ad063b2fb3e92cb8d8507444a7adadde5a9f3b3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/trait.hpp",
+      "SPDXID": "SPDXRef-binary-file-20",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f7efa340e4eb001c55a7c74877f4498578a4c3522a478dbe3235d6ecf8d6f061"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/tuple.hpp",
+      "SPDXID": "SPDXRef-binary-file-21",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "44bfb4bc39e97167a97711343a2f62e6b70207514e99b32738dda71bc5d00878"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/type_support.hpp",
+      "SPDXID": "SPDXRef-binary-file-22",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ca16be4e98ab7f2a0e9e2a7550b3b1e4c4925b6521e4f554a349cd6b299126a9"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/api/xxh64.hpp",
+      "SPDXID": "SPDXRef-binary-file-23",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ea6fa096d134b19a33131fe922d2e2b8cd30d983987dcb98c3677d3811f78ed5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/base64/base64.hpp",
+      "SPDXID": "SPDXRef-binary-file-24",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9e09f7ecf8ce58f7e44dcb571846928d8f9599ead08fb3194d92daef70871a17"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/beve.hpp",
+      "SPDXID": "SPDXRef-binary-file-25",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7d50ed6867751c782b5c625517e90bf68db002910ce9b97066f3afb82d1e6f92"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/beve/beve_to_json.hpp",
+      "SPDXID": "SPDXRef-binary-file-26",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e5c8de9450e8c7f0c88e9a8fed928363272f9eb1364a32f8815ca9f19a6b14f2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/beve/header.hpp",
+      "SPDXID": "SPDXRef-binary-file-27",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2225c20ef7cabaa47ba2a35c368ff6023e3db420eed3c404d067bf4bdeb832bd"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/beve/key_traits.hpp",
+      "SPDXID": "SPDXRef-binary-file-28",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4b485cd4b4a4774f6270479fd9b395c8100a3ecdfcd8a26c60bfc7760f58f0ec"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/beve/lazy.hpp",
+      "SPDXID": "SPDXRef-binary-file-29",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e5975a90c8a48f5df2d5cba20b7d08813f9a8a03ae9ba80d3d3f6235a1993e5c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/beve/peek_header.hpp",
+      "SPDXID": "SPDXRef-binary-file-30",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7007fdc9a3602d684ab0965f1187f5f7788383f8d997b90cbfe27dbedd6d969f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/beve/ptr.hpp",
+      "SPDXID": "SPDXRef-binary-file-31",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "691e49f8a96b338e3910598581226683bb58aaeb7e1528f7f12eea9f5aa795c9"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/beve/read.hpp",
+      "SPDXID": "SPDXRef-binary-file-32",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "29a7087bb16532876e93cffd3559cc13cd862e3efb73230ec7a58ecbb5f3342e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/beve/size.hpp",
+      "SPDXID": "SPDXRef-binary-file-33",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a4a7a855870bfeb179a091317b9e00fbaa4bfa99090fc761876970ee18e1dfa2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/beve/skip.hpp",
+      "SPDXID": "SPDXRef-binary-file-34",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "109a01e757d6fca4ea3fa95a116461317d5de31b7bab7fec7dfefb9f4fc2b0e7"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/beve/wrappers.hpp",
+      "SPDXID": "SPDXRef-binary-file-35",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "41bf055f0b4f3762feadbd09291d0609e4e4ed4570f63c167f11a00c2d89dcd0"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/beve/write.hpp",
+      "SPDXID": "SPDXRef-binary-file-36",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ac461035be07c19d53de9a22ff4c4c96bbb4b98ed56b7a199b9dd2b98771078e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/bson.hpp",
+      "SPDXID": "SPDXRef-binary-file-37",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e52fd07d2edc3f98bef2d13178e91ce80124e79b1a499dc2a4c7e238fa9cb1df"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/bson/bson_to_json.hpp",
+      "SPDXID": "SPDXRef-binary-file-38",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "cec4269359e96e002156919dba4b3b6508e3c3ce7e8cacd0f35fb00757317b0f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/bson/header.hpp",
+      "SPDXID": "SPDXRef-binary-file-39",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "95cb2d11a0cd9af7c7ab6c67fa74f0cedf8dda400f477d903128d7689c80925d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/bson/read.hpp",
+      "SPDXID": "SPDXRef-binary-file-40",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c14db0fec7953dd5064627213e8e02315e78718e123a4a093f1bce456c372b38"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/bson/skip.hpp",
+      "SPDXID": "SPDXRef-binary-file-41",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7736054c5566dfb4109c182e20f20cd68a350e7ad35628c90cea0e2dbcd56fd5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/bson/wrappers.hpp",
+      "SPDXID": "SPDXRef-binary-file-42",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "316dc996e71262614166835244b6f432ba173e70d67391e47e6fbe32a7f3578f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/bson/write.hpp",
+      "SPDXID": "SPDXRef-binary-file-43",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "67580121bbf043bd341c3e6ac32c3a100729c835ac1c95665a777209bc612779"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/cbor.hpp",
+      "SPDXID": "SPDXRef-binary-file-44",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "85ce6dd35e9ea49d467ca12f6601b67ca27e6062a91c5c10d89a20ad488ff2a2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/cbor/cbor_to_json.hpp",
+      "SPDXID": "SPDXRef-binary-file-45",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1827a7b6091ba426a280d15e41c12604fcf4bfc3d0a531d790bcb4332af1ee94"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/cbor/header.hpp",
+      "SPDXID": "SPDXRef-binary-file-46",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8e6c77ea4e99862ba7c89d099f4c5ec30702d4729fa813872d7c02b49149c776"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/cbor/read.hpp",
+      "SPDXID": "SPDXRef-binary-file-47",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "06ac0c65a846460cbf538eaa6c01f583a767478014321f31ba9e12e0852c9f8a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/cbor/skip.hpp",
+      "SPDXID": "SPDXRef-binary-file-48",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ca6ab81d4d1bc4c03c11d01f17ee11bfb2afb84073a718431500d33556fd9c85"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/cbor/wrappers.hpp",
+      "SPDXID": "SPDXRef-binary-file-49",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0170abf1bbd3a24859cd84cc2b26463e9fdc7d1c0f91fa627eb7f7f4cd75f492"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/cbor/write.hpp",
+      "SPDXID": "SPDXRef-binary-file-50",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "826f9be7c8cce3572ef1c41341fea934f490470da35548ed5c02cdf07b42d073"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/chrono.hpp",
+      "SPDXID": "SPDXRef-binary-file-51",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9ac9633b27f34885c5c12d64e5da72053d0ce4d243698108591cc6eee44afec3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/compare/approx.hpp",
+      "SPDXID": "SPDXRef-binary-file-52",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "106a5d02ab59bc705ad3d344ebfa020bfeeff37acd774f92e77b4bf9314d91cf"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/compare/compare.hpp",
+      "SPDXID": "SPDXRef-binary-file-53",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e4577fc6a4d4be6774a3dc0068ce52a111ab7d2719b3c4ae1af20a68c51f2aa9"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/concepts/container_concepts.hpp",
+      "SPDXID": "SPDXRef-binary-file-54",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a52f6bac4660f9cac43f4e2d1803523b4e5742b6f917a9681b750d4745e8ab0d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/containers/flat_map.hpp",
+      "SPDXID": "SPDXRef-binary-file-55",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c036b2fb684241b5de0b35d84547b23fc013ba4dc79171d4aa17124dbbfc8bb5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/containers/inplace_vector.hpp",
+      "SPDXID": "SPDXRef-binary-file-56",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "797474b62d7b95f752e900cf702b90d3e1b441fc9d9c7e2542fca8260f5c6a88"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/containers/ordered_map.hpp",
+      "SPDXID": "SPDXRef-binary-file-57",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5deec4c8f212c6ecec4398e67632e3c7da493af28aaae262efc9276001339d6d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/containers/ordered_small_map.hpp",
+      "SPDXID": "SPDXRef-binary-file-58",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f92853924ba6bf5ebff2ef7973ec4f4f51129ef9f458849a786af944ee368607"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/array_apply.hpp",
+      "SPDXID": "SPDXRef-binary-file-59",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0dea77d6fd42d976611e2535f6cad31d6065e08c0e398b4187126cef84940b3a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/as_array_wrapper.hpp",
+      "SPDXID": "SPDXRef-binary-file-60",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f0512a4fb630990c045f06a15bb14954a83f163df59b209a669cef2374006932"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/buffer_traits.hpp",
+      "SPDXID": "SPDXRef-binary-file-61",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "817bd2d803f4a7a4803f9982a1034378a35236dcdcc38f7ee7677cf1c79efc59"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/cast.hpp",
+      "SPDXID": "SPDXRef-binary-file-62",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ba895982b5925b3f12ee865caa2ec7b689ca2c70127238dbc8e6198b231819ca"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/chrono.hpp",
+      "SPDXID": "SPDXRef-binary-file-63",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0e59b7f7fdf356f81c9d4ee310acaf30b4d518d60e8eb6889c297d356e43c3c4"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/common.hpp",
+      "SPDXID": "SPDXRef-binary-file-64",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "556704cd69aa6c5c65b5ceaed3882d89fff8a15aab7c36e8cf7db18ef52987f4"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/constraint.hpp",
+      "SPDXID": "SPDXRef-binary-file-65",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0e74689c7eb0b0921a5cfacb9cda9ba6fc159b9d07dca9b82defe87c05811e08"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/context.hpp",
+      "SPDXID": "SPDXRef-binary-file-66",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1be143ae969a1b0b9d5fd1af8d14fd0a3a354db1e0bfa4b52feaa9070df6d0ac"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/convert_struct.hpp",
+      "SPDXID": "SPDXRef-binary-file-67",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4842d457269cdb836c114afa2b06cbe54d92b0bafec448593e8b12ceb57c6c54"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/custom.hpp",
+      "SPDXID": "SPDXRef-binary-file-68",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "76570932449b203219840a2f4e555abe1941df867ab1cd483732e1b9c8149065"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/custom_meta.hpp",
+      "SPDXID": "SPDXRef-binary-file-69",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3197093c54351972ee4ad07a9f4a739fccf678636500b7ab70803f1ddb729c8e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/error_category.hpp",
+      "SPDXID": "SPDXRef-binary-file-70",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "200c735290071d499a7d5e8eee00705203da7387cf2e1ee2f50b235f481fc28c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/feature_test.hpp",
+      "SPDXID": "SPDXRef-binary-file-71",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9cf89d69c9ba85d566f0ce51ee5d1198c8dfe4a144249276c0dba1c9e7ad89ac"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/format_str.hpp",
+      "SPDXID": "SPDXRef-binary-file-72",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6a46472df017888b36e38367b13dd2c13918a63ee4aeb6c355b2d0fcc303c07d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/istream_buffer.hpp",
+      "SPDXID": "SPDXRef-binary-file-73",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7687918e6d9ab133b6d87ec9d908ed7ba30ecc95cfd851a011db1291dce53083"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/manage.hpp",
+      "SPDXID": "SPDXRef-binary-file-74",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "14343b831b61171411af2e524ceddb1d5cb433784c24d2b7f2ca4880b59df539"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/meta.hpp",
+      "SPDXID": "SPDXRef-binary-file-75",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "39d0c7560e24689ce53647d3aa84f35bd6797cffe1d57dc0c9de3f84509f1e93"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/optimization_level.hpp",
+      "SPDXID": "SPDXRef-binary-file-76",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "96f088df19a07a4a293af8702e1e001516e7ebe3e73a4120b73d313014ed1514"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/opts.hpp",
+      "SPDXID": "SPDXRef-binary-file-77",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ace1573a6e49294656b4a82d36772590f85b959173a48856fbf47d07af31007c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/ostream_buffer.hpp",
+      "SPDXID": "SPDXRef-binary-file-78",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "35df9ee6cd428de38f289d48b4dcc987c965c0b7ca7724fc715a87f777eff995"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/ptr.hpp",
+      "SPDXID": "SPDXRef-binary-file-79",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c432859cb62d5e55e99d0b6de8aa02f48296d9da5479221e677f88fb8c7929f7"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/read.hpp",
+      "SPDXID": "SPDXRef-binary-file-80",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "daa263d56d2055e3e99bd2f412d01da9f5eac1d355008ae2f0b34da21da00842"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/reflect.hpp",
+      "SPDXID": "SPDXRef-binary-file-81",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f8a21c63208d5903f35dbac7a5b138e3da21e62608487c0919b8ad860cfe9ca7"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/seek.hpp",
+      "SPDXID": "SPDXRef-binary-file-82",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f3359e8299de49734fdcf99372918e56b13beb4b624ca8a8ff2830e69dc9d7a5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/std_error_code.hpp",
+      "SPDXID": "SPDXRef-binary-file-83",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0ace69547f2c5e0cb2dbffb63272bd15c693de7ce8d3c2de8225325c8c263944"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/streaming_state.hpp",
+      "SPDXID": "SPDXRef-binary-file-84",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c7a5eeaa650bb0a541a88beb8be9012d9791dfa8d0af0d5350998a48e10bd862"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/to.hpp",
+      "SPDXID": "SPDXRef-binary-file-85",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "59e1f1fc238d4d359b1560e9e13a7159cb9967b8351f6076e179ff18f78280b6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/traits.hpp",
+      "SPDXID": "SPDXRef-binary-file-86",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4f36a76f432b82ab095c3ed3c4d7b89848d0880849368a0e0eddcc58edb0bf95"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/tuple.hpp",
+      "SPDXID": "SPDXRef-binary-file-87",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5f3380431296659dded555942a24a5c1c9692fcce99263a7993cba06dcacfa10"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/wrapper_traits.hpp",
+      "SPDXID": "SPDXRef-binary-file-88",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "813050ed5bdbeec67848a59d39d2bf03f385d7269174498e3ce3d34d0fadd75d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/wrappers.hpp",
+      "SPDXID": "SPDXRef-binary-file-89",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4eb798c217dbdd8f406f1c49224fbc281e5635ecc23a5deb6c50cc535f87c9b4"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/write.hpp",
+      "SPDXID": "SPDXRef-binary-file-90",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1b15938479b1d318cab627ff68bd2485f204ac51eceefaa9a3269b6a278dacdd"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/write_chars.hpp",
+      "SPDXID": "SPDXRef-binary-file-91",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2cd114e633dc4bcf905d4b6c9184db84e8a1ed431174daaac9dd3a9bb4af9902"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/core/write_wrappers.hpp",
+      "SPDXID": "SPDXRef-binary-file-92",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c301551edb7412ae32bba832056c09c09a21bcee5e64847acda976bf5dc5bee6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/csv.hpp",
+      "SPDXID": "SPDXRef-binary-file-93",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c9ab15fe9e1391ecce669ad2da41d66f7640f21f8e97bd5d598edbf78ca59ac3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/csv/read.hpp",
+      "SPDXID": "SPDXRef-binary-file-94",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "bdd7db36cd9b667854cc3c38dff1c55ba61f0542e40b32836361fde94de39ae6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/csv/skip.hpp",
+      "SPDXID": "SPDXRef-binary-file-95",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0d3abd78d0be4eb7c6f392238d4f23834479c110793ce890fc0d8ab153cc4a4e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/csv/write.hpp",
+      "SPDXID": "SPDXRef-binary-file-96",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a907e038f96b8451787ae411096bc904922cc614ab30dee0588b5de2d34aeb7a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/eetf.hpp",
+      "SPDXID": "SPDXRef-binary-file-97",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c9456f921e192e8d44383ff5e13df4d8e7f3e70eff1e766c1ba43a1aec8c47e4"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/eetf/cmp.hpp",
+      "SPDXID": "SPDXRef-binary-file-98",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c55c8cbcf21d2fb3be548233e709851562c1943e9ee6553fd3ede1c2c71e083e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/eetf/defs.hpp",
+      "SPDXID": "SPDXRef-binary-file-99",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "811e0452f4595ad133ad58cb8364a7b47d8d22787777b579b8c4464fc5690de8"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/eetf/eetf_to_json.hpp",
+      "SPDXID": "SPDXRef-binary-file-100",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7ac4841693b4344fc3adff852c8d6b70495414c54dfefd0952d50dfb5f47e785"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/eetf/ei.hpp",
+      "SPDXID": "SPDXRef-binary-file-101",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "542b608001304686639ee51978771da2c982a00bd5c0d62dc4f277d7bd771757"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/eetf/opts.hpp",
+      "SPDXID": "SPDXRef-binary-file-102",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "22643f8d689b8c69d2c02922e1b459f0752cd3fcb70ec6544e75af6c7268380a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/eetf/read.hpp",
+      "SPDXID": "SPDXRef-binary-file-103",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "86c8290e4f9a07a02d07ddad454538e72cb84af8cd1b51ffa79e45d7eae4e09d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/eetf/types.hpp",
+      "SPDXID": "SPDXRef-binary-file-104",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d50a25710e590a9a86ee10eb416a7ecbcd28eb3a36b817b896f0e0fe6996f660"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/eetf/wrappers.hpp",
+      "SPDXID": "SPDXRef-binary-file-105",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "77938e1382ee01ea0ee7b68b98188eba5d2761e5b80c20641e1eb892d55267b2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/eetf/write.hpp",
+      "SPDXID": "SPDXRef-binary-file-106",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "cc6be398e2577cbc152b8c1277c0b5af0ac5829850a0ed262dece3bedf925b90"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/exceptions/binary_exceptions.hpp",
+      "SPDXID": "SPDXRef-binary-file-107",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e350e947d582165d4b2c668dcc6fbbc450f7c8e68ec89f1477f16279986a05b0"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/exceptions/cbor_exceptions.hpp",
+      "SPDXID": "SPDXRef-binary-file-108",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "dfd02d15335c132fba74c677ba10456b9b181313448bc324c2fea95469a9ce81"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/exceptions/core_exceptions.hpp",
+      "SPDXID": "SPDXRef-binary-file-109",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d3581eab3207b250ea141da3558d9c84352b4b652b5ebf560f64ba44d22f8b9c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/exceptions/csv_exceptions.hpp",
+      "SPDXID": "SPDXRef-binary-file-110",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "476ebd925644a83883dbadd9a362f62d6da775dc9a836f5fa45c206248be6073"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/exceptions/json_exceptions.hpp",
+      "SPDXID": "SPDXRef-binary-file-111",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "48873c81d3045c4f7e5bf81d49a7e88ab05b2956d912bd55376fefb1292fbfd5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/exceptions/json_schema_exceptions.hpp",
+      "SPDXID": "SPDXRef-binary-file-112",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8e3e36ed4fa048c5256aba7731edee99b062dad4d4cff7a0522b9786fc6cee84"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/exceptions/jsonb_exceptions.hpp",
+      "SPDXID": "SPDXRef-binary-file-113",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8b3bcb43a26899f3ca7f9dc3540e5f56dc402114c8d960b23b4f063d6bbacdea"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/exceptions/msgpack_exceptions.hpp",
+      "SPDXID": "SPDXRef-binary-file-114",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a795efc0e644db157dcfc2247a36c9bbb67151b19aeee7ae2184573a4b96ba6c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/ext/README.md",
+      "SPDXID": "SPDXRef-binary-file-115",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c7fe9e6e15d6e9b1574af861ed27f33907da10f8145e420f0aaee368497497f2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/ext/cli_menu.hpp",
+      "SPDXID": "SPDXRef-binary-file-116",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "910b682c2f21b667579e3a74e0d1bc5fc6bc08723c083fd1834a90f63a9068e9"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/ext/eigen.hpp",
+      "SPDXID": "SPDXRef-binary-file-117",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "fdb76b4939407dadbbb206fd74254b8cb0a8099bf99c0d5d11a0b6bfe8816a00"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/ext/glaze_asio.hpp",
+      "SPDXID": "SPDXRef-binary-file-118",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9f42fe96001da4aa279f5454743fc4c288a372365af1819fdddb981b358ec8a5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/ext/jsonrpc.hpp",
+      "SPDXID": "SPDXRef-binary-file-119",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "688c554b510116756d8d00b7c1e636f8cb0e6b3683dc45d6f3d37d398181cdd6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/file/file_ops.hpp",
+      "SPDXID": "SPDXRef-binary-file-120",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f3a57697f6251dfc2c8f38c180aac1bdecda87ee9a04af29e6f6857b79a4ccc1"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/file/file_watch.hpp",
+      "SPDXID": "SPDXRef-binary-file-121",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "decc75dcb904e213c97c48c51eee9a4ee01874a46b7d570bce9572f194c243d5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/file/raw_or_file.hpp",
+      "SPDXID": "SPDXRef-binary-file-122",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "90b7147a65f1b11585711bac24bc41cc658f8a29c209cdc4d47a5c46cef2f027"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/file/read_directory.hpp",
+      "SPDXID": "SPDXRef-binary-file-123",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "48a257fffe7b59edc6f4fe4981736f4d6c129a847c565e3caa13a00a0ef42b4f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/file/write_directory.hpp",
+      "SPDXID": "SPDXRef-binary-file-124",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e839bcdaa4936cbb9774b08c7ccc8db70abdcb15af6351c296e3ee12ed089550"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/format/format_to.hpp",
+      "SPDXID": "SPDXRef-binary-file-125",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b0ae58456fb344d00b9bd98fdb8a91b2c3d37f6e9de49d8b8c817dbeb874157f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/forward.hpp",
+      "SPDXID": "SPDXRef-binary-file-126",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e337468b65a54cdef3e19e052299e8d270f4f21653b8cca3fc45570bd0770aa3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/glaze.hpp",
+      "SPDXID": "SPDXRef-binary-file-127",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "97e9ad5f877da1bfd3a3afa3dd0b2b30b4a9d815514eb3fd375af8cbc7adaa54"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/glaze_exceptions.hpp",
+      "SPDXID": "SPDXRef-binary-file-128",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ac72a11f4f222c2aa1331799602d618ed2ed614b1b5a4e66848a749648e2a0b0"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/hardware/volatile_array.hpp",
+      "SPDXID": "SPDXRef-binary-file-129",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0eedd9bb7c3876fa7ca1a2ac4e524b86df2004ca4c3e16707e747e6275492771"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/hash/sweethash.hpp",
+      "SPDXID": "SPDXRef-binary-file-130",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "050c8b8840fd18b830e055ccccaff4db57499cce40eecf7cdd6c9ba038cbd4ed"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json.hpp",
+      "SPDXID": "SPDXRef-binary-file-131",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "bb065003dccf0bcf2a0ce34408a24b8cd4b7e7572698186847feafacf9d15757"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/chrono_format.hpp",
+      "SPDXID": "SPDXRef-binary-file-132",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "400ac96fefd796a26de96b849ed566b2a3561361f22deaa1fee2a8f0122e4e49"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/escape_unicode.hpp",
+      "SPDXID": "SPDXRef-binary-file-133",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9b2c31417c64a9c1bbaf2c8ce459246bad4c5e0c71e1dea97a8aa697c6ad69ef"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/flatten_map.hpp",
+      "SPDXID": "SPDXRef-binary-file-134",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1473df10c1351627d828b12d38e7b3362d0eeeaa3a1aa5d56fab79502fb17b3c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/float_format.hpp",
+      "SPDXID": "SPDXRef-binary-file-135",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a6ad86c5115f082e935b11c2513d626e8a5cd86da81eedf35b1a678230b02909"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/generic.hpp",
+      "SPDXID": "SPDXRef-binary-file-136",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e8a137ead0e7e5db9216ffd5b25e0fae3f9a500fb2530cd5d3a28d181761a9cd"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/generic_fwd.hpp",
+      "SPDXID": "SPDXRef-binary-file-137",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "19c6e93e839721a96d2311a7f0ce397adb4e5abd6ddb0b2e304436e36dafa7db"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/invoke.hpp",
+      "SPDXID": "SPDXRef-binary-file-138",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "309a3384064536bcff5914d1c023ca74d2ae31a0b6f7ed7238e07557b471353b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/jmespath.hpp",
+      "SPDXID": "SPDXRef-binary-file-139",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1aa330a41ee48b40314c35ce81502592955af77a18cbbc667b9fe1c09fdb8d88"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/json_concepts.hpp",
+      "SPDXID": "SPDXRef-binary-file-140",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5bd23da516a7f6fd49c376e672c9e5c7ab327e6bac31264f420421ec0cc3b6e3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/json_format.hpp",
+      "SPDXID": "SPDXRef-binary-file-141",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c0afd4ab2d6a23786ae259a5801ca5047a634aad961d07783fe786d1c7cb981d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/json_ptr.hpp",
+      "SPDXID": "SPDXRef-binary-file-142",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8450b194df0ee618f8ab911cb468e5f0486efe109735154a7cf10b5404dc295d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/json_stream.hpp",
+      "SPDXID": "SPDXRef-binary-file-143",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "43315019d4bea0fc01e9b88562e8327588a7c68572d65fbdc52e0b89601d89c9"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/lazy.hpp",
+      "SPDXID": "SPDXRef-binary-file-144",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "89664c3cc1852096509586011fa4b9ffdce39b6086f591adec9c41a0259c1e87"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/max_write_precision.hpp",
+      "SPDXID": "SPDXRef-binary-file-145",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "acf6d4dd8266add4cee86df1b0bb9568f40215e97cb75e1e1b799ef891a7fdf1"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/minify.hpp",
+      "SPDXID": "SPDXRef-binary-file-146",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6f5c281201326839ef0d91fbbb3c55e2c441731698fc1f289aeddc454354cc73"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/ndjson.hpp",
+      "SPDXID": "SPDXRef-binary-file-147",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5bc5b114cbd987a374d821d259ceee2faa7eeb2da0ea6b3fc5a0d001a13a1a36"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/patch.hpp",
+      "SPDXID": "SPDXRef-binary-file-148",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4834f2ae7eb9d9d22478dd2fbcf4f284b1158bf463becca26a6e39bc64ea1541"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/prettify.hpp",
+      "SPDXID": "SPDXRef-binary-file-149",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5ba392eee44af44cb1f242693a4650c9acedb85e7f644725a69ed9ca3fe00fe1"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/ptr.hpp",
+      "SPDXID": "SPDXRef-binary-file-150",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5f76a138f942b41814550bcf551bf0c480826f96168046c16d4977375abd11c6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/raw_string.hpp",
+      "SPDXID": "SPDXRef-binary-file-151",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a67038de0f9825155759179318cd9055a9099f15e7358974de37c520bdf8ccea"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/read.hpp",
+      "SPDXID": "SPDXRef-binary-file-152",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "39e495320ef8e86f33df3b8fed90b3bd327b4712373ff7ac807af1697e66aa1d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/schema.hpp",
+      "SPDXID": "SPDXRef-binary-file-153",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "74b12b7c73a7a56411d4547c614eb6291aa4b20910c831bbc7fb2f15032c6c8d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/skip.hpp",
+      "SPDXID": "SPDXRef-binary-file-154",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4db81f2be7e665e068209313e67b78ed905f255bad3fb6d5c973772aef651cab"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/study.hpp",
+      "SPDXID": "SPDXRef-binary-file-155",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "74b3687cdbec8ff52337948893fb35024f31f3b3628a27bf47e69a63571d58a6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/wrappers.hpp",
+      "SPDXID": "SPDXRef-binary-file-156",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5bf8d0aa333842e5359f79f2bd8ee827aa7395ba87939df31e60c776a7045a37"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/json/write.hpp",
+      "SPDXID": "SPDXRef-binary-file-157",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "278d2b71d43532b2b44c46ccb66abf10d34eba4b6ba7f27265bd2859be1a50d2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/jsonb.hpp",
+      "SPDXID": "SPDXRef-binary-file-158",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c0b7444a39afafebae38a1ed663f434a2db5b5fa8689d096b0b61b136a36797c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/jsonb/header.hpp",
+      "SPDXID": "SPDXRef-binary-file-159",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b568034faace437137d9684b03ab704d5a8a9967316ca27d91219370cc824188"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/jsonb/jsonb_to_json.hpp",
+      "SPDXID": "SPDXRef-binary-file-160",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8c1c3ff2bee89beeb5b7aa8cc4d4652dcb2c5b6e263cb800b17774ac736703c6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/jsonb/read.hpp",
+      "SPDXID": "SPDXRef-binary-file-161",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0f5f08db32dc30a4b857d8081d6fbe98772d397c8dadbea7943a43064c4b5340"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/jsonb/skip.hpp",
+      "SPDXID": "SPDXRef-binary-file-162",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6824a96815a3c256cb333531205dfd3d4e4d3480f05dafbd25011933435d1835"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/jsonb/text_decode.hpp",
+      "SPDXID": "SPDXRef-binary-file-163",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "99fb01ffa13606b7c8f6b6a263fefd6d6353977ddefefcb9550cc428c2c57f91"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/jsonb/write.hpp",
+      "SPDXID": "SPDXRef-binary-file-164",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "38de816ecf1d0264568110f11e438f319d8d7784998b337b5b635de112de4058"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/msgpack.hpp",
+      "SPDXID": "SPDXRef-binary-file-165",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "db6a3f4d57983d795cbdd6c97fecef1b4222a876673400980137fe3efda88f10"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/msgpack/common.hpp",
+      "SPDXID": "SPDXRef-binary-file-166",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b6ee1bb30275b56bc98caaab27711af889ea0fc7c1d3e224a15bbfbfc7521647"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/msgpack/read.hpp",
+      "SPDXID": "SPDXRef-binary-file-167",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3623fe892b41a79606a6a45ccff95ec207c18112db3cf7fc53dfde9e8eed2d7e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/msgpack/skip.hpp",
+      "SPDXID": "SPDXRef-binary-file-168",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "58c387c64a40c5b058abafc3e94304538333b7b71f0edb812b4819bc4ad52253"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/msgpack/wrappers.hpp",
+      "SPDXID": "SPDXRef-binary-file-169",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "471b21d21f044ee7f7b5a0b4f2781d5de47826d5901701f15a818bfa24a83b49"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/msgpack/write.hpp",
+      "SPDXID": "SPDXRef-binary-file-170",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7dadff488c57e2b2b134cd2791c464c5b14e28cf87665b31cc93462a0b96c88c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/net/cors.hpp",
+      "SPDXID": "SPDXRef-binary-file-171",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a191230fc00346167ed22ad13e051dad7d1b5324197587dce8e8075ae24be2b0"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/net/http.hpp",
+      "SPDXID": "SPDXRef-binary-file-172",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f9a49248b2ca06f1c336bd7ee19d7b5bffc081fa60e008cfcc673a412297637b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/net/http_client.hpp",
+      "SPDXID": "SPDXRef-binary-file-173",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5221f5776fb02807c0fc9cf2ade9a3cd359ab8827fcd8703bdac14f9048a1f62"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/net/http_headers.hpp",
+      "SPDXID": "SPDXRef-binary-file-174",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5a19326ea7a21e9703684fcc0abfa71bb053d34e09ecd45ad7b2faf93a7e19fc"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/net/http_router.hpp",
+      "SPDXID": "SPDXRef-binary-file-175",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "41bb47416b1b1ee4eaac93dc84b02fa5e5b005459fc2cc919b6e28adfc5224d9"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/net/http_server.hpp",
+      "SPDXID": "SPDXRef-binary-file-176",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "eefd125efe2a4c713882072a17b1d2e88aeff95db4b815f03a9f6cf3186288b2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/net/openapi.hpp",
+      "SPDXID": "SPDXRef-binary-file-177",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "64d630640fbbb92a3cebb10f6090249568ec3f1ef69419b8667d99bf5069c722"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/net/rest_registry_impl.hpp",
+      "SPDXID": "SPDXRef-binary-file-178",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a104ab3ec1eaca3491a1617cae5f8c52ce88a79639e4ab816cce86e6888d1607"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/net/ssl.hpp",
+      "SPDXID": "SPDXRef-binary-file-179",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b28ff886317a589ba70f139a28ff2446bb4ffbc49cadb5eb85518589e669f997"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/net/url.hpp",
+      "SPDXID": "SPDXRef-binary-file-180",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e740afbd790d3b59dd82d6a3e3d2aebf698d379c635df15e462942f1eeafb579"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/net/websocket_client.hpp",
+      "SPDXID": "SPDXRef-binary-file-181",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7fa41cfa72c19bbf5ac3a3e63a319a5d251e1d5ffe29f88090ea71a5960555c7"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/net/websocket_connection.hpp",
+      "SPDXID": "SPDXRef-binary-file-182",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ef14e092a0e6958c9d7c951e17a9826b6fcd3e2176b80e8bcbf8179dac02f1c5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/record/recorder.hpp",
+      "SPDXID": "SPDXRef-binary-file-183",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ac397b978ceae5a5f8367b5ffc927e819c3d1bd2346600192c019b1e3ba8e62f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/reflection/get_name.hpp",
+      "SPDXID": "SPDXRef-binary-file-184",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5ab4e7142fc4ca652c6f7db507b1b346b31d510eccc706b3bc94e5bedf9d9b7c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/reflection/requires_key.hpp",
+      "SPDXID": "SPDXRef-binary-file-185",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f6931d3d624adedb0783ced5077bf23c19fb2ebd01c89cf6d78c203a612f28ca"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/reflection/to_tuple.hpp",
+      "SPDXID": "SPDXRef-binary-file-186",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8163f22846eebdfb8425f6a7473955127ec4e549da4912a54c099e6078259000"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/rpc/jsonrpc_registry_impl.hpp",
+      "SPDXID": "SPDXRef-binary-file-187",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7e09970d4992ae04c7d6093fd30e2335cc971bb029a9c514d73ea69c5c2834b2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/rpc/registry.hpp",
+      "SPDXID": "SPDXRef-binary-file-188",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c6c738804ad9210b97f3743e317140e0b74bc443fa508220543c3e7d4f44522d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/rpc/repe/buffer.hpp",
+      "SPDXID": "SPDXRef-binary-file-189",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "65a4b8306d204cc8d378e8794d042abf95837a4c7c13f18b71853c35b502dfbb"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/rpc/repe/header.hpp",
+      "SPDXID": "SPDXRef-binary-file-190",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a88dfe196ad9be7ca19faad920e35a311359d19afe33699a2f3f7f395c47b69d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/rpc/repe/plugin.h",
+      "SPDXID": "SPDXRef-binary-file-191",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "64f1272ddfafcf7e858a57ac768483e3158ea0562c020e98af529b808860d148"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/rpc/repe/plugin_helper.hpp",
+      "SPDXID": "SPDXRef-binary-file-192",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0a4acaea3c8dba80a22418e24a3718fb1b8912ce4d7bf3e06dbddc1c3bcf22b2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/rpc/repe/repe.hpp",
+      "SPDXID": "SPDXRef-binary-file-193",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9839f22c494825ee5d63052d94bf031f6c596e8cccebe17b030f506f4abd14af"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/rpc/repe/repe_registry_impl.hpp",
+      "SPDXID": "SPDXRef-binary-file-194",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "da017213862f94570586be5d11798baf63315f37b5b2f0a252e984f162b8c14d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/rpc/repe/repe_to_jsonrpc.hpp",
+      "SPDXID": "SPDXRef-binary-file-195",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0a5ba68b5e8a200171d65dd72e5540e628e11e3075706a83e1aa3fc66791da6f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/simd/avx.hpp",
+      "SPDXID": "SPDXRef-binary-file-196",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2eeaae2c2b88c585cdd3bbc57bac1ee8ccfa9bcc77b8b36193283ddb3b484e86"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/simd/backends.hpp",
+      "SPDXID": "SPDXRef-binary-file-197",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9977ff933b247fb237f5dfff31797a66cbd5941833289a9f208b1fcce8da9a18"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/simd/neon.hpp",
+      "SPDXID": "SPDXRef-binary-file-198",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "abf5015c4c77048354f93a7121eeee2ca139c65bf0cddf62c0e020cf200bc372"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/simd/simd.hpp",
+      "SPDXID": "SPDXRef-binary-file-199",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9a9ce262717a35760f1f94edabe78b981afacc9721ebcd714b37dbef05805a71"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/simd/sse.hpp",
+      "SPDXID": "SPDXRef-binary-file-200",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "bf5c2b27dd4c62bd7979976a5b799fd7eb26f69d2e911521a4c0ad233b30b646"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/simd/utf8_validation.hpp",
+      "SPDXID": "SPDXRef-binary-file-201",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "53caf75cb387128c1ff8ac40567400168ac876532d5fdb6458b0f7f549ab9584"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/simd/structural.hpp",
+      "SPDXID": "SPDXRef-binary-file-202",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ca73987eb373e270a0d325b9b80558a98cd05d67a2b1d953155336df1f416096"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/stencil/stencil.hpp",
+      "SPDXID": "SPDXRef-binary-file-203",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8efd50a025a73b40794cc91242ba90a352579a3741266a4ec4dcc59f33694bd5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/stencil/stencilcount.hpp",
+      "SPDXID": "SPDXRef-binary-file-204",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b24ece0eaa8a6bfc3e5d056c55fbf4a3933b9397d2162327078ba2cb1a2ca06f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/thread/async.hpp",
+      "SPDXID": "SPDXRef-binary-file-205",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "636f8efd7970f69eafe05bf163580ddb9b3484d938d4a21f59446f432aa691a8"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/thread/async_string.hpp",
+      "SPDXID": "SPDXRef-binary-file-206",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "94c8fcd9cbea8cc1b4f3a133ce0e183697ffa1dee8350fd006789cf33589fa57"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/thread/async_vector.hpp",
+      "SPDXID": "SPDXRef-binary-file-207",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "19a9305427faff563545b52666520045bb1dce2625fdab03763c599e5a251908"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/thread/atomic.hpp",
+      "SPDXID": "SPDXRef-binary-file-208",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "988dbfd146fae2998ddd06e3d856e4cfe8ca037cb93d5b72d847449719c9961c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/thread/guard.hpp",
+      "SPDXID": "SPDXRef-binary-file-209",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c727916c1d6c7ea2d41169b7c6562af23c78a206fe49df454919a9d860211ea7"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/thread/threadpool.hpp",
+      "SPDXID": "SPDXRef-binary-file-210",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d137545c7614ae6db05515286f57c39f7338104f7a165e4fb4240b37a98a6a9a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/toml.hpp",
+      "SPDXID": "SPDXRef-binary-file-211",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "aa68ec58acff6502daead6f75c2fb7e7c882334cb50210be89e4f7fd203c254b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/toml/common.hpp",
+      "SPDXID": "SPDXRef-binary-file-212",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "85716b195b832897b4392bbb4767115c9256f58aa5a11dadb6bddc68d6f090a5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/toml/opts.hpp",
+      "SPDXID": "SPDXRef-binary-file-213",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d0b97d0f811ff4c936a44288ccb8525d4dfbe331a28ff5b2a13d26ac31df5392"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/toml/read.hpp",
+      "SPDXID": "SPDXRef-binary-file-214",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "be4f8c022a87ce808dc67eb4dddf8cfc3d96c3d30146c5dce9d3397c83501999"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/toml/skip.hpp",
+      "SPDXID": "SPDXRef-binary-file-215",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1f6c94d2ed3c387661689b27e67914f3f5afb16d7667a4213a09c8b1f80bf1f2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/toml/write.hpp",
+      "SPDXID": "SPDXRef-binary-file-216",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b597841ff92befe22675248851eb689eab8c03d7ec8219ff86c4df6eb4d31657"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/trace/trace.hpp",
+      "SPDXID": "SPDXRef-binary-file-217",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6396b0bc662e9c940967cf30e99758a213da1de17eaeb54ccd676b27280ddb59"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/tuplet/tuple.hpp",
+      "SPDXID": "SPDXRef-binary-file-218",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "fef65592590dc25ef9be22e33d556662ab1b758a4bc619bdaa088a44ee735aca"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/atoi.hpp",
+      "SPDXID": "SPDXRef-binary-file-219",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e1444869216ca501d7d816ee94183ac5d9155cf8be71d8fec299c3390adf7ab6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/attributes.hpp",
+      "SPDXID": "SPDXRef-binary-file-220",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1803b961ce859965c9b9442e9062dcf13cb633ed122e48b4a4aaa3abbc04c948"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/bit.hpp",
+      "SPDXID": "SPDXRef-binary-file-221",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3db98edaa8c9457878dcb57b89023e364219519076a95ac76ad3f5fb487a77d6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/bit_array.hpp",
+      "SPDXID": "SPDXRef-binary-file-222",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "01faf7c866871bfa143da01f4065ef29c8f1b47122c4cd03a1fa3dc1ae58f39d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/buffer_pool.hpp",
+      "SPDXID": "SPDXRef-binary-file-223",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b32dd7120e7ecb3d9fb241598a42a0e68acb12639d73d9a2983c2c0149321715"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/compare.hpp",
+      "SPDXID": "SPDXRef-binary-file-224",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "92acf07440c26e0942332f14b5d28e1700b246cbf0dd95989327fc7625ee1b5b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/convert.hpp",
+      "SPDXID": "SPDXRef-binary-file-225",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f65f8d08dfe098d411adcb1cae143375549d8cb6c11966596ba94c256fe20506"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/dump.hpp",
+      "SPDXID": "SPDXRef-binary-file-226",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "bed1ea89771e91eceb54ee53b337e0b86a43d072da54caa09657caba13c4980e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/env.hpp",
+      "SPDXID": "SPDXRef-binary-file-227",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "fe259fff18a95cf486612050a1ba247ff5b529a7956befbbed26e77e6f6efee1"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/expected.hpp",
+      "SPDXID": "SPDXRef-binary-file-228",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "94558daf3b841aaf1c1d3d2ce6698756fb43b2cd733faa65780037eb48dedd81"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/fast_float.hpp",
+      "SPDXID": "SPDXRef-binary-file-229",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ea5bed7d198fe8263d4fc7885a98b4edf40e4c21f9957e676a12a325d28db12e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/for_each.hpp",
+      "SPDXID": "SPDXRef-binary-file-230",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c71866dbcb569ffb4799943a237fa2193c00dd743aae69d09ee98051c1ba9d3a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/glaze_fast_float.hpp",
+      "SPDXID": "SPDXRef-binary-file-231",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "833643250317c303e8e1003e9432f282c0bf31a0d8a9b46eca56d9376c8029b8"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/help.hpp",
+      "SPDXID": "SPDXRef-binary-file-232",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9fb6002d8cf401a35c688483daa417458cfda7686648fa218c95b4196b8c2838"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/inline.hpp",
+      "SPDXID": "SPDXRef-binary-file-233",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "32ffed83eb7d51b2855039487164691300dc5534f052564e51d9fde32a92aaa5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/itoa.hpp",
+      "SPDXID": "SPDXRef-binary-file-234",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "649e0e8c80de1a50aab64043e6d11c5afef28c67c6a912f99be2036c7494814e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/itoa_40kb.hpp",
+      "SPDXID": "SPDXRef-binary-file-235",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "fa36638e873448fc507a48cb162d209d9c7a11104142069f296a0684befb512c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/key_transformers.hpp",
+      "SPDXID": "SPDXRef-binary-file-236",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "bf7e28ebef003b34df9adb85eb6a469be5fc70663d6275f184a3332de3660b12"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/memory_pool.hpp",
+      "SPDXID": "SPDXRef-binary-file-237",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2b2b4330d0f653b72a9b318af3c9ea0ac5d8b6a4f0dd9cf659c3d5e4a79c7dbc"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/murmur.hpp",
+      "SPDXID": "SPDXRef-binary-file-238",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9617a3c95916a477957a77cafc04f58496f1cb10a36b9405908cdb6d2b17e253"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/nullable_traits.hpp",
+      "SPDXID": "SPDXRef-binary-file-239",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7006920913338ef857165640029bc799ec2107f83e9754685e47483a2fafd006"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/parse.hpp",
+      "SPDXID": "SPDXRef-binary-file-240",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4939334cb8b51fbc43c1c3708449ee24aeecb2b6c8e51abbbaa28c75330f0ab1"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/primes_64.hpp",
+      "SPDXID": "SPDXRef-binary-file-241",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "32a5a3bbe550e4366124749e7f1ebb9521dae271263ef7ac2859a67f0f4efff3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/progress_bar.hpp",
+      "SPDXID": "SPDXRef-binary-file-242",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "fc5d643d987df70e6c57c0510ab2e3b51a44f055b5fbbc690f7a3c20495b94e4"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/simple_float.hpp",
+      "SPDXID": "SPDXRef-binary-file-243",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3a9c16118064b6a94b5f82a1015b073bc7a288d247242dacb652ca41d4bd30a7"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/string_literal.hpp",
+      "SPDXID": "SPDXRef-binary-file-244",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ad6e43add326103160eb9e161b3e62588d7b824cca678130c6c7cad2f0362709"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/tuple.hpp",
+      "SPDXID": "SPDXRef-binary-file-245",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "786b71baeed0f2335cc93df917417c68bffbf2e607cce9b269c97dfb98258b53"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/type_traits.hpp",
+      "SPDXID": "SPDXRef-binary-file-246",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "729a465031e2f9936216afefdc067c4b19f75667ff72221ffa5a790773d83909"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/uuid.hpp",
+      "SPDXID": "SPDXRef-binary-file-247",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "01bc83818c755680932c9c691a1f654e24671c4872330a9d5c6c1764b38b7780"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/validate.hpp",
+      "SPDXID": "SPDXRef-binary-file-248",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "47b040440d2fdd7cc3da5234c434383d8f47a44f34d804970e4d441f8697f0a4"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/variant.hpp",
+      "SPDXID": "SPDXRef-binary-file-249",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "94342bb9c178bb6a14252e543bacf3d40875871d774a81228a157f2caa09f8f3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/util/zmij.hpp",
+      "SPDXID": "SPDXRef-binary-file-250",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8e8d93760589a201eec44da66c2aaa98621fe340d29d41586dd01a6fa6d91898"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/version.hpp",
+      "SPDXID": "SPDXRef-binary-file-251",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1d97da2d0f6a0e2dd32ad7d5ccb3cebbd77c56177dedcc513d125c2fa9469f10"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/yaml.hpp",
+      "SPDXID": "SPDXRef-binary-file-252",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e3d3a56d02c530f41cffa7fc3a86c910187c8204296b2999aa479b8ab53ee0be"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/yaml/common.hpp",
+      "SPDXID": "SPDXRef-binary-file-253",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "37c38983f6a480e81e5f65c43577a06c8ea062abfd4bd5f2af4306e210cc5660"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/yaml/opts.hpp",
+      "SPDXID": "SPDXRef-binary-file-254",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4e53cd9c97fb59c1cacc1dfab4a1d830440251853c1741c0d8979bc2ceed9e39"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/yaml/read.hpp",
+      "SPDXID": "SPDXRef-binary-file-255",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "16bf1d8b561bfe7dca3536accd6db8f14a61943250972eddc65ee53a63f8fd2b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/yaml/skip.hpp",
+      "SPDXID": "SPDXRef-binary-file-256",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f13b7bf3b470e4aa1434386f8233f32a38e2896bc131cbc1cb94d76e3440efb3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./include/glaze/yaml/write.hpp",
+      "SPDXID": "SPDXRef-binary-file-257",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "dce4f7487eb3720983dcc4089ea30c5155f3af3b0bb44c9b18913e86ae7ca8e5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./share/glaze/glazeConfig.cmake",
+      "SPDXID": "SPDXRef-binary-file-258",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "fb949f513bb6da6d90ae94956a192c98a9f95031515fdd07427c298bd4ee4c27"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./share/glaze/glazeConfigVersion.cmake",
+      "SPDXID": "SPDXRef-binary-file-259",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "15df7759aa8a1c0f43a56b4d9e16fef7e8ff6f8300beec49fe9837ce621af82c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./share/glaze/glazeTargets.cmake",
+      "SPDXID": "SPDXRef-binary-file-260",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "822516428dfe798c7c85e9d956ff26ee49e1d7aef1e98325ee23ef918973d6ee"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./share/glaze/copyright",
+      "SPDXID": "SPDXRef-binary-file-261",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5d49e66411a0807a7c8d6b911b9a26b59e940c71aebe561a3ad8b0b80ac4b7b6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./share/glaze/usage",
+      "SPDXID": "SPDXRef-binary-file-262",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c44a7726a0a82839e38776fe78e3315c7752d77ad368fc29ac7350052327e9a6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./share/glaze/vcpkg-spdx-resources.json",
+      "SPDXID": "SPDXRef-binary-file-263",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9e3ef3dca4160ee1f46076d3446d20d7af6dfb84c36eba08124a966310cfda77"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./BUILD_INFO",
+      "SPDXID": "SPDXRef-binary-file-264",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b17d8abcb0fd6454b3c1ec6556988d624863978121b87c51af8b1b6d937db69a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    }
+  ]
+}

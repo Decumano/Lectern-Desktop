@@ -1,0 +1,35 @@
+{
+  "packages": [
+{
+  "SPDXID" : "SPDXRef-resource-0",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "a6b0f1d1bd9178382f06de9773b31e3efdcdfb20fc3b65b23d9675e0838da6f64c417a75e062bda918dd28781e5d11a78e7130cef2394e676c7bc2da9e49106b"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/catchorg/Catch2@v3.16.1",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "catchorg/Catch2"
+},
+{
+  "SPDXID" : "SPDXRef-resource-1",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "87a33d2a87dc68aac424b56089c6a41176f5db49c7192fa34b4311212a609db8b52554a0857fea19dcb96a6296087b146cecb675c1653ffaf95a48a0678658fb"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "https://raw.githubusercontent.com/Kitware/CMake/af7ecc8c294d153b0120813776e1fa11c5bfe4a1/LICENSE.rst",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "cmake-license-af7ecc8c294d153b0120813776e1fa11c5bfe4a1.rst",
+  "packageFileName" : "cmake-license-af7ecc8c294d153b0120813776e1fa11c5bfe4a1.rst"
+}
+  ]
+}

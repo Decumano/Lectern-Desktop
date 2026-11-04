@@ -1,0 +1,35 @@
+{
+  "packages": [
+{
+  "SPDXID" : "SPDXRef-resource-0",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "7b15f7f428666b60daccd37c860f139cf1bd3f9ad19dd391134127fa245daaac895248b3415067839f1f8ab029b39a9f8260d93497d9d943f281da15fa21c4e4"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/boostorg/cmake@boost-1.92.0",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "boostorg/cmake"
+},
+{
+  "SPDXID" : "SPDXRef-resource-1",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "d6078467835dba8932314c1c1e945569a64b065474d7aced27c9a7acc391d52e9f234138ed9f1aa9cd576f25f12f557e0b733c14891d42c16ecdc4a7bd4d60b8"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "https://raw.githubusercontent.com/boostorg/boost/refs/tags/boost-1.92.0/LICENSE_1_0.txt",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "boost-1.92.0-LICENSE_1_0.txt",
+  "packageFileName" : "boost-1.92.0-LICENSE_1_0.txt"
+}
+  ]
+}

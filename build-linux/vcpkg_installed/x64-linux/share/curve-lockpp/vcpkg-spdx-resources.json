@@ -1,0 +1,34 @@
+{
+  "packages": [
+{
+  "SPDXID" : "SPDXRef-resource-0",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "0581718dc2451d3cc62f2d0443f52a1adc95fe7a8ee859bd9cca78d68aa029ce7bc9e5387eca24f1b5fe44fc4af3ec662426c471b16e5ad0f29aa83ae0d2c4c1"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/Curve/lockpp@v3.2.0",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "Curve/lockpp"
+},
+{
+  "SPDXID" : "SPDXRef-resource-1",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "3cf0523bddc213f206ed0ca57803550cb7db9e293392d3741138be47f49d9027ef517e1656235a349a62b492d35c3fc677714dc00afe59e2d36144a9689cfa8f"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/TheLartians/PackageProject.cmake@v1.13.0",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "TheLartians/PackageProject.cmake"
+}
+  ]
+}

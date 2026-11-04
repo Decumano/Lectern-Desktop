@@ -43,7 +43,7 @@ struct Entry
     uint64_t offset = 0;
 };
 
-void write_u32(std::ostream &out, uint32_t value)
+void fWriteU32(std::ostream &out, uint32_t value)
 {
     unsigned char bytes[4] = {
         static_cast<unsigned char>(value & 0xff),
@@ -54,7 +54,7 @@ void write_u32(std::ostream &out, uint32_t value)
     out.write(reinterpret_cast<const char *>(bytes), 4);
 }
 
-void write_u64(std::ostream &out, uint64_t value)
+void fWriteU64(std::ostream &out, uint64_t value)
 {
     unsigned char bytes[8];
     for (int i = 0; i < 8; ++i)
@@ -160,14 +160,14 @@ int main(int argc, char *argv[])
     }
 
     out.write("LKPK", 4);
-    write_u32(out, 1);
-    write_u32(out, static_cast<uint32_t>(entries.size()));
+    fWriteU32(out, 1);
+    fWriteU32(out, static_cast<uint32_t>(entries.size()));
     for (const auto &entry : entries)
     {
-        write_u32(out, static_cast<uint32_t>(entry.name.size()));
+        fWriteU32(out, static_cast<uint32_t>(entry.name.size()));
         out.write(entry.name.data(), static_cast<std::streamsize>(entry.name.size()));
-        write_u64(out, entry.offset);
-        write_u64(out, entry.size);
+        fWriteU64(out, entry.offset);
+        fWriteU64(out, entry.size);
     }
 
     for (const auto &entry : entries)

@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

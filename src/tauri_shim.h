@@ -16,7 +16,7 @@
 
 namespace lectern {
 
-inline constexpr const char *kTauriShim = R"js(
+inline constexpr const char *cTauriShim = R"js(
 (function () {
   // Argument order per command, matching the exposed C++ signatures.
   var SIGNATURES = {

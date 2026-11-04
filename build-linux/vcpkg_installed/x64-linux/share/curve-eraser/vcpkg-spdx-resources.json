@@ -1,0 +1,34 @@
+{
+  "packages": [
+{
+  "SPDXID" : "SPDXRef-resource-0",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "5c43cb2af7a42f4eb6c1b5f76ce36315f093cd8d2e3aa7873da7d1a1d188df3515e0e63b9ba8fd7418d9b62c3bc80fa1ec7548535fb69e3f36873eede682af4b"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/Curve/eraser@v2.3.0",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "Curve/eraser"
+},
+{
+  "SPDXID" : "SPDXRef-resource-1",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "3cf0523bddc213f206ed0ca57803550cb7db9e293392d3741138be47f49d9027ef517e1656235a349a62b492d35c3fc677714dc00afe59e2d36144a9689cfa8f"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/TheLartians/PackageProject.cmake@v1.13.0",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "TheLartians/PackageProject.cmake"
+}
+  ]
+}

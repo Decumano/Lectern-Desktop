@@ -37,7 +37,7 @@ struct Registry
     Configure configure;
 };
 
-Registry &registry()
+Registry &fRegistry()
 {
     static Registry instance;
     return instance;
@@ -47,17 +47,17 @@ Registry &registry()
 /// localStorage and its `storage` events, which only reach documents in the
 /// same origin *and the same profile* — give each window its own and the
 /// windows stop seeing each other entirely.
-std::filesystem::path storage_path()
+std::filesystem::path fStoragePath()
 {
-    return paths::app_config_dir() / "webview";
+    return paths::fAppConfigDir() / "webview";
 }
 
-constexpr const char *kScheme = "app";
-constexpr const char *kHost = "lectern";
+constexpr const char *cScheme = "app";
+constexpr const char *cHost = "lectern";
 
-/// Turns the frontend's relative `index.html?win=w1` into a full app:// URL,
+/// Turns the frontend's relative `index.html?win=w1` into a full lectern:// URL,
 /// refusing anything that is already absolute.
-std::string resolve_url(const std::string &url)
+std::string fResolveUrl(const std::string &url)
 {
     if (url.find("://") != std::string::npos)
     {
@@ -79,43 +79,43 @@ std::string resolve_url(const std::string &url)
     const size_t query = path.find('?');
     const std::string bare = query == std::string::npos ? path
                                                         : path.substr(0, query);
-    paths::safe_rel_path(bare);
+    paths::fSafeRelPath(bare);
 
-    return std::string(kScheme) + "://" + kHost + "/" + path;
+    return std::string(cScheme) + "://" + cHost + "/" + path;
 }
 
 }  // namespace
 
-void set_configurator(Configure configure)
+void fSetConfigurator(Configure configure)
 {
-    std::lock_guard<std::mutex> lock(registry().mutex);
-    registry().configure = std::move(configure);
+    std::lock_guard<std::mutex> lock(fRegistry().mutex);
+    fRegistry().configure = std::move(configure);
 }
 
-size_t count()
+size_t fCount()
 {
-    std::lock_guard<std::mutex> lock(registry().mutex);
-    return registry().views.size();
+    std::lock_guard<std::mutex> lock(fRegistry().mutex);
+    return fRegistry().views.size();
 }
 
-View *open(const std::shared_ptr<saucer::application> &app,
+View *fOpen(const std::shared_ptr<saucer::application> &app,
           const std::string &url,
           const std::string &title,
           const Placement &placement)
 {
-    const std::string full_url = resolve_url(url);
+    const std::string full_url = fResolveUrl(url);
 
     Configure configure;
     {
-        std::lock_guard<std::mutex> lock(registry().mutex);
-        configure = registry().configure;
+        std::lock_guard<std::mutex> lock(fRegistry().mutex);
+        configure = fRegistry().configure;
     }
 
     // make() constructs on the UI thread whichever thread calls it, which is
     // what makes this safe to call straight from an exposed function.
     ViewPtr view = app->make<View>(saucer::preferences{
         .application = app,
-        .storage_path = storage_path(),
+        .storage_path = fStoragePath(),
     });
 
     View *raw = view.get();
@@ -151,8 +151,8 @@ View *open(const std::shared_ptr<saucer::application> &app,
         app->post([app, raw]() {
             bool empty = false;
             {
-                std::lock_guard<std::mutex> lock(registry().mutex);
-                auto &views = registry().views;
+                std::lock_guard<std::mutex> lock(fRegistry().mutex);
+                auto &views = fRegistry().views;
                 views.erase(std::remove_if(views.begin(),
                                            views.end(),
                                            [raw](const ViewPtr &held) {
@@ -175,19 +175,19 @@ View *open(const std::shared_ptr<saucer::application> &app,
     raw->show();
 
     {
-        std::lock_guard<std::mutex> lock(registry().mutex);
-        registry().views.push_back(std::move(view));
+        std::lock_guard<std::mutex> lock(fRegistry().mutex);
+        fRegistry().views.push_back(std::move(view));
     }
 
-    spdlog::debug("opened window at {} ({} open)", full_url, count());
+    spdlog::debug("opened window at {} ({} open)", full_url, fCount());
 
     return raw;
 }
 
-void close_all()
+void fCloseAll()
 {
-    std::lock_guard<std::mutex> lock(registry().mutex);
-    for (auto &view : registry().views)
+    std::lock_guard<std::mutex> lock(fRegistry().mutex);
+    for (auto &view : fRegistry().views)
     {
         view->close();
     }

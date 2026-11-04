@@ -71,14 +71,14 @@ struct is_tuple<std::tuple<Ts...>> : std::true_type
 };
 
 template <typename T>
-std::expected<T, std::string> convert(const nlohmann::json &value);
+std::expected<T, std::string> fConvert(const nlohmann::json &value);
 
 /// Fills one tuple element, recording the first failure.
 template <size_t I, typename T>
-bool assign_element(T &out, const nlohmann::json &array, std::string &error)
+bool fAssignElement(T &out, const nlohmann::json &array, std::string &error)
 {
     using Element = std::tuple_element_t<I, T>;
-    auto converted = convert<Element>(array[I]);
+    auto converted = fConvert<Element>(array[I]);
     if (!converted)
     {
         error = "parameter " + std::to_string(I) + ": " + converted.error();
@@ -89,7 +89,7 @@ bool assign_element(T &out, const nlohmann::json &array, std::string &error)
 }
 
 template <typename T>
-std::expected<T, std::string> convert(const nlohmann::json &value)
+std::expected<T, std::string> fConvert(const nlohmann::json &value)
 {
     if constexpr (is_tuple<T>::value)
     {
@@ -109,7 +109,7 @@ std::expected<T, std::string> convert(const nlohmann::json &value)
         std::string error;
         [&]<size_t... I>(std::index_sequence<I...>) {
             // Short-circuits on the first element that doesn't convert.
-            (void)(assign_element<I>(out, value, error) && ...);
+            (void)(fAssignElement<I>(out, value, error) && ...);
         }(std::make_index_sequence<arity>{});
 
         if (!error.empty())
@@ -154,7 +154,7 @@ class interface
         {
             return std::unexpected<std::string>("malformed JSON payload");
         }
-        return detail::convert<T>(parsed);
+        return detail::fConvert<T>(parsed);
     }
 
     template <typename T>

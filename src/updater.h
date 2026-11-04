@@ -34,34 +34,34 @@ struct Update
 
 /// True when this build can check at all: a public key and a manifest URL were
 /// configured, and the app isn't running inside a Flatpak sandbox.
-bool enabled();
+bool fEnabled();
 
 /// Fetches and verifies the manifest, returning the newer release when there
 /// is one. Blocking; returns nullopt on any failure, including a bad
 /// signature — the caller cannot distinguish "up to date" from "could not
 /// check", and shouldn't: neither is worth interrupting the user for.
-std::optional<Update> check();
+std::optional<Update> fCheck();
 
 /// Downloads the asset to a temp file and verifies its SHA-256 against the
 /// manifest. Returns the path on success.
-std::optional<std::string> download(const Update &update);
+std::optional<std::string> fDownload(const Update &update);
 
 /// Hands the downloaded file to the platform installer and returns true when
 /// the app should now quit. On Linux this only reveals the file and returns
 /// false, since the package manager owns installation.
-bool install(const std::string &downloaded_path);
+bool fInstall(const std::string &downloaded_path);
 
 /// Runs `check` on a background thread and, if an update is waiting, asks the
 /// user with a native dialog. Called once at startup; returns immediately.
-void run_startup_check();
+void fRunStartupCheck();
 
 /// Compares dotted numeric versions. Exposed for testing.
 /// Returns <0, 0 or >0 like strcmp.
-int compare_versions(const std::string &left, const std::string &right);
+int fCompareVersions(const std::string &left, const std::string &right);
 
 /// Verifies a detached Ed25519 signature (hex) over `payload` against a hex
 /// public key. Exposed for testing.
-bool verify_signature(const std::string &payload,
+bool fVerifySignature(const std::string &payload,
                       const std::string &signature_hex,
                       const std::string &public_key_hex);
 

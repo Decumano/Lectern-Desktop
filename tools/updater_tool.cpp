@@ -6,7 +6,7 @@
 // carries. It is a build tool, not part of the app.
 //
 // Usage:
-//   lectern-updater-tool keygen
+//   lectern-updater-tool fKeygen
 //       Prints a new keypair. The public key goes into the build as
 //       -DLECTERN_UPDATE_PUBLIC_KEY=…; the secret key goes into a CI secret
 //       and nowhere else.
@@ -40,7 +40,7 @@ namespace {
 
 using namespace lectern;
 
-int usage()
+int fUsage()
 {
     std::cerr
         << "usage:\n"
@@ -52,7 +52,7 @@ int usage()
     return 2;
 }
 
-std::string to_hex(const unsigned char *data, size_t length)
+std::string fToHex(const unsigned char *data, size_t length)
 {
     static const char *digits = "0123456789abcdef";
     std::string out;
@@ -66,22 +66,22 @@ std::string to_hex(const unsigned char *data, size_t length)
 }
 
 /// `@path` reads the value from a file; anything else is the value itself.
-std::string resolve_argument(const std::string &value)
+std::string fResolveArgument(const std::string &value)
 {
     if (value.size() > 1 && value.front() == '@')
     {
-        const auto contents = util::read_file(value.substr(1));
+        const auto contents = util::fReadFile(value.substr(1));
         if (!contents)
         {
             std::cerr << "cannot read " << value.substr(1) << "\n";
             std::exit(1);
         }
-        return util::trim(*contents);
+        return util::fTrim(*contents);
     }
-    return util::trim(value);
+    return util::fTrim(value);
 }
 
-int keygen()
+int fKeygen()
 {
     std::array<unsigned char, crypto_sign_PUBLICKEYBYTES> public_key{};
     std::array<unsigned char, crypto_sign_SECRETKEYBYTES> secret_key{};
@@ -94,22 +94,22 @@ int keygen()
 
     std::cout << "public key (build with "
                  "-DLECTERN_UPDATE_PUBLIC_KEY=<this>):\n"
-              << to_hex(public_key.data(), public_key.size()) << "\n\n"
+              << fToHex(public_key.data(), public_key.size()) << "\n\n"
               << "secret key (store as a CI secret; it signs every release):\n"
-              << to_hex(secret_key.data(), secret_key.size()) << "\n";
+              << fToHex(secret_key.data(), secret_key.size()) << "\n";
     return 0;
 }
 
-int sign(const std::string &path, const std::string &secret_key_argument)
+int fSign(const std::string &path, const std::string &secret_key_argument)
 {
-    const auto payload = util::read_file(path);
+    const auto payload = util::fReadFile(path);
     if (!payload)
     {
         std::cerr << "cannot read " << path << "\n";
         return 1;
     }
 
-    const auto secret_key = util::from_hex(resolve_argument(secret_key_argument));
+    const auto secret_key = util::fFromHex(fResolveArgument(secret_key_argument));
     if (!secret_key || secret_key->size() != crypto_sign_SECRETKEYBYTES)
     {
         std::cerr << "secret key must be " << crypto_sign_SECRETKEYBYTES * 2
@@ -130,24 +130,24 @@ int sign(const std::string &path, const std::string &secret_key_argument)
         return 1;
     }
 
-    std::cout << to_hex(signature.data(), signature.size()) << "\n";
+    std::cout << fToHex(signature.data(), signature.size()) << "\n";
     return 0;
 }
 
-int verify(const std::string &path,
+int fVerify(const std::string &path,
            const std::string &signature_argument,
            const std::string &public_key_argument)
 {
-    const auto payload = util::read_file(path);
+    const auto payload = util::fReadFile(path);
     if (!payload)
     {
         std::cerr << "cannot read " << path << "\n";
         return 1;
     }
 
-    const auto signature = util::from_hex(resolve_argument(signature_argument));
+    const auto signature = util::fFromHex(fResolveArgument(signature_argument));
     const auto public_key =
-        util::from_hex(resolve_argument(public_key_argument));
+        util::fFromHex(fResolveArgument(public_key_argument));
 
     if (!signature || signature->size() != crypto_sign_BYTES ||
         !public_key || public_key->size() != crypto_sign_PUBLICKEYBYTES)
@@ -170,9 +170,9 @@ int verify(const std::string &path,
     return 0;
 }
 
-int sha256(const std::string &path)
+int fSha256(const std::string &path)
 {
-    const std::string digest = util::sha256_file(path);
+    const std::string digest = util::fSha256File(path);
     if (digest.empty())
     {
         std::cerr << "cannot read " << path << "\n";
@@ -186,31 +186,31 @@ int sha256(const std::string &path)
 
 int main(int argc, char *argv[])
 {
-    util::init_crypto();
+    util::fInitCrypto();
 
     if (argc < 2)
     {
-        return usage();
+        return fUsage();
     }
 
     const std::string command = argv[1];
 
-    if (command == "keygen" && argc == 2)
+    if (command == "fKeygen" && argc == 2)
     {
-        return keygen();
+        return fKeygen();
     }
     if (command == "sign" && argc == 4)
     {
-        return sign(argv[2], argv[3]);
+        return fSign(argv[2], argv[3]);
     }
     if (command == "verify" && argc == 5)
     {
-        return verify(argv[2], argv[3], argv[4]);
+        return fVerify(argv[2], argv[3], argv[4]);
     }
     if (command == "sha256" && argc == 3)
     {
-        return sha256(argv[2]);
+        return fSha256(argv[2]);
     }
 
-    return usage();
+    return fUsage();
 }

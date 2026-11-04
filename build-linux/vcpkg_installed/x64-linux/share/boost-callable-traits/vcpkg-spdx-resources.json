@@ -1,0 +1,19 @@
+{
+  "packages": [
+{
+  "SPDXID" : "SPDXRef-resource-0",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "6c2a1e97b6a30044d1764c68a385c74d8d67e7aab2141de22e36f885710bf8204df074186f384e55894ce8a7e8eb06713ef831d07a9d17508444e854ae2d41a9"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/boostorg/callable_traits@boost-1.92.0",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "boostorg/callable_traits"
+}
+  ]
+}

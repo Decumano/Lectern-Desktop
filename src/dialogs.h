@@ -15,21 +15,21 @@
 namespace lectern::dialogs {
 
 /// Folder picker. Empty result means the user cancelled.
-std::optional<std::filesystem::path> pick_folder(const std::string &title);
+std::optional<std::filesystem::path> fPickFolder(const std::string &title);
 
 /// Save-as dialog, pre-filled with `suggested_name`. Empty result means the
 /// user cancelled.
-std::optional<std::filesystem::path> save_file(
+std::optional<std::filesystem::path> fSaveFile(
     const std::string &title,
     const std::string &suggested_name,
     const std::string &extension);
 
 /// Yes/no prompt. Used by the updater, which has no UI of its own — the
 /// frontend is shared with the web app and knows nothing about updates.
-bool confirm(const std::string &title, const std::string &message);
+bool fConfirm(const std::string &title, const std::string &message);
 
 /// Opens a path with the desktop's default handler (Explorer, Finder,
 /// xdg-open). Best effort; failure is silent.
-void reveal(const std::filesystem::path &path);
+void fReveal(const std::filesystem::path &path);
 
 }  // namespace lectern::dialogs

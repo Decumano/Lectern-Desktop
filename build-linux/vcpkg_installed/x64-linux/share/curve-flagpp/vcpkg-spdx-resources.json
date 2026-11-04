@@ -1,0 +1,34 @@
+{
+  "packages": [
+{
+  "SPDXID" : "SPDXRef-resource-0",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "92e324b1cd773ae256c50d389fe1b30ac71237dfb299bae1e413e97b8057433dccb8a6c93ce16f05edc0de624893165491ac621e1b9da9f512df531bd69b504b"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/Curve/flagpp@v3.1.0",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "Curve/flagpp"
+},
+{
+  "SPDXID" : "SPDXRef-resource-1",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "3cf0523bddc213f206ed0ca57803550cb7db9e293392d3741138be47f49d9027ef517e1656235a349a62b492d35c3fc677714dc00afe59e2d36144a9689cfa8f"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/TheLartians/PackageProject.cmake@v1.13.0",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "TheLartians/PackageProject.cmake"
+}
+  ]
+}

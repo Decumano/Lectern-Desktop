@@ -25,7 +25,7 @@ namespace fs = std::filesystem;
 
 namespace lectern::util {
 
-void init_crypto()
+void fInitCrypto()
 {
     if (sodium_init() < 0)
     {
@@ -33,14 +33,14 @@ void init_crypto()
     }
 }
 
-int64_t now_ms()
+int64_t fNowMs()
 {
     using namespace std::chrono;
     return duration_cast<milliseconds>(system_clock::now().time_since_epoch())
         .count();
 }
 
-int64_t now_s()
+int64_t fNowS()
 {
     using namespace std::chrono;
     return duration_cast<seconds>(system_clock::now().time_since_epoch())
@@ -49,7 +49,7 @@ int64_t now_s()
 
 namespace {
 
-std::string to_hex(const unsigned char *data, size_t len)
+std::string fToHex(const unsigned char *data, size_t len)
 {
     static const char *digits = "0123456789abcdef";
     std::string out;
@@ -64,7 +64,7 @@ std::string to_hex(const unsigned char *data, size_t len)
 
 }  // namespace
 
-std::string uuid_v4()
+std::string fUuidV4()
 {
     std::array<unsigned char, 16> bytes{};
     randombytes_buf(bytes.data(), bytes.size());
@@ -72,25 +72,25 @@ std::string uuid_v4()
     bytes[6] = static_cast<unsigned char>((bytes[6] & 0x0f) | 0x40);
     bytes[8] = static_cast<unsigned char>((bytes[8] & 0x3f) | 0x80);
 
-    const std::string hex = to_hex(bytes.data(), bytes.size());
+    const std::string hex = fToHex(bytes.data(), bytes.size());
     return hex.substr(0, 8) + "-" + hex.substr(8, 4) + "-" + hex.substr(12, 4) +
            "-" + hex.substr(16, 4) + "-" + hex.substr(20, 12);
 }
 
-std::string random_hex(size_t count)
+std::string fRandomHex(size_t count)
 {
     std::vector<unsigned char> bytes(count);
     randombytes_buf(bytes.data(), bytes.size());
-    return to_hex(bytes.data(), bytes.size());
+    return fToHex(bytes.data(), bytes.size());
 }
 
-std::string base64_encode(const std::vector<unsigned char> &data)
+std::string fBase64Encode(const std::vector<unsigned char> &data)
 {
-    return base64_encode(std::string_view(
+    return fBase64Encode(std::string_view(
         reinterpret_cast<const char *>(data.data()), data.size()));
 }
 
-std::string base64_encode(std::string_view data)
+std::string fBase64Encode(std::string_view data)
 {
     // sodium_base64_ENCODED_LEN includes room for the NUL terminator.
     const size_t out_len =
@@ -106,7 +106,7 @@ std::string base64_encode(std::string_view data)
     return out;
 }
 
-std::optional<std::string> base64_decode(std::string_view data)
+std::optional<std::string> fBase64Decode(std::string_view data)
 {
     std::vector<unsigned char> out(data.size());  // decoding only shrinks
     size_t decoded_len = 0;
@@ -126,16 +126,16 @@ std::optional<std::string> base64_decode(std::string_view data)
                        decoded_len);
 }
 
-std::string sha256_hex(std::string_view data)
+std::string fSha256Hex(std::string_view data)
 {
     std::array<unsigned char, crypto_hash_sha256_BYTES> digest{};
     crypto_hash_sha256(digest.data(),
                        reinterpret_cast<const unsigned char *>(data.data()),
                        data.size());
-    return to_hex(digest.data(), digest.size());
+    return fToHex(digest.data(), digest.size());
 }
 
-std::string sha256_file(const fs::path &path)
+std::string fSha256File(const fs::path &path)
 {
     std::ifstream in(path, std::ios::binary);
     if (!in)
@@ -166,17 +166,17 @@ std::string sha256_file(const fs::path &path)
 
     std::array<unsigned char, crypto_hash_sha256_BYTES> digest{};
     crypto_hash_sha256_final(&state, digest.data());
-    return to_hex(digest.data(), digest.size());
+    return fToHex(digest.data(), digest.size());
 }
 
-std::optional<std::vector<unsigned char>> from_hex(std::string_view hex)
+std::optional<std::vector<unsigned char>> fFromHex(std::string_view hex)
 {
     if (hex.size() % 2 != 0)
     {
         return std::nullopt;
     }
 
-    const auto nibble = [](char c) -> int {
+    const auto fNibble = [](char c) -> int {
         if (c >= '0' && c <= '9') return c - '0';
         if (c >= 'a' && c <= 'f') return c - 'a' + 10;
         if (c >= 'A' && c <= 'F') return c - 'A' + 10;
@@ -187,8 +187,8 @@ std::optional<std::vector<unsigned char>> from_hex(std::string_view hex)
     out.reserve(hex.size() / 2);
     for (size_t i = 0; i < hex.size(); i += 2)
     {
-        const int high = nibble(hex[i]);
-        const int low = nibble(hex[i + 1]);
+        const int high = fNibble(hex[i]);
+        const int low = fNibble(hex[i + 1]);
         if (high < 0 || low < 0)
         {
             return std::nullopt;
@@ -198,7 +198,7 @@ std::optional<std::vector<unsigned char>> from_hex(std::string_view hex)
     return out;
 }
 
-bool spawn_detached(const fs::path &executable,
+bool fSpawnDetached(const fs::path &executable,
                     const std::vector<std::string> &args)
 {
 #ifdef _WIN32
@@ -260,7 +260,7 @@ bool spawn_detached(const fs::path &executable,
 #endif
 }
 
-bool constant_time_equals(std::string_view a, std::string_view b)
+bool fConstantTimeEquals(std::string_view a, std::string_view b)
 {
     if (a.size() != b.size())
     {
@@ -269,25 +269,25 @@ bool constant_time_equals(std::string_view a, std::string_view b)
     return sodium_memcmp(a.data(), b.data(), a.size()) == 0;
 }
 
-std::string trim(std::string_view s)
+std::string fTrim(std::string_view s)
 {
-    const auto is_space = [](unsigned char c) {
+    const auto fIsSpace = [](unsigned char c) {
         return std::isspace(c) != 0;
     };
     size_t begin = 0;
-    while (begin < s.size() && is_space(static_cast<unsigned char>(s[begin])))
+    while (begin < s.size() && fIsSpace(static_cast<unsigned char>(s[begin])))
     {
         ++begin;
     }
     size_t end = s.size();
-    while (end > begin && is_space(static_cast<unsigned char>(s[end - 1])))
+    while (end > begin && fIsSpace(static_cast<unsigned char>(s[end - 1])))
     {
         --end;
     }
     return std::string(s.substr(begin, end - begin));
 }
 
-std::string to_lower(std::string_view s)
+std::string fToLower(std::string_view s)
 {
     std::string out(s);
     std::transform(out.begin(), out.end(), out.begin(), [](unsigned char c) {
@@ -296,18 +296,18 @@ std::string to_lower(std::string_view s)
     return out;
 }
 
-bool starts_with(std::string_view s, std::string_view prefix)
+bool fStartsWith(std::string_view s, std::string_view prefix)
 {
     return s.size() >= prefix.size() && s.compare(0, prefix.size(), prefix) == 0;
 }
 
-bool ends_with(std::string_view s, std::string_view suffix)
+bool fEndsWith(std::string_view s, std::string_view suffix)
 {
     return s.size() >= suffix.size() &&
            s.compare(s.size() - suffix.size(), suffix.size(), suffix) == 0;
 }
 
-std::vector<std::string> split(std::string_view s, char sep)
+std::vector<std::string> fSplit(std::string_view s, char sep)
 {
     std::vector<std::string> out;
     size_t start = 0;
@@ -325,15 +325,15 @@ std::vector<std::string> split(std::string_view s, char sep)
     return out;
 }
 
-std::string_view basename_of(std::string_view rel_path)
+std::string_view fBasenameOf(std::string_view rel_path)
 {
     const size_t pos = rel_path.rfind('/');
     return pos == std::string_view::npos ? rel_path : rel_path.substr(pos + 1);
 }
 
-std::string extension_of(std::string_view name)
+std::string fExtensionOf(std::string_view name)
 {
-    const std::string_view base = basename_of(name);
+    const std::string_view base = fBasenameOf(name);
     const size_t pos = base.rfind('.');
     // A leading dot is a hidden file, not an extension (".mdp" has none),
     // which is what Rust's Path::extension() also reports.
@@ -341,12 +341,12 @@ std::string extension_of(std::string_view name)
     {
         return {};
     }
-    return to_lower(base.substr(pos + 1));
+    return fToLower(base.substr(pos + 1));
 }
 
 namespace {
 
-void set_env(const std::string &name, const std::string &value)
+void fSetEnv(const std::string &name, const std::string &value)
 {
 #ifdef _WIN32
     _putenv_s(name.c_str(), value.c_str());
@@ -357,7 +357,7 @@ void set_env(const std::string &name, const std::string &value)
 
 }  // namespace
 
-void load_dotenv(const fs::path &path)
+void fLoadDotenv(const fs::path &path)
 {
     std::ifstream in(path);
     if (!in)
@@ -368,7 +368,7 @@ void load_dotenv(const fs::path &path)
     std::string line;
     while (std::getline(in, line))
     {
-        const std::string trimmed = trim(line);
+        const std::string trimmed = fTrim(line);
         if (trimmed.empty() || trimmed.front() == '#')
         {
             continue;
@@ -380,8 +380,8 @@ void load_dotenv(const fs::path &path)
             continue;
         }
 
-        std::string name = trim(trimmed.substr(0, equals));
-        std::string value = trim(trimmed.substr(equals + 1));
+        std::string name = fTrim(trimmed.substr(0, equals));
+        std::string value = fTrim(trimmed.substr(equals + 1));
         if (name.empty())
         {
             continue;
@@ -400,12 +400,12 @@ void load_dotenv(const fs::path &path)
         // no no-overwrite mode, so check first.
         if (std::getenv(name.c_str()) == nullptr)
         {
-            set_env(name, value);
+            fSetEnv(name, value);
         }
     }
 }
 
-std::optional<std::string> env(const char *name)
+std::optional<std::string> fEnv(const char *name)
 {
     const char *value = std::getenv(name);
     if (value == nullptr)
@@ -415,14 +415,14 @@ std::optional<std::string> env(const char *name)
     return std::string(value);
 }
 
-std::string env_or(const char *name, std::string fallback)
+std::string fEnvOr(const char *name, std::string fallback)
 {
-    return env(name).value_or(std::move(fallback));
+    return fEnv(name).value_or(std::move(fallback));
 }
 
-int64_t env_i64(const char *name, int64_t fallback)
+int64_t fEnvI64(const char *name, int64_t fallback)
 {
-    const auto value = env(name);
+    const auto value = fEnv(name);
     if (!value || value->empty())
     {
         return fallback;
@@ -437,18 +437,18 @@ int64_t env_i64(const char *name, int64_t fallback)
     }
 }
 
-bool env_bool(const char *name, bool fallback)
+bool fEnvBool(const char *name, bool fallback)
 {
-    const auto value = env(name);
+    const auto value = fEnv(name);
     if (!value)
     {
         return fallback;
     }
-    const std::string lowered = to_lower(*value);
+    const std::string lowered = fToLower(*value);
     return lowered == "1" || lowered == "true";
 }
 
-std::optional<std::string> read_file(const fs::path &path)
+std::optional<std::string> fReadFile(const fs::path &path)
 {
     std::ifstream in(path, std::ios::binary);
     if (!in)
@@ -464,9 +464,9 @@ std::optional<std::string> read_file(const fs::path &path)
     return buffer.str();
 }
 
-std::optional<std::vector<unsigned char>> read_file_bytes(const fs::path &path)
+std::optional<std::vector<unsigned char>> fReadFileBytes(const fs::path &path)
 {
-    const auto text = read_file(path);
+    const auto text = fReadFile(path);
     if (!text)
     {
         return std::nullopt;
@@ -474,7 +474,7 @@ std::optional<std::vector<unsigned char>> read_file_bytes(const fs::path &path)
     return std::vector<unsigned char>(text->begin(), text->end());
 }
 
-void write_file_atomic(const fs::path &path, std::string_view content)
+void fWriteFileAtomic(const fs::path &path, std::string_view content)
 {
     const fs::path parent = path.parent_path();
     if (!parent.empty())
@@ -486,7 +486,7 @@ void write_file_atomic(const fs::path &path, std::string_view content)
     // A unique sibling, so two concurrent writers can't clobber each other's
     // temp file and produce a torn document.
     const fs::path temp =
-        parent / (path.filename().string() + "." + random_hex(8) + ".tmp");
+        parent / (path.filename().string() + "." + fRandomHex(8) + ".tmp");
     {
         std::ofstream out(temp, std::ios::binary | std::ios::trunc);
         if (!out)

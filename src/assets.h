@@ -14,7 +14,7 @@ namespace lectern::assets {
 
 /// Absolute path of the running executable, resolved through the OS rather
 /// than argv[0] (which a caller controls and need not be a real path).
-std::filesystem::path executable_path();
+std::filesystem::path fExecutablePath();
 
 /// The directory holding index.html. Search order:
 ///   1. $LECTERN_FRONTEND_DIR              — explicit override
@@ -24,6 +24,6 @@ std::filesystem::path executable_path();
 ///   5. the configure-time default         — running from a build tree
 /// Returns the first candidate that actually contains index.html; when none
 /// does, returns candidate 2 so the error message names a sensible location.
-std::filesystem::path frontend_dir();
+std::filesystem::path fFrontendDir();
 
 }  // namespace lectern::assets

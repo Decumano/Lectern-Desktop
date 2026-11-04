@@ -27,22 +27,22 @@ std::set<fs::path> g_authorized_roots;
 std::mutex g_data_dir_mutex;
 fs::path g_portable_data_dir;
 
-fs::path roots_file()
+fs::path fRootsFile()
 {
-    return app_config_dir() / "authorized_roots.json";
+    return fAppConfigDir() / "authorized_roots.json";
 }
 
 }  // namespace
 
-void use_portable_data_dir(const fs::path &root)
+void fUsePortableDataDir(const fs::path &root)
 {
     std::lock_guard<std::mutex> lock(g_data_dir_mutex);
     g_portable_data_dir = root;
 }
 
-fs::path app_config_dir()
+fs::path fAppConfigDir()
 {
-    if (const auto override_dir = util::env("LECTERN_DATA_DIR"))
+    if (const auto override_dir = util::fEnv("LECTERN_DATA_DIR"))
     {
         if (!override_dir->empty())
         {
@@ -76,16 +76,16 @@ fs::path app_config_dir()
     }
     if (base.empty())
     {
-        base = fs::path(util::env_or("APPDATA", "."));
+        base = fs::path(util::fEnvOr("APPDATA", "."));
     }
     const fs::path dir = base / "Lectern";
 #elif defined(__APPLE__)
-    base = fs::path(util::env_or("HOME", "."));
+    base = fs::path(util::fEnvOr("HOME", "."));
     const fs::path dir = base / "Library" / "Application Support" / "Lectern";
 #else
-    const auto xdg = util::env("XDG_CONFIG_HOME");
+    const auto xdg = util::fEnv("XDG_CONFIG_HOME");
     base = (xdg && !xdg->empty()) ? fs::path(*xdg)
-                                  : fs::path(util::env_or("HOME", ".")) /
+                                  : fs::path(util::fEnvOr("HOME", ".")) /
                                         ".config";
     const fs::path dir = base / "lectern";
 #endif
@@ -95,24 +95,24 @@ fs::path app_config_dir()
     return dir;
 }
 
-std::string safe_rel_path(std::string_view rel_path)
+std::string fSafeRelPath(std::string_view rel_path)
 {
-    const auto invalid = [] {
+    const auto fInvalid = [] {
         return std::invalid_argument("invalid path");
     };
 
     if (rel_path.empty())
     {
-        throw invalid();
+        throw fInvalid();
     }
     if (rel_path.front() == '/' || rel_path.front() == '\\')
     {
-        throw invalid();
+        throw fInvalid();
     }
 
     std::vector<std::string> segments;
     std::string current;
-    const auto flush = [&] {
+    const auto fFlush = [&] {
         if (current.empty())
         {
             return;
@@ -124,13 +124,13 @@ std::string safe_rel_path(std::string_view rel_path)
         }
         if (current == "..")
         {
-            throw invalid();
+            throw fInvalid();
         }
         // A colon is either a Windows drive prefix ("C:") or an NTFS
         // alternate data stream ("file.mdp:evil"); neither belongs here.
         if (current.find(':') != std::string::npos)
         {
-            throw invalid();
+            throw fInvalid();
         }
         segments.push_back(current);
         current.clear();
@@ -140,22 +140,22 @@ std::string safe_rel_path(std::string_view rel_path)
     {
         if (c == '/' || c == '\\')
         {
-            flush();
+            fFlush();
         }
         else if (c == '\0')
         {
-            throw invalid();
+            throw fInvalid();
         }
         else
         {
             current.push_back(c);
         }
     }
-    flush();
+    fFlush();
 
     if (segments.empty())
     {
-        throw invalid();
+        throw fInvalid();
     }
 
     std::string out = segments.front();
@@ -167,9 +167,9 @@ std::string safe_rel_path(std::string_view rel_path)
     return out;
 }
 
-void load_authorized_roots()
+void fLoadAuthorizedRoots()
 {
-    const auto data = util::read_file(roots_file());
+    const auto data = util::fReadFile(fRootsFile());
     if (!data)
     {
         return;
@@ -191,7 +191,7 @@ void load_authorized_roots()
     }
 }
 
-void authorize_root(const fs::path &picked)
+void fAuthorizeRoot(const fs::path &picked)
 {
     std::error_code ec;
     const fs::path canonical = fs::canonical(picked, ec);
@@ -203,9 +203,9 @@ void authorize_root(const fs::path &picked)
     // Re-read before writing. The file is replaced wholesale with the
     // in-memory set, so anything already on disk that this process never
     // loaded — a second instance's folder, or a caller that skipped
-    // load_authorized_roots — would otherwise be silently dropped, and the
+    // fLoadAuthorizedRoots — would otherwise be silently dropped, and the
     // user would find a folder they had already picked no longer trusted.
-    load_authorized_roots();
+    fLoadAuthorizedRoots();
 
     std::vector<std::string> all;
     {
@@ -220,10 +220,10 @@ void authorize_root(const fs::path &picked)
         }
     }
 
-    util::write_file_atomic(roots_file(), json(all).dump(2));
+    util::fWriteFileAtomic(fRootsFile(), json(all).dump(2));
 }
 
-fs::path check_root(const std::string &root)
+fs::path fCheckRoot(const std::string &root)
 {
     std::error_code ec;
     const fs::path canonical = fs::canonical(root, ec);
@@ -242,10 +242,10 @@ fs::path check_root(const std::string &root)
     return canonical;
 }
 
-fs::path resolve_work_path(const std::string &root,
+fs::path fResolveWorkPath(const std::string &root,
                            const std::string &rel_path)
 {
-    return check_root(root) / safe_rel_path(rel_path);
+    return fCheckRoot(root) / fSafeRelPath(rel_path);
 }
 
 }  // namespace lectern::paths

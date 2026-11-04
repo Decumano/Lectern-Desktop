@@ -28,7 +28,7 @@ struct Index
     bool valid = false;
 };
 
-uint32_t read_u32(const unsigned char *data)
+uint32_t fReadU32(const unsigned char *data)
 {
     return static_cast<uint32_t>(data[0]) |
            (static_cast<uint32_t>(data[1]) << 8) |
@@ -36,7 +36,7 @@ uint32_t read_u32(const unsigned char *data)
            (static_cast<uint32_t>(data[3]) << 24);
 }
 
-uint64_t read_u64(const unsigned char *data)
+uint64_t fReadU64(const unsigned char *data)
 {
     uint64_t value = 0;
     for (int i = 7; i >= 0; --i)
@@ -47,7 +47,7 @@ uint64_t read_u64(const unsigned char *data)
 }
 
 /// Locates the linked blob, if this build has one.
-std::string_view locate_blob()
+std::string_view fLocateBlob()
 {
 #ifndef LECTERN_EMBED_FRONTEND
     return {};
@@ -82,17 +82,17 @@ std::string_view locate_blob()
 /// Parses the index once. Every bound is checked against the blob's real size:
 /// the pack is part of the binary, but a truncated or corrupted one must fail
 /// closed rather than read past the end.
-Index parse()
+Index fParse()
 {
     Index index;
-    index.blob = locate_blob();
+    index.blob = fLocateBlob();
 
     const auto *bytes =
         reinterpret_cast<const unsigned char *>(index.blob.data());
     const size_t size = index.blob.size();
 
-    constexpr size_t kHeader = 4 + 4 + 4;
-    if (bytes == nullptr || size < kHeader)
+    constexpr size_t cHeader = 4 + 4 + 4;
+    if (bytes == nullptr || size < cHeader)
     {
         return index;
     }
@@ -100,13 +100,13 @@ Index parse()
     {
         return index;
     }
-    if (read_u32(bytes + 4) != 1)
+    if (fReadU32(bytes + 4) != 1)
     {
         return index;  // a version this build does not understand
     }
 
-    const uint32_t count = read_u32(bytes + 8);
-    size_t cursor = kHeader;
+    const uint32_t count = fReadU32(bytes + 8);
+    size_t cursor = cHeader;
 
     index.entries.reserve(count);
     for (uint32_t i = 0; i < count; ++i)
@@ -115,7 +115,7 @@ Index parse()
         {
             return {};
         }
-        const uint32_t name_len = read_u32(bytes + cursor);
+        const uint32_t name_len = fReadU32(bytes + cursor);
         cursor += 4;
 
         if (name_len == 0 || cursor + name_len + 16 > size)
@@ -126,9 +126,9 @@ Index parse()
             reinterpret_cast<const char *>(bytes + cursor), name_len);
         cursor += name_len;
 
-        const uint64_t offset = read_u64(bytes + cursor);
+        const uint64_t offset = fReadU64(bytes + cursor);
         cursor += 8;
-        const uint64_t length = read_u64(bytes + cursor);
+        const uint64_t length = fReadU64(bytes + cursor);
         cursor += 8;
 
         // The payload must lie inside the blob, and offset + length must not
@@ -162,27 +162,27 @@ Index parse()
     return index;
 }
 
-const Index &index()
+const Index &fIndex()
 {
-    static const Index parsed = parse();
+    static const Index parsed = fParse();
     return parsed;
 }
 
 }  // namespace
 
-bool available()
+bool fAvailable()
 {
-    return index().valid && !index().entries.empty();
+    return fIndex().valid && !fIndex().entries.empty();
 }
 
-size_t count()
+size_t fCount()
 {
-    return index().valid ? index().entries.size() : 0;
+    return fIndex().valid ? fIndex().entries.size() : 0;
 }
 
-std::optional<std::string_view> read(std::string_view name)
+std::optional<std::string_view> fRead(std::string_view name)
 {
-    const Index &parsed = index();
+    const Index &parsed = fIndex();
     if (!parsed.valid)
     {
         return std::nullopt;

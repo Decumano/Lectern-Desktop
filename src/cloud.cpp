@@ -32,13 +32,13 @@ namespace {
 /// Deliberately keeps its pre-rename name: the directory already exists in
 /// every synced work folder, and the server side matches on it too, so
 /// renaming it would orphan existing sync state.
-constexpr const char *kSyncDir = ".officesuite-sync";
-constexpr auto kPollInterval = 45s;
+constexpr const char *cSyncDir = ".officesuite-sync";
+constexpr auto cPollInterval = 45s;
 
-/// Serializes sync passes: `nudge_sync`, the background loop, `sync_now` and
+/// Serializes sync passes: `fNudgeSync`, the background loop, `fSyncNow` and
 /// `connect` can all fire concurrently, and two passes reconciling the same
 /// folder at once would race on state.json and the base snapshots.
-std::mutex &sync_lock()
+std::mutex &fSyncLock()
 {
     static std::mutex lock;
     return lock;
@@ -54,14 +54,14 @@ struct CloudConfig
     std::string root;
 };
 
-fs::path config_path()
+fs::path fConfigPath()
 {
-    return paths::app_config_dir() / "cloud.json";
+    return paths::fAppConfigDir() / "cloud.json";
 }
 
-std::optional<CloudConfig> load_config()
+std::optional<CloudConfig> fLoadConfig()
 {
-    const auto data = util::read_file(config_path());
+    const auto data = util::fReadFile(fConfigPath());
     if (!data)
     {
         return std::nullopt;
@@ -85,9 +85,9 @@ std::optional<CloudConfig> load_config()
     return config;
 }
 
-void save_config(const CloudConfig &config)
+void fSaveConfig(const CloudConfig &config)
 {
-    util::write_file_atomic(config_path(),
+    util::fWriteFileAtomic(fConfigPath(),
                             json{{"server_url", config.server_url},
                                  {"email", config.email},
                                  {"api_token", config.api_token},
@@ -95,10 +95,10 @@ void save_config(const CloudConfig &config)
                                 .dump(2));
 }
 
-void clear_config()
+void fClearConfig()
 {
     std::error_code ec;
-    fs::remove(config_path(), ec);
+    fs::remove(fConfigPath(), ec);
 }
 
 // ── Per-folder sync state (the "base" snapshot registry + open conflicts) ──
@@ -116,31 +116,31 @@ struct SyncState
     std::set<std::string> folders;
 };
 
-fs::path sync_dir(const std::string &root)
+fs::path fSyncDir(const std::string &root)
 {
-    return fs::path(root) / kSyncDir;
+    return fs::path(root) / cSyncDir;
 }
 
-fs::path state_path(const std::string &root)
+fs::path fStatePath(const std::string &root)
 {
-    return sync_dir(root) / "state.json";
+    return fSyncDir(root) / "state.json";
 }
 
-fs::path base_path(const std::string &root, const std::string &rel_path)
+fs::path fBasePath(const std::string &root, const std::string &rel_path)
 {
-    return sync_dir(root) / "base" / rel_path;
+    return fSyncDir(root) / "base" / rel_path;
 }
 
-fs::path remote_snapshot_path(const std::string &root,
+fs::path fRemoteSnapshotPath(const std::string &root,
                               const std::string &rel_path)
 {
-    return sync_dir(root) / "base" / (rel_path + ".remote");
+    return fSyncDir(root) / "base" / (rel_path + ".remote");
 }
 
-SyncState load_state(const std::string &root)
+SyncState fLoadState(const std::string &root)
 {
     SyncState state;
-    const auto data = util::read_file(state_path(root));
+    const auto data = util::fReadFile(fStatePath(root));
     if (!data)
     {
         return state;
@@ -185,7 +185,7 @@ SyncState load_state(const std::string &root)
     return state;
 }
 
-void save_state(const std::string &root, const SyncState &state)
+void fSaveState(const std::string &root, const SyncState &state)
 {
     json files = json::object();
     for (const auto &[rel, hash] : state.files)
@@ -199,8 +199,8 @@ void save_state(const std::string &root, const SyncState &state)
     }
 
     std::error_code ec;
-    fs::create_directories(sync_dir(root), ec);
-    util::write_file_atomic(state_path(root),
+    fs::create_directories(fSyncDir(root), ec);
+    util::fWriteFileAtomic(fStatePath(root),
                             json{{"last_synced_at", state.last_synced_at},
                                  {"files", files},
                                  {"conflicts", conflicts},
@@ -208,43 +208,43 @@ void save_state(const std::string &root, const SyncState &state)
                                 .dump(2));
 }
 
-void write_base(const std::string &root,
+void fWriteBase(const std::string &root,
                 const std::string &rel_path,
                 const std::string &content)
 {
-    util::write_file_atomic(base_path(root, rel_path), content);
+    util::fWriteFileAtomic(fBasePath(root, rel_path), content);
 }
 
-std::optional<std::string> read_base(const std::string &root,
+std::optional<std::string> fReadBase(const std::string &root,
                                      const std::string &rel_path)
 {
-    return util::read_file(base_path(root, rel_path));
+    return util::fReadFile(fBasePath(root, rel_path));
 }
 
-void remove_base(const std::string &root, const std::string &rel_path)
+void fRemoveBase(const std::string &root, const std::string &rel_path)
 {
     std::error_code ec;
-    fs::remove(base_path(root, rel_path), ec);
+    fs::remove(fBasePath(root, rel_path), ec);
 }
 
-void write_remote_snapshot(const std::string &root,
+void fWriteRemoteSnapshot(const std::string &root,
                            const std::string &rel_path,
                            const std::string &content)
 {
-    util::write_file_atomic(remote_snapshot_path(root, rel_path), content);
+    util::fWriteFileAtomic(fRemoteSnapshotPath(root, rel_path), content);
 }
 
-std::optional<std::string> read_remote_snapshot(const std::string &root,
+std::optional<std::string> fReadRemoteSnapshot(const std::string &root,
                                                 const std::string &rel_path)
 {
-    return util::read_file(remote_snapshot_path(root, rel_path));
+    return util::fReadFile(fRemoteSnapshotPath(root, rel_path));
 }
 
-void remove_remote_snapshot(const std::string &root,
+void fRemoveRemoteSnapshot(const std::string &root,
                             const std::string &rel_path)
 {
     std::error_code ec;
-    fs::remove(remote_snapshot_path(root, rel_path), ec);
+    fs::remove(fRemoteSnapshotPath(root, rel_path), ec);
 }
 
 // ── Local scanning ──
@@ -254,14 +254,14 @@ void remove_remote_snapshot(const std::string &root,
 /// from empty" holding the whole document, so it routinely outgrows the
 /// document itself, and two divergently-edited copies line-merge into
 /// nonsense. It stays on the machine that produced it.
-bool excluded_from_sync(std::string_view name)
+bool fExcludedFromSync(std::string_view name)
 {
-    constexpr std::string_view kHistorySuffix = ".history.json";
-    return name.size() > kHistorySuffix.size() &&
-           name.substr(name.size() - kHistorySuffix.size()) == kHistorySuffix;
+    constexpr std::string_view cHistorySuffix = ".history.json";
+    return name.size() > cHistorySuffix.size() &&
+           name.substr(name.size() - cHistorySuffix.size()) == cHistorySuffix;
 }
 
-void walk_local_files(const fs::path &dir,
+void fWalkLocalFiles(const fs::path &dir,
                       const std::string &rel_prefix,
                       std::set<std::string> &out,
                       std::set<std::string> *out_dirs)
@@ -289,7 +289,7 @@ void walk_local_files(const fs::path &dir,
             {
                 out_dirs->insert(rel);
             }
-            walk_local_files(entry.path(), rel, out, out_dirs);
+            fWalkLocalFiles(entry.path(), rel, out, out_dirs);
             continue;
         }
 
@@ -298,22 +298,22 @@ void walk_local_files(const fs::path &dir,
         // the documents, and silently leaving those behind was indis-
         // tinguishable from the sync losing them. Dotfiles are skipped
         // above, which is what keeps the sync's own metadata out.
-        if (!excluded_from_sync(name))
+        if (!fExcludedFromSync(name))
         {
             out.insert(rel);
         }
     }
 }
 
-std::set<std::string> local_file_paths(const std::string &root,
+std::set<std::string> fLocalFilePaths(const std::string &root,
                                        std::set<std::string> *out_dirs = nullptr)
 {
     std::set<std::string> out;
-    walk_local_files(fs::path(root), "", out, out_dirs);
+    fWalkLocalFiles(fs::path(root), "", out, out_dirs);
     return out;
 }
 
-uint64_t local_mtime_ms(const fs::path &path)
+uint64_t fLocalMtimeMs(const fs::path &path)
 {
     std::error_code ec;
     const auto time = fs::last_write_time(path, ec);
@@ -334,7 +334,7 @@ uint64_t local_mtime_ms(const fs::path &path)
 /// A line-based three-way merge is meaningless on binary content and would
 /// happily produce a corrupt file, so anything holding a NUL byte is treated
 /// as unmergeable and raised as a conflict for the user to settle instead.
-bool looks_binary(std::string_view content)
+bool fLooksBinary(std::string_view content)
 {
     const size_t window = std::min<size_t>(content.size(), 8192);
     return content.substr(0, window).find('\0') != std::string_view::npos;
@@ -345,11 +345,11 @@ bool looks_binary(std::string_view content)
 /// server must not be able to reach outside the synced folder with an absolute
 /// path, a drive prefix, or `..` — every server-supplied path is checked here
 /// before it's used, and invalid ones are simply ignored.
-bool valid_remote_rel_path(const std::string &rel_path)
+bool fValidRemoteRelPath(const std::string &rel_path)
 {
     try
     {
-        return paths::safe_rel_path(rel_path) == rel_path;
+        return paths::fSafeRelPath(rel_path) == rel_path;
     }
     catch (const std::exception &)
     {
@@ -357,12 +357,12 @@ bool valid_remote_rel_path(const std::string &rel_path)
     }
 }
 
-cpr::Header auth_header(const CloudConfig &config)
+cpr::Header fAuthHeader(const CloudConfig &config)
 {
     return cpr::Header{{"Authorization", "Bearer " + config.api_token}};
 }
 
-void flatten_remote(const json &entries,
+void fFlattenRemote(const json &entries,
                     std::map<std::string, std::string> &out,
                     std::set<std::string> *out_dirs)
 {
@@ -379,26 +379,26 @@ void flatten_remote(const json &entries,
         if (entry.value("isDir", false))
         {
             const std::string dir_rel = entry.value("relPath", "");
-            if (out_dirs != nullptr && valid_remote_rel_path(dir_rel))
+            if (out_dirs != nullptr && fValidRemoteRelPath(dir_rel))
             {
                 out_dirs->insert(dir_rel);
             }
-            flatten_remote(entry.value("children", json::array()), out, out_dirs);
+            fFlattenRemote(entry.value("children", json::array()), out, out_dirs);
             continue;
         }
         const std::string rel = entry.value("relPath", "");
-        if (valid_remote_rel_path(rel) && !excluded_from_sync(rel))
+        if (fValidRemoteRelPath(rel) && !fExcludedFromSync(rel))
         {
             out[rel] = entry.value("hash", "");
         }
     }
 }
 
-std::map<std::string, std::string> remote_list(const CloudConfig &config,
+std::map<std::string, std::string> fRemoteList(const CloudConfig &config,
                                               std::set<std::string> *out_dirs = nullptr)
 {
     const auto response = cpr::Get(cpr::Url{config.server_url + "/api/workspace"},
-                                   auth_header(config),
+                                   fAuthHeader(config),
                                    cpr::Timeout{30000});
     if (response.status_code < 200 || response.status_code >= 300)
     {
@@ -408,17 +408,17 @@ std::map<std::string, std::string> remote_list(const CloudConfig &config,
 
     const auto tree = json::parse(response.text, nullptr, false);
     std::map<std::string, std::string> flat;
-    flatten_remote(tree, flat, out_dirs);
+    fFlattenRemote(tree, flat, out_dirs);
     return flat;
 }
 
 /// Files the server knows were deleted, and when. An older server without the
 /// endpoint yields an empty map, which simply disables tombstone handling.
-std::map<std::string, uint64_t> remote_tombstones(const CloudConfig &config)
+std::map<std::string, uint64_t> fRemoteTombstones(const CloudConfig &config)
 {
     const auto response =
         cpr::Get(cpr::Url{config.server_url + "/api/workspace/deleted"},
-                 auth_header(config),
+                 fAuthHeader(config),
                  cpr::Timeout{30000});
     if (response.status_code == 404)
     {
@@ -439,7 +439,7 @@ std::map<std::string, uint64_t> remote_tombstones(const CloudConfig &config)
     for (const auto &row : rows)
     {
         const std::string rel = row.value("relPath", "");
-        if (valid_remote_rel_path(rel))
+        if (fValidRemoteRelPath(rel))
         {
             out[rel] = row.value("deletedAt", uint64_t{0});
         }
@@ -447,12 +447,12 @@ std::map<std::string, uint64_t> remote_tombstones(const CloudConfig &config)
     return out;
 }
 
-std::string remote_read(const CloudConfig &config, const std::string &rel_path)
+std::string fRemoteRead(const CloudConfig &config, const std::string &rel_path)
 {
     const auto response =
         cpr::Get(cpr::Url{config.server_url + "/api/workspace/file"},
                  cpr::Parameters{{"path", rel_path}},
-                 auth_header(config),
+                 fAuthHeader(config),
                  cpr::Timeout{60000});
     if (response.status_code < 200 || response.status_code >= 300)
     {
@@ -462,11 +462,11 @@ std::string remote_read(const CloudConfig &config, const std::string &rel_path)
     return response.text;
 }
 
-void remote_write(const CloudConfig &config,
+void fRemoteWrite(const CloudConfig &config,
                   const std::string &rel_path,
                   const std::string &content)
 {
-    cpr::Header headers = auth_header(config);
+    cpr::Header headers = fAuthHeader(config);
     // Bytes, not text: a synced folder now carries images and PDFs too.
     headers["Content-Type"] = "application/octet-stream";
 
@@ -483,10 +483,10 @@ void remote_write(const CloudConfig &config,
     }
 }
 
-void remote_create_folder(const CloudConfig &config,
+void fRemoteCreateFolder(const CloudConfig &config,
                           const std::string &rel_path)
 {
-    cpr::Header headers = auth_header(config);
+    cpr::Header headers = fAuthHeader(config);
     headers["Content-Type"] = "application/json";
 
     const auto response =
@@ -501,13 +501,13 @@ void remote_create_folder(const CloudConfig &config,
     }
 }
 
-void remote_delete_folder(const CloudConfig &config,
+void fRemoteDeleteFolder(const CloudConfig &config,
                           const std::string &rel_path)
 {
     const auto response =
         cpr::Delete(cpr::Url{config.server_url + "/api/workspace/entry"},
                     cpr::Parameters{{"path", rel_path}, {"isDir", "true"}},
-                    auth_header(config),
+                    fAuthHeader(config),
                     cpr::Timeout{30000});
     if ((response.status_code < 200 || response.status_code >= 300) &&
         response.status_code != 404)
@@ -517,12 +517,12 @@ void remote_delete_folder(const CloudConfig &config,
     }
 }
 
-void remote_delete(const CloudConfig &config, const std::string &rel_path)
+void fRemoteDelete(const CloudConfig &config, const std::string &rel_path)
 {
     const auto response =
         cpr::Delete(cpr::Url{config.server_url + "/api/workspace/entry"},
                     cpr::Parameters{{"path", rel_path}, {"isDir", "false"}},
-                    auth_header(config),
+                    fAuthHeader(config),
                     cpr::Timeout{30000});
     if ((response.status_code < 200 || response.status_code >= 300) &&
         response.status_code != 404)
@@ -532,7 +532,7 @@ void remote_delete(const CloudConfig &config, const std::string &rel_path)
     }
 }
 
-std::string login(const std::string &server_url,
+std::string fLogin(const std::string &server_url,
                   const std::string &email,
                   const std::string &password)
 {
@@ -565,7 +565,7 @@ std::string login(const std::string &server_url,
 /// file can be caught without abandoning the rest of the pass — one file the
 /// server rejects (an oversized notebook, say) used to abort the whole sync
 /// and, through connect(), roll the connection back entirely.
-void sync_one_path(const CloudConfig &config,
+void fSyncOnePath(const CloudConfig &config,
                    const std::string &rel_path,
                    SyncState &state,
                    const std::map<std::string, std::string> &remote_hashes,
@@ -583,8 +583,8 @@ void sync_one_path(const CloudConfig &config,
         if (local_gone && remote_hashes.count(rel_path) == 0)
         {
             state.conflicts.erase(rel_path);
-            remove_remote_snapshot(config.root, rel_path);
-            remove_base(config.root, rel_path);
+            fRemoveRemoteSnapshot(config.root, rel_path);
+            fRemoveBase(config.root, rel_path);
             state.files.erase(rel_path);
         }
         // Otherwise leave conflicted files alone until the user resolves.
@@ -595,11 +595,11 @@ void sync_one_path(const CloudConfig &config,
     std::optional<std::string> local_content;
     if (fs::is_regular_file(local_full, ec) && !ec)
     {
-        local_content = util::read_file(local_full);
+        local_content = util::fReadFile(local_full);
     }
 
     const std::optional<std::string> local_hash =
-        local_content ? std::optional(util::sha256_hex(*local_content))
+        local_content ? std::optional(util::fSha256Hex(*local_content))
                       : std::nullopt;
 
     const auto remote_it = remote_hashes.find(rel_path);
@@ -637,23 +637,23 @@ void sync_one_path(const CloudConfig &config,
             {
                 const auto tombstone = tombstones.find(rel_path);
                 if (tombstone != tombstones.end() &&
-                    tombstone->second > local_mtime_ms(local_full))
+                    tombstone->second > fLocalMtimeMs(local_full))
                 {
                     fs::remove(local_full, ec);
-                    remove_base(config.root, rel_path);
+                    fRemoveBase(config.root, rel_path);
                     state.files.erase(rel_path);
                     return;
                 }
             }
 
-            remote_write(config, rel_path, *local_content);
-            write_base(config.root, rel_path, *local_content);
+            fRemoteWrite(config, rel_path, *local_content);
+            fWriteBase(config.root, rel_path, *local_content);
             state.files[rel_path] = *local_hash;
         }
         else if (base_hash)
         {
-            remote_delete(config, rel_path);
-            remove_base(config.root, rel_path);
+            fRemoteDelete(config, rel_path);
+            fRemoveBase(config.root, rel_path);
             state.files.erase(rel_path);
         }
         return;
@@ -663,15 +663,15 @@ void sync_one_path(const CloudConfig &config,
     {
         if (remote_hash)
         {
-            const std::string content = remote_read(config, rel_path);
-            util::write_file_atomic(local_full, content);
-            write_base(config.root, rel_path, content);
+            const std::string content = fRemoteRead(config, rel_path);
+            util::fWriteFileAtomic(local_full, content);
+            fWriteBase(config.root, rel_path, content);
             state.files[rel_path] = *remote_hash;
         }
         else if (base_hash)
         {
             fs::remove(local_full, ec);
-            remove_base(config.root, rel_path);
+            fRemoveBase(config.root, rel_path);
             state.files.erase(rel_path);
         }
         return;
@@ -680,7 +680,7 @@ void sync_one_path(const CloudConfig &config,
     // Both sides changed.
     if (!local_content && !remote_hash)
     {
-        remove_base(config.root, rel_path);
+        fRemoveBase(config.root, rel_path);
         state.files.erase(rel_path);
         return;
     }
@@ -689,40 +689,40 @@ void sync_one_path(const CloudConfig &config,
     {
         if (base_hash)
         {
-            const std::string remote_text = remote_read(config, rel_path);
+            const std::string remote_text = fRemoteRead(config, rel_path);
             const std::string base_text =
-                read_base(config.root, rel_path).value_or("");
+                fReadBase(config.root, rel_path).value_or("");
 
-            const bool mergeable = !looks_binary(base_text) &&
-                                   !looks_binary(*local_content) &&
-                                   !looks_binary(remote_text);
+            const bool mergeable = !fLooksBinary(base_text) &&
+                                   !fLooksBinary(*local_content) &&
+                                   !fLooksBinary(remote_text);
             const auto merge =
-                mergeable ? diff::three_way_merge(base_text, *local_content,
+                mergeable ? diff::fThreeWayMerge(base_text, *local_content,
                                                   remote_text)
                           : diff::MergeResult{};
             if (mergeable && merge.clean)
             {
-                util::write_file_atomic(local_full, merge.text);
-                remote_write(config, rel_path, merge.text);
-                write_base(config.root, rel_path, merge.text);
-                state.files[rel_path] = util::sha256_hex(merge.text);
+                util::fWriteFileAtomic(local_full, merge.text);
+                fRemoteWrite(config, rel_path, merge.text);
+                fWriteBase(config.root, rel_path, merge.text);
+                state.files[rel_path] = util::fSha256Hex(merge.text);
             }
             else
             {
-                write_remote_snapshot(config.root, rel_path, remote_text);
+                fWriteRemoteSnapshot(config.root, rel_path, remote_text);
                 state.conflicts[rel_path] =
                     mergeable ? "edit-edit" : "edit-edit (binary)";
             }
         }
         else if (local_hash == remote_hash)
         {
-            write_base(config.root, rel_path, *local_content);
+            fWriteBase(config.root, rel_path, *local_content);
             state.files[rel_path] = *local_hash;
         }
         else
         {
-            const std::string remote_text = remote_read(config, rel_path);
-            write_remote_snapshot(config.root, rel_path, remote_text);
+            const std::string remote_text = fRemoteRead(config, rel_path);
+            fWriteRemoteSnapshot(config.root, rel_path, remote_text);
             state.conflicts[rel_path] = "created-both";
         }
         return;
@@ -734,21 +734,21 @@ void sync_one_path(const CloudConfig &config,
     {
         try
         {
-            remote_text = remote_read(config, rel_path);
+            remote_text = fRemoteRead(config, rel_path);
         }
         catch (const std::exception &)
         {
             remote_text.clear();
         }
     }
-    write_remote_snapshot(config.root, rel_path, remote_text);
+    fWriteRemoteSnapshot(config.root, rel_path, remote_text);
     state.conflicts[rel_path] = "edit-delete";
 }
 
 /// Runs one reconciliation pass. Returns the files that could not be synced;
 /// an empty result means everything is in step. Throws only when the pass
 /// could not run at all (server unreachable, credentials rejected).
-bool remote_has_children(const std::map<std::string, std::string> &remote_hashes,
+bool fRemoteHasChildren(const std::map<std::string, std::string> &remote_hashes,
                          const std::string &rel_path)
 {
     const std::string prefix = rel_path + "/";
@@ -765,13 +765,13 @@ bool remote_has_children(const std::map<std::string, std::string> &remote_hashes
 /// A folder only reaches the server as a side effect of uploading a file into
 /// it, so a folder that is empty -- or holds nothing but other empty folders
 /// -- stays invisible there no matter how many times sync runs. This walks the
-/// folders themselves, applying the same three-way reasoning sync_one_path
+/// folders themselves, applying the same three-way reasoning fSyncOnePath
 /// applies to files: state.folders is the base that separates "created here"
 /// from "deleted there".
 ///
 /// Runs after the file pass, so a folder this sync emptied can be dropped, and
 /// so a folder is only judged once the files inside it have settled.
-void sync_folders(const CloudConfig &config,
+void fSyncFolders(const CloudConfig &config,
                   SyncState &state,
                   const std::set<std::string> &local_dirs,
                   const std::set<std::string> &remote_dirs,
@@ -785,12 +785,12 @@ void sync_folders(const CloudConfig &config,
     // Deepest first: a parent is only reconsidered once its children have
     // been, so removing one never strands the folders inside it.
     std::vector<std::string> ordered(every.begin(), every.end());
-    const auto depth = [](const std::string &path) {
+    const auto fDepth = [](const std::string &path) {
         return std::count(path.begin(), path.end(), '/');
     };
     std::sort(ordered.begin(), ordered.end(),
-              [&depth](const std::string &a, const std::string &b) {
-                  return depth(a) != depth(b) ? depth(a) > depth(b) : a < b;
+              [&fDepth](const std::string &a, const std::string &b) {
+                  return fDepth(a) != fDepth(b) ? fDepth(a) > fDepth(b) : a < b;
               });
 
     std::set<std::string> agreed;
@@ -807,7 +807,7 @@ void sync_folders(const CloudConfig &config,
             }
             else if (in_local && !in_base)
             {
-                remote_create_folder(config, rel_path);
+                fRemoteCreateFolder(config, rel_path);
                 agreed.insert(rel_path);
             }
             else if (in_remote && !in_base)
@@ -824,13 +824,13 @@ void sync_folders(const CloudConfig &config,
             {
                 // Gone locally. Only drop it remotely once nothing is left
                 // inside, so a partly-synced tree cannot lose files.
-                if (remote_has_children(remote_hashes, rel_path))
+                if (fRemoteHasChildren(remote_hashes, rel_path))
                 {
                     agreed.insert(rel_path);
                 }
                 else
                 {
-                    remote_delete_folder(config, rel_path);
+                    fRemoteDeleteFolder(config, rel_path);
                 }
             }
             else if (in_local)
@@ -854,19 +854,19 @@ void sync_folders(const CloudConfig &config,
     state.folders = agreed;
 }
 
-std::vector<std::string> sync_once(const CloudConfig &config)
+std::vector<std::string> fSyncOnce(const CloudConfig &config)
 {
-    std::lock_guard<std::mutex> guard(sync_lock());
-    SyncState state = load_state(config.root);
+    std::lock_guard<std::mutex> guard(fSyncLock());
+    SyncState state = fLoadState(config.root);
     std::vector<std::string> failures;
 
     std::set<std::string> remote_dirs;
-    const auto remote_hashes = remote_list(config, &remote_dirs);
+    const auto remote_hashes = fRemoteList(config, &remote_dirs);
 
     std::map<std::string, uint64_t> tombstones;
     try
     {
-        tombstones = remote_tombstones(config);
+        tombstones = fRemoteTombstones(config);
     }
     catch (const std::exception &)
     {
@@ -875,7 +875,7 @@ std::vector<std::string> sync_once(const CloudConfig &config)
     }
 
     std::set<std::string> local_dirs;
-    std::set<std::string> all_paths = local_file_paths(config.root, &local_dirs);
+    std::set<std::string> all_paths = fLocalFilePaths(config.root, &local_dirs);
     for (const auto &[rel, _] : remote_hashes)
     {
         all_paths.insert(rel);
@@ -888,7 +888,7 @@ std::vector<std::string> sync_once(const CloudConfig &config)
     // acting on them, so nothing is uploaded and nothing is deleted locally.
     for (auto it = all_paths.begin(); it != all_paths.end();)
     {
-        if (excluded_from_sync(*it))
+        if (fExcludedFromSync(*it))
         {
             state.files.erase(*it);
             it = all_paths.erase(it);
@@ -903,7 +903,7 @@ std::vector<std::string> sync_once(const CloudConfig &config)
     {
         try
         {
-            sync_one_path(config, rel_path, state, remote_hashes, tombstones);
+            fSyncOnePath(config, rel_path, state, remote_hashes, tombstones);
         }
         catch (const std::exception &error)
         {
@@ -921,15 +921,15 @@ std::vector<std::string> sync_once(const CloudConfig &config)
         throw std::runtime_error(failures.front());
     }
 
-    sync_folders(config, state, local_dirs, remote_dirs, remote_hashes,
+    fSyncFolders(config, state, local_dirs, remote_dirs, remote_hashes,
                  failures);
 
-    state.last_synced_at = static_cast<uint64_t>(util::now_ms());
-    save_state(config.root, state);
+    state.last_synced_at = static_cast<uint64_t>(util::fNowMs());
+    fSaveState(config.root, state);
     return failures;
 }
 
-std::string insert_suffix(const std::string &rel_path,
+std::string fInsertSuffix(const std::string &rel_path,
                           const std::string &suffix)
 {
     const size_t dot = rel_path.rfind('.');
@@ -940,12 +940,12 @@ std::string insert_suffix(const std::string &rel_path,
     return rel_path.substr(0, dot) + suffix + "." + rel_path.substr(dot + 1);
 }
 
-void resolve_conflict_impl(const CloudConfig &config,
+void fResolveConflictImpl(const CloudConfig &config,
                            const std::string &rel_path,
                            const std::string &choice)
 {
-    std::lock_guard<std::mutex> guard(sync_lock());
-    SyncState state = load_state(config.root);
+    std::lock_guard<std::mutex> guard(fSyncLock());
+    SyncState state = fLoadState(config.root);
     if (state.conflicts.count(rel_path) == 0)
     {
         throw std::runtime_error("no such conflict");
@@ -953,8 +953,8 @@ void resolve_conflict_impl(const CloudConfig &config,
 
     const fs::path local_full = fs::path(config.root) / rel_path;
     const std::string remote_text =
-        read_remote_snapshot(config.root, rel_path).value_or("");
-    const std::string local_text = util::read_file(local_full).value_or("");
+        fReadRemoteSnapshot(config.root, rel_path).value_or("");
+    const std::string local_text = util::fReadFile(local_full).value_or("");
 
     std::error_code ec;
     if (choice == "local")
@@ -963,35 +963,35 @@ void resolve_conflict_impl(const CloudConfig &config,
         // too — pushing local_text would upload an empty file.
         if (!fs::is_regular_file(local_full, ec) || ec)
         {
-            remote_delete(config, rel_path);
-            remove_base(config.root, rel_path);
+            fRemoteDelete(config, rel_path);
+            fRemoveBase(config.root, rel_path);
             state.files.erase(rel_path);
         }
         else
         {
-            remote_write(config, rel_path, local_text);
-            write_base(config.root, rel_path, local_text);
-            state.files[rel_path] = util::sha256_hex(local_text);
+            fRemoteWrite(config, rel_path, local_text);
+            fWriteBase(config.root, rel_path, local_text);
+            state.files[rel_path] = util::fSha256Hex(local_text);
         }
     }
     else if (choice == "remote")
     {
-        util::write_file_atomic(local_full, remote_text);
-        write_base(config.root, rel_path, remote_text);
-        state.files[rel_path] = util::sha256_hex(remote_text);
+        util::fWriteFileAtomic(local_full, remote_text);
+        fWriteBase(config.root, rel_path, remote_text);
+        state.files[rel_path] = util::fSha256Hex(remote_text);
     }
     else if (choice == "both")
     {
         const std::string copy_rel =
-            insert_suffix(rel_path, " (remote copy)");
-        util::write_file_atomic(fs::path(config.root) / copy_rel, remote_text);
-        remote_write(config, copy_rel, remote_text);
-        write_base(config.root, copy_rel, remote_text);
-        state.files[copy_rel] = util::sha256_hex(remote_text);
+            fInsertSuffix(rel_path, " (remote copy)");
+        util::fWriteFileAtomic(fs::path(config.root) / copy_rel, remote_text);
+        fRemoteWrite(config, copy_rel, remote_text);
+        fWriteBase(config.root, copy_rel, remote_text);
+        state.files[copy_rel] = util::fSha256Hex(remote_text);
 
-        remote_write(config, rel_path, local_text);
-        write_base(config.root, rel_path, local_text);
-        state.files[rel_path] = util::sha256_hex(local_text);
+        fRemoteWrite(config, rel_path, local_text);
+        fWriteBase(config.root, rel_path, local_text);
+        state.files[rel_path] = util::fSha256Hex(local_text);
     }
     else
     {
@@ -999,8 +999,8 @@ void resolve_conflict_impl(const CloudConfig &config,
     }
 
     state.conflicts.erase(rel_path);
-    remove_remote_snapshot(config.root, rel_path);
-    save_state(config.root, state);
+    fRemoveRemoteSnapshot(config.root, rel_path);
+    fSaveState(config.root, state);
 }
 
 // ── Background loop ──
@@ -1009,7 +1009,7 @@ std::mutex g_failures_mutex;
 std::vector<std::string> g_last_failures;
 
 /// Remembers what the most recent pass could not sync.
-void remember_failures(const std::vector<std::string> &failures)
+void fRememberFailures(const std::vector<std::string> &failures)
 {
     std::lock_guard<std::mutex> lock(g_failures_mutex);
     g_last_failures = failures;
@@ -1021,7 +1021,7 @@ std::thread g_loop_thread;
 bool g_loop_running = false;
 bool g_loop_stop = false;
 
-void start_background_loop()
+void fStartBackgroundLoop()
 {
     std::lock_guard<std::mutex> lock(g_loop_mutex);
     if (g_loop_running)
@@ -1042,7 +1042,7 @@ void start_background_loop()
     {
         ~LoopGuard()
         {
-            shutdown();
+            fShutdown();
         }
     } guard;
 
@@ -1052,20 +1052,20 @@ void start_background_loop()
             {
                 std::unique_lock<std::mutex> lock(g_loop_mutex);
                 if (g_loop_cv.wait_for(
-                        lock, kPollInterval, [] { return g_loop_stop; }))
+                        lock, cPollInterval, [] { return g_loop_stop; }))
                 {
                     break;
                 }
             }
 
-            const auto config = load_config();
+            const auto config = fLoadConfig();
             if (!config)
             {
                 break;  // disconnected
             }
             try
             {
-                remember_failures(sync_once(*config));
+                fRememberFailures(fSyncOnce(*config));
             }
             catch (const std::exception &error)
             {
@@ -1081,9 +1081,9 @@ void start_background_loop()
 /// The status object the frontend renders. `syncErrors` is an addition the
 /// shared frontend ignores, but it makes the last pass's failures visible to
 /// anything that does look — the log, the probe, a future UI.
-json status_from_config(const CloudConfig &config)
+json fStatusFromConfig(const CloudConfig &config)
 {
-    const SyncState state = load_state(config.root);
+    const SyncState state = fLoadState(config.root);
     json errors = json::array();
     {
         std::lock_guard<std::mutex> lock(g_failures_mutex);
@@ -1100,7 +1100,7 @@ json status_from_config(const CloudConfig &config)
                 {"syncErrors", errors}};
 }
 
-json disconnected_status()
+json fDisconnectedStatus()
 {
     return json{{"connected", false},
                 {"serverUrl", ""},
@@ -1109,7 +1109,7 @@ json disconnected_status()
                 {"conflictCount", 0}};
 }
 
-std::string trim_trailing_slashes(std::string value)
+std::string fTrimTrailingSlashes(std::string value)
 {
     while (!value.empty() && value.back() == '/')
     {
@@ -1120,9 +1120,9 @@ std::string trim_trailing_slashes(std::string value)
 
 }  // namespace
 
-void nudge_sync()
+void fNudgeSync()
 {
-    const auto config = load_config();
+    const auto config = fLoadConfig();
     if (!config)
     {
         return;
@@ -1130,7 +1130,7 @@ void nudge_sync()
     std::thread([config = *config] {
         try
         {
-            remember_failures(sync_once(config));
+            fRememberFailures(fSyncOnce(config));
         }
         catch (const std::exception &error)
         {
@@ -1139,15 +1139,15 @@ void nudge_sync()
     }).detach();
 }
 
-void resume_on_startup()
+void fResumeOnStartup()
 {
-    if (load_config())
+    if (fLoadConfig())
     {
-        start_background_loop();
+        fStartBackgroundLoop();
     }
 }
 
-void shutdown()
+void fShutdown()
 {
     {
         std::lock_guard<std::mutex> lock(g_loop_mutex);
@@ -1160,28 +1160,28 @@ void shutdown()
     }
 }
 
-json connect(const std::string &server_url,
+json fConnect(const std::string &server_url,
              const std::string &email,
              const std::string &password,
              const std::string &root)
 {
     CloudConfig config;
-    config.server_url = trim_trailing_slashes(server_url);
+    config.server_url = fTrimTrailingSlashes(server_url);
     config.email = email;
     // Only a folder the user actually picked in the OS dialog may become the
     // sync root the engine writes into.
-    paths::check_root(root);
+    paths::fCheckRoot(root);
     config.root = root;
-    config.api_token = login(config.server_url, email, password);
+    config.api_token = fLogin(config.server_url, email, password);
 
-    save_config(config);
+    fSaveConfig(config);
 
     // Make connect atomic: if the first sync fails (server unreachable, token
     // rejected, ...), roll the config back so the app doesn't sit in a
     // half-connected state with no background loop running.
     try
     {
-        const auto failures = sync_once(config);
+        const auto failures = fSyncOnce(config);
         for (const auto &failure : failures)
         {
             // Connected, but this file did not go up. Rolling the whole
@@ -1189,38 +1189,38 @@ json connect(const std::string &server_url,
             // sync at all and no way to tell why.
             spdlog::warn("connected, but could not sync {}", failure);
         }
-        remember_failures(failures);
+        fRememberFailures(failures);
     }
     catch (...)
     {
-        clear_config();
+        fClearConfig();
         throw;
     }
 
-    start_background_loop();
-    return status_from_config(config);
+    fStartBackgroundLoop();
+    return fStatusFromConfig(config);
 }
 
-void disconnect()
+void fDisconnect()
 {
-    clear_config();
+    fClearConfig();
 }
 
-json status()
+json fStatus()
 {
-    const auto config = load_config();
-    return config ? status_from_config(*config) : disconnected_status();
+    const auto config = fLoadConfig();
+    return config ? fStatusFromConfig(*config) : fDisconnectedStatus();
 }
 
-json sync_now()
+json fSyncNow()
 {
-    const auto config = load_config();
+    const auto config = fLoadConfig();
     if (!config)
     {
         throw std::runtime_error("not connected");
     }
-    const auto failures = sync_once(*config);
-    remember_failures(failures);
+    const auto failures = fSyncOnce(*config);
+    fRememberFailures(failures);
     if (!failures.empty())
     {
         std::string message =
@@ -1242,18 +1242,18 @@ json sync_now()
             "\n\nA 413 means the file is larger than the server accepts.";
         throw std::runtime_error(message);
     }
-    return status_from_config(*config);
+    return fStatusFromConfig(*config);
 }
 
-json list_conflicts()
+json fListConflicts()
 {
-    const auto config = load_config();
+    const auto config = fLoadConfig();
     if (!config)
     {
         throw std::runtime_error("not connected");
     }
 
-    const SyncState state = load_state(config->root);
+    const SyncState state = fLoadState(config->root);
     json out = json::array();
     for (const auto &[rel_path, reason] : state.conflicts)
     {
@@ -1261,25 +1261,25 @@ json list_conflicts()
         out.push_back(
             {{"relPath", rel_path},
              {"localContent",
-              util::read_file(fs::path(config->root) / rel_path).value_or("")},
+              util::fReadFile(fs::path(config->root) / rel_path).value_or("")},
              {"remoteContent",
-              read_remote_snapshot(config->root, rel_path).value_or("")}});
+              fReadRemoteSnapshot(config->root, rel_path).value_or("")}});
     }
     return out;
 }
 
-void resolve_conflict(const std::string &rel_path, const std::string &choice)
+void fResolveConflict(const std::string &rel_path, const std::string &choice)
 {
-    if (!valid_remote_rel_path(rel_path))
+    if (!fValidRemoteRelPath(rel_path))
     {
         throw std::runtime_error("invalid path");
     }
-    const auto config = load_config();
+    const auto config = fLoadConfig();
     if (!config)
     {
         throw std::runtime_error("not connected");
     }
-    resolve_conflict_impl(*config, rel_path, choice);
+    fResolveConflictImpl(*config, rel_path, choice);
 }
 
 // ── Custom fonts (account-level; see the server's fonts.cpp) ──
@@ -1289,16 +1289,16 @@ void resolve_conflict(const std::string &rel_path, const std::string &choice)
 // the sync engine uses and hands the JS side a base64 data: URI, which needs
 // no further request at all once injected into a @font-face rule.
 
-json list_fonts()
+json fListFonts()
 {
-    const auto config = load_config();
+    const auto config = fLoadConfig();
     if (!config)
     {
         return json::array();  // not connected: no account, no fonts
     }
 
     const auto response = cpr::Get(cpr::Url{config->server_url + "/api/fonts"},
-                                   auth_header(*config),
+                                   fAuthHeader(*config),
                                    cpr::Timeout{30000});
     if (response.status_code < 200 || response.status_code >= 300)
     {
@@ -1314,7 +1314,7 @@ json list_fonts()
     return parsed;
 }
 
-std::string font_data_url(const std::string &font_id)
+std::string fFontDataUrl(const std::string &font_id)
 {
     // The id becomes a URL path segment; keep it to the UUID alphabet so a
     // hostile value can't rewrite the request path.
@@ -1331,7 +1331,7 @@ std::string font_data_url(const std::string &font_id)
         }
     }
 
-    const auto config = load_config();
+    const auto config = fLoadConfig();
     if (!config)
     {
         throw std::runtime_error("not connected");
@@ -1339,7 +1339,7 @@ std::string font_data_url(const std::string &font_id)
 
     const auto response =
         cpr::Get(cpr::Url{config->server_url + "/api/fonts/" + font_id},
-                 auth_header(*config),
+                 fAuthHeader(*config),
                  cpr::Timeout{60000});
     if (response.status_code < 200 || response.status_code >= 300)
     {
@@ -1364,7 +1364,7 @@ std::string font_data_url(const std::string &font_id)
     }
 
     return "data:" + content_type + ";base64," +
-           util::base64_encode(response.text);
+           util::fBase64Encode(response.text);
 }
 
 }  // namespace lectern::cloud

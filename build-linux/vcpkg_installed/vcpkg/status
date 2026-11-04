@@ -1,0 +1,293 @@
+Package: vcpkg-cmake-config
+Version: 2026-07-21
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 20241176d5ae7b3396ce717eaf390547bcdaf823a1a52fc2063a296d6260d037
+Status: install ok installed
+
+Package: vcpkg-cmake
+Version: 2025-08-07
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 4d04c2809fed8d896fe566d4f0364796232a7a41d87adb04be56c1d438779142
+Status: install ok installed
+
+Package: catch2
+Version: 3.16.1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 6f2eb6a4f78df0cb184efd1a27c355f1e81c588fafc36ed179f01abf3ff98b7e
+Description: A modern, C++-native, test framework for unit-tests, TDD and BDD.
+Status: install ok installed
+
+Package: vcpkg-cmake-get-vars
+Version: 2025-05-29
+Depends: vcpkg-cmake
+Architecture: x64-linux
+Multi-Arch: same
+Abi: dce03e8abacb0de169ce6fc8283e0e93508791772bb0cdaa2e855b22fa11d1f7
+Status: install ok installed
+
+Package: openssl
+Version: 3.6.5
+Port-Version: 2
+Depends: vcpkg-cmake, vcpkg-cmake-config, vcpkg-cmake-get-vars
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 3538ac1fd229407c83e24b8c442e92627ddfeb80b072435a6f5df4ff96191ac9
+Description: OpenSSL is an open source project that provides a robust, commercial-grade, and full-featured toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols. It is also a general-purpose cryptography library.
+Status: install ok installed
+
+Package: zlib
+Version: 1.3.2
+Port-Version: 2
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 3b77e74f5a6d2c7355d1ede527dfb8e68c3909a3b4378205aa20329fb719625d
+Description: A compression library
+Status: install ok installed
+
+Package: curl
+Version: 8.23.0
+Depends: vcpkg-cmake, vcpkg-cmake-config, zlib
+Architecture: x64-linux
+Multi-Arch: same
+Abi: b4027a9c0aa5587032f159d6fd8c5da1c119d27bf41bf707ca2325a751c8a2fd
+Description: A library for transferring data with URLs
+Default-Features: ssl
+Status: install ok installed
+
+Package: curl
+Feature: openssl
+Depends: openssl
+Architecture: x64-linux
+Multi-Arch: same
+Description: TLS support (OpenSSL)
+Status: install ok installed
+
+Package: curl
+Feature: ssl
+Architecture: x64-linux
+Multi-Arch: same
+Description: Default SSL / TLS implementation.
+Status: install ok installed
+
+Package: cpr
+Version: 1.15.1
+Depends: curl, vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 0ca8e49e91219e702d92ab1b0cd28300af3aeda2e97437b41d15556234a68a8f
+Description: C++ Requests is a simple wrapper around libcurl inspired by the excellent Python Requests project.
+Default-Features: ssl
+Status: install ok installed
+
+Package: cpr
+Feature: ssl
+Depends: curl, openssl
+Architecture: x64-linux
+Multi-Arch: same
+Description: Enable SSL support
+Status: install ok installed
+
+Package: vcpkg-make
+Version: 2026-07-09
+Port-Version: 2
+Depends: vcpkg-cmake-get-vars
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 0fbcaba8b49c6d203c3dc3f3aa5bb3083ce77134c9cba0a6dd9de70a35a9b19f
+Status: install ok installed
+
+Package: libsodium
+Version: 1.0.22
+Port-Version: 1
+Depends: vcpkg-make
+Architecture: x64-linux
+Multi-Arch: same
+Abi: eb1ccff860ea6100a087c4fe8ac0237c787b81561dc9896ac7e02aad2e9d2445
+Description: A modern and easy-to-use crypto library
+Status: install ok installed
+
+Package: nlohmann-json
+Version: 3.12.0
+Port-Version: 2
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 29ae822b76851a97b95e9f47e25c75315cf433e42f1429d76a2dc97f34c3d83b
+Description: JSON for Modern C++
+Status: install ok installed
+
+Package: glaze
+Version: 9.0.0
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: fc00126a41d173a20143c38ae271fe14e1d8c15a84e2e301a3d1d53697ac70d7
+Description: One of the fastest JSON libraries in the world. Glaze reads and writes from C++ memory, simplifying interfaces and offering incredible performance.
+Status: install ok installed
+
+Package: fmt
+Version: 12.2.0
+Port-Version: 1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 0d094f8461eb605cdf5e80a272310a73d2e3283457944ad6fea31541fe34d9a4
+Description: {fmt} is an open-source formatting library providing a fast and safe alternative to C stdio and C++ iostreams.
+Status: install ok installed
+
+Package: curve-rebind
+Version: 5.3.1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 643d2e9057a2c393de1daf61d23388f761b8effd7d9228fd3348d4c91589f2e3
+Description: A C++23 reflection library for aggregates and enums
+Status: install ok installed
+
+Package: curve-poolparty
+Version: 3.0.1
+Depends: vcpkg-cmake
+Architecture: x64-linux
+Multi-Arch: same
+Abi: a2dca7b9d5caff1f486b2006b624fe861597b8d0f5cf999f1a95f5394ba81724
+Description: A C++20 thread-pool library
+Status: install ok installed
+
+Package: curve-lockpp
+Version: 3.2.0
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 68fcf73c475b40e166b68f21b68445cd78755e82412773cd3decf69fb171ac9e
+Description: A C++17 Library that provides mutex protected objects
+Status: install ok installed
+
+Package: curve-flagpp
+Version: 3.1.0
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: a214b5fa4464c39d58886d7c425e37e2c19fab2056822e94206c071a4157b11c
+Description: A C++20 library that provides (opt-in) bit-wise operations for arbitrary `enum class`es
+Status: install ok installed
+
+Package: curve-ereignis
+Version: 4.3
+Depends: vcpkg-cmake
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 6abb837573377b3a013df0eb413c61c91733d723a84afa3fe57732c1cb278e3a
+Description: A thread-safe C++17 Event Library
+Status: install ok installed
+
+Package: curve-eraser
+Version: 2.3.0
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: eecae7f968468adf3b2147916964e380b1e323b33450fbf48a829e639d13e4d3
+Description: A C++20 type-erasure library that supports user defined interfaces
+Status: install ok installed
+
+Package: vcpkg-boost
+Version: 2026-08-21
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 984a826fc89de54c7acbfade0ce822da89d7b73d84caf23745da05140c03b260
+Status: install ok installed
+
+Package: boost-uninstall
+Version: 1.92.0
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 2d1b16b240cd726d56f2cb6bb55362953558ec7a3dd2f82301e3b9ea518af382
+Description: Internal vcpkg port used to uninstall Boost
+Status: install ok installed
+
+Package: boost-cmake
+Version: 1.92.0
+Depends: boost-uninstall, vcpkg-boost
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 63bddebc70ef9decdfa2ea9c86d289e3708952320f116149930fcbb209a4f89b
+Description: Boost cmake module
+Status: install ok installed
+
+Package: boost-headers
+Version: 1.92.0
+Depends: boost-cmake
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 71db14917b26cabcc6ab25399c1579a220c3be4b2239cf9054bc1cc0a2f9647f
+Description: Boost headers module
+Status: install ok installed
+
+Package: boost-config
+Version: 1.92.0
+Depends: boost-cmake, boost-headers
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 7d9805ca176f8635c33ffdd9ecb965aec2ab2c4bf41fc26161e9f35c33f259b8
+Description: Boost config module
+Status: install ok installed
+
+Package: boost-preprocessor
+Version: 1.92.0
+Depends: boost-cmake, boost-config, boost-headers
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 61e2fec1ba09e42bb85bd1949eda66d2e97671f54fd67c468b6453f4a19b7b6c
+Description: Boost preprocessor module
+Status: install ok installed
+
+Package: boost-callable-traits
+Version: 1.92.0
+Depends: boost-cmake, boost-config, boost-headers
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 411e456c2ffba54cb9c930e05fe1fb1ed2a737de03300808a3b8af2ba88411ba
+Description: Boost callable_traits module
+Status: install ok installed
+
+Package: saucer
+Version: 6.0.1
+Port-Version: 8
+Depends: boost-callable-traits, boost-preprocessor, curve-eraser, curve-ereignis, curve-flagpp, curve-lockpp, curve-poolparty, curve-rebind, fmt, glaze, vcpkg-cmake
+Architecture: x64-linux
+Multi-Arch: same
+Abi: a5fed9c068de4bf2b77aef8d7121a59a3e301955e8dc3ae50806cd52a3e8d21a
+Description: Next-gen desktop apps with web-frontend in C++
+Status: install ok installed
+
+Package: spdlog
+Version: 1.17.0
+Port-Version: 1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 18b38de25ef51cf7487d3bb920d0442ab736461e148742e00df2f6033d49271a
+Description: Very fast, header-only/compiled, C++ logging library.
+Default-Features: fmt, tz-offset
+Status: install ok installed
+
+Package: spdlog
+Feature: fmt
+Depends: fmt
+Architecture: x64-linux
+Multi-Arch: same
+Description: Use fmt library
+Status: install ok installed
+
+Package: spdlog
+Feature: tz-offset
+Architecture: x64-linux
+Multi-Arch: same
+Description: Omit %z timezone offset (use on platforms without tm_gmtoff)
+Status: install ok installed
+

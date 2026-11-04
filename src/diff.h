@@ -18,7 +18,7 @@ namespace lectern::diff {
 /// Splits keeping the line terminator attached, so re-joining is exact and a
 /// file with no trailing newline round-trips unchanged (Rust's
 /// `split_inclusive('\n')`). An empty input yields no lines at all.
-std::vector<std::string_view> split_lines(std::string_view text);
+std::vector<std::string_view> fSplitLines(std::string_view text);
 
 /// A replacement: base lines in `[start, end)` become `lines`.
 struct Hunk
@@ -29,7 +29,7 @@ struct Hunk
 };
 
 /// Every non-equal region between `base` and `other`.
-std::vector<Hunk> hunks_from_diff(const std::vector<std::string_view> &base,
+std::vector<Hunk> fHunksFromDiff(const std::vector<std::string_view> &base,
                                   const std::vector<std::string_view> &other);
 
 struct MergeResult
@@ -42,7 +42,7 @@ struct MergeResult
 /// combine automatically; hunks that overlap are only auto-resolved if both
 /// sides made the exact same edit, otherwise this reports a conflict rather
 /// than guessing.
-MergeResult three_way_merge(std::string_view base,
+MergeResult fThreeWayMerge(std::string_view base,
                             std::string_view local,
                             std::string_view remote);
 

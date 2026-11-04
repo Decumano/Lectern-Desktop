@@ -1,0 +1,19 @@
+{
+  "packages": [
+{
+  "SPDXID" : "SPDXRef-resource-0",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "e27a0afe02a8a1ff2fdad5d5cda6d4d422c49f4dc76067cc7551979b5f48f8da53950c89442394d4f2ccfe0f87ecb71e375b01bdac20f80d5dab21cc4451b25c"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/libcpr/cpr@1.15.1",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "libcpr/cpr"
+}
+  ]
+}

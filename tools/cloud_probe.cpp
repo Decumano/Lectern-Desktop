@@ -29,14 +29,14 @@ using namespace lectern;
 
 namespace {
 
-void step(const std::string &what)
+void fStep(const std::string &what)
 {
     std::cout << "\n== " << what << "\n";
 }
 
 /// Prints enough of a response to tell a wrong URL from a wrong password from
 /// a server that isn't there at all.
-void report(const cpr::Response &response)
+void fReport(const cpr::Response &response)
 {
     std::cout << "   status : " << response.status_code << "\n";
     if (response.error.code != cpr::ErrorCode::OK)
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     // point is what tells you where it got to.
     std::cout << std::unitbuf;
 
-    util::init_crypto();
+    util::fInitCrypto();
 
     std::string server = argv[1];
     while (!server.empty() && server.back() == '/')
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     fs::path root = argc > 4
                         ? fs::path(argv[4])
                         : fs::temp_directory_path(ec) /
-                              ("lectern-probe-" + util::random_hex(6));
+                              ("lectern-probe-" + util::fRandomHex(6));
     fs::create_directories(root, ec);
 
     std::cout << "server      : " << server << "\n"
@@ -86,10 +86,10 @@ int main(int argc, char *argv[])
               << "work folder : " << root.string() << "\n";
 
     // 1. Is anything listening, and is it the frontend or the API?
-    step("GET / (is the server reachable?)");
+    fStep("GET / (is the server reachable?)");
     const auto root_response =
         cpr::Get(cpr::Url{server + "/"}, cpr::Timeout{10000});
-    report(root_response);
+    fReport(root_response);
     if (root_response.error.code != cpr::ErrorCode::OK)
     {
         std::cout << "\nThe server could not be reached at all. Check the URL, "
@@ -99,13 +99,13 @@ int main(int argc, char *argv[])
     }
 
     // 2. The call cloud::connect makes first.
-    step("POST /api/auth/login");
+    fStep("POST /api/auth/login");
     const auto login = cpr::Post(
         cpr::Url{server + "/api/auth/login"},
         cpr::Header{{"Content-Type", "application/json"}},
         cpr::Body{json{{"email", email}, {"password", password}}.dump()},
         cpr::Timeout{30000});
-    report(login);
+    fReport(login);
 
     if (login.status_code < 200 || login.status_code >= 300)
     {
@@ -129,28 +129,28 @@ int main(int argc, char *argv[])
     }
 
     // 3. The first authenticated call the sync engine makes.
-    step("GET /api/workspace (bearer auth)");
+    fStep("GET /api/workspace (bearer auth)");
     const auto list = cpr::Get(cpr::Url{server + "/api/workspace"},
                                cpr::Header{{"Authorization", "Bearer " + token}},
                                cpr::Timeout{30000});
-    report(list);
+    fReport(list);
 
     // 4. Optional endpoint; an older server returns 404 and sync still works.
-    step("GET /api/workspace/deleted (tombstones, optional)");
-    report(cpr::Get(cpr::Url{server + "/api/workspace/deleted"},
+    fStep("GET /api/workspace/deleted (tombstones, optional)");
+    fReport(cpr::Get(cpr::Url{server + "/api/workspace/deleted"},
                     cpr::Header{{"Authorization", "Bearer " + token}},
                     cpr::Timeout{30000}));
 
     // 5. The whole thing, through the real engine.
-    step("cloud::connect (full path, including the first sync)");
+    fStep("cloud::connect (full path, including the first sync)");
     try
     {
-        paths::load_authorized_roots();
-        paths::authorize_root(root);
-        const json status = cloud::connect(server, email, password,
+        paths::fLoadAuthorizedRoots();
+        paths::fAuthorizeRoot(root);
+        const json status = cloud::fConnect(server, email, password,
                                            root.string());
         std::cout << "   " << status.dump(2) << "\n\nConnected.\n";
-        cloud::disconnect();
+        cloud::fDisconnect();
         return 0;
     }
     catch (const std::exception &error)

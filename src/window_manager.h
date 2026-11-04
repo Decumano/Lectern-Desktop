@@ -44,7 +44,7 @@ struct Placement
 /// functions and injected shim as the first one. Set once from main().
 using Configure = std::function<void(View &)>;
 
-void set_configurator(Configure configure);
+void fSetConfigurator(Configure configure);
 
 /// Creates, shows and registers a window at `url`, which must be a path
 /// relative to the frontend root — `index.html?win=w1` and the like. Absolute
@@ -53,15 +53,15 @@ void set_configurator(Configure configure);
 ///
 /// Safe to call from an exposed function; the window is created on the UI
 /// thread regardless of which thread asks.
-View *open(const std::shared_ptr<saucer::application> &app,
+View *fOpen(const std::shared_ptr<saucer::application> &app,
           const std::string &url,
           const std::string &title,
           const Placement &placement);
 
 /// How many windows are currently open.
-size_t count();
+size_t fCount();
 
 /// Closes every window, which lets the application's run loop finish.
-void close_all();
+void fCloseAll();
 
 }  // namespace lectern::windows

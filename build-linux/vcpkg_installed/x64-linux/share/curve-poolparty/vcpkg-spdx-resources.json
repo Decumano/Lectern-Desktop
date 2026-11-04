@@ -1,0 +1,19 @@
+{
+  "packages": [
+{
+  "SPDXID" : "SPDXRef-resource-0",
+  "checksums" : 
+  [
+    {
+      "algorithm" : "SHA512",
+      "checksumValue" : "ae542b2be6134cf58926e4ede8840bff560c427d45c07fadb7dc465112712df80a89569f5ebd4d57c6045cdd74380a65ed296f32c8904531327207aa7281c1b6"
+    }
+  ],
+  "copyrightText" : "NOASSERTION",
+  "downloadLocation" : "git+https://github.com/Curve/poolparty@v3.0.1",
+  "licenseConcluded" : "NOASSERTION",
+  "licenseDeclared" : "NOASSERTION",
+  "name" : "Curve/poolparty"
+}
+  ]
+}
