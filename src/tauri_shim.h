@@ -23,6 +23,7 @@ inline constexpr const char *cTauriShim = R"js(
     greet: ['name'],
     defaultFile: ['name'],
     save_file: ['name', 'content'],
+    save_pdf: ['name', 'html', 'widthMm', 'heightMm'],
 
     pick_work_folder: [],
     list_work_folder: ['root'],

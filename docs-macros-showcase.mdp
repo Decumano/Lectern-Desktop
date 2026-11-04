@@ -1,0 +1,188 @@
+[PAGE size=A4 margin="2.5cm 2cm" spacing=1.3 paragraph=0.8em header="Docs macro showcase" footer="{title}" numbers=bottom-right first-page=plain h1-center]
+
+;;
+# Docs Macro Showcase
+;;
+
+{type: Showcase, status: Draft, app: Documents, version: 3}
+
+[TOC title="Contents:" numbers=on depth=2]
+
+[PAGEBREAK]
+
+## Field cards
+
+One line, fields side by side:
+
+{type: Character, status: Active, faction: Ironhold, race: Human}
+
+Braces on their own lines, one field per row:
+
+{
+type: Location,
+region: Northmarch,
+climate: Subarctic,
+}
+
+## Alignment blocks
+
+Symbol form (what the toolbar writes):
+
+::
+Left-aligned paragraph.
+::
+
+;;
+Centered paragraph, and **all Markdown inside still works**.
+;;
+
+:::
+Right-aligned paragraph.
+:::
+
+;;;
+Justified paragraph. This one needs enough text to actually wrap across several lines so that you can see the justification doing its work on the right-hand edge of the page, spreading the words out evenly.
+;;;
+
+Keyword form (explicit, can combine directives):
+
+::: center
+Centered with the keyword form.
+:::
+
+::: right italic
+Right-aligned and in italics.
+:::
+
+## Fonts
+
+A font block is the only way to change the font:
+
+||font=Georgia size=13 spacing=1.6
+This passage is Georgia at 13pt with a line-height of 1.6, with *italics* and **bold** still working.
+||
+
+||font=monospace
+Generic families like monospace work too.
+||
+
+Blocks nest, and they flow with the text, so this is one single sentence:
+
+||font=Georgia
+It starts in Georgia,
+||font=monospace
+moves to monospace,
+||
+and returns to Georgia.
+||
+
+Only a blank line starts a new paragraph, so this one is two:
+
+||font=Georgia
+First paragraph in Georgia.
+
+||font=monospace
+Second paragraph in monospace,
+||
+ending in Georgia.
+||
+
+## Sizes and text formatting
+
+Sizes by LaTeX name: [tiny]{size=tiny} [small]{size=small} [large]{size=large} [Large]{size=Large} [Huge]{size=Huge}. By points: [18pt]{size=18}. By unit: [1.5em]{size=1.5em}.
+
+Other directives: [crimson bold]{color=#a00 bold}, [small caps, wide]{smallcaps tracking=2pt}, [underlined italic]{italic underline}, and combined: [large and brown]{size=Large color=#7a5a2f bold}.
+
+Keyword blocks take the same directives:
+
+::: center size=Huge bold
+A Huge centered line
+:::
+
+::: right size=small italic color=#666 spacing=1.8
+Small, grey, italic and widely spaced.
+:::
+
+### Heading attributes {center italic}
+
+A trailing `{...}` styles one heading and is removed from its text and TOC entry.
+
+### Left out of the contents {notoc color=#a00}
+
+`notoc` hides a heading from `[TOC]`; `nolabel` skips its chapter label; `pagebreak` starts a new page before it.
+
+## Roman-numeral lists
+
+i. First point
+ii. Second point
+iii. Third point
+
+I. Uppercase is a separate list
+II. Another uppercase item
+
+## Task lists
+
+Ticking these in the preview writes the change back to the source.
+
+- [ ] Draft the siege chapter
+- [x] Name the river
+- [ ] Map the northern pass
+
+## Tags
+
+This entry is a #showcase of the #docs macros, filed under #northmarch.
+
+## Math (KaTeX)
+
+Inline: $E = mc^2$ appears mid-sentence, and prices like $5 and $10 stay literal.
+
+$$
+\int_0^\infty e^{-x^2}\,dx = \frac{\sqrt{\pi}}{2}
+$$
+
+## Diagrams (Mermaid)
+
+```mermaid
+graph TD
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Continue]
+    B -->|No| D[Stop]
+```
+
+## Cross-file links and embeds
+
+Links and embeds use the `lorekeep://file/<id>` scheme and are written by the link toolbar, not by hand. Use the toolbar to add a link to another file, or embed a Diagram or Sheet chart, e.g. `![Trade routes](lorekeep://file/<id>)`.
+
+## Standard Markdown still works
+
+| Feature | Supported |
+|---|---|
+| Tables | yes |
+| ~~Strikethrough~~ | yes |
+| `Inline code` | yes |
+
+> Blockquotes, **bold**, *italic*, and [links](https://example.com) are unchanged.
+
+\\\
+
+# PDF output
+
+This heading starts on a new page, because every single `#` heading does. The line before it holds three backslashes, which is a page break that shows nothing in the editor. `[PAGEBREAK]` does the same but leaves a dashed rule in the editor.
+
+Exporting to PDF opens a dialog for paper, margins, page numbers, header and footer. Its defaults come from the `[PAGE ...]` line at the top of this file, which never prints:
+
+| Option | Example |
+|---|---|
+| Paper | `size=A4` or `landscape` |
+| Margins | `margin=2cm` or `margin="2.5cm 2cm"` |
+| Header and footer | `header="My book" footer="Page {page} of {pages}"` |
+| Page numbers | `numbers=bottom-right` |
+| Plain first page | `first-page=plain` |
+| Body size and spacing | `fontsize=12 spacing=1.3 paragraph=0.8em` |
+| Paragraph indent | `indent=1.5em` |
+| Which heading breaks pages | `newpage=h2` or `newpage=none` |
+| "Chapter N" above each `#` | `chapter-label="Chapter"` |
+| Heading styles | `h1-size=Huge h1-center h1-bold` |
+| Hide the file-name title | `title=off` |
+
+Text is never cut at the bottom of a page: paragraphs and tables carry on at the next page, splitting only between lines or rows.
