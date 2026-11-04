@@ -489,6 +489,42 @@ pkgcfg_lib_ADWAITA_pangocairo-1.0:FILEPATH=/usr/lib/libpangocairo-1.0.so
 pkgcfg_lib_ADWAITA_vulkan:FILEPATH=/usr/lib/libvulkan.so
 
 //Path to a library.
+pkgcfg_lib_GTK4UNIXPRINT_cairo:FILEPATH=/usr/lib/libcairo.so
+
+//Path to a library.
+pkgcfg_lib_GTK4UNIXPRINT_cairo-gobject:FILEPATH=/usr/lib/libcairo-gobject.so
+
+//Path to a library.
+pkgcfg_lib_GTK4UNIXPRINT_gdk_pixbuf-2.0:FILEPATH=/usr/lib/libgdk_pixbuf-2.0.so
+
+//Path to a library.
+pkgcfg_lib_GTK4UNIXPRINT_gio-2.0:FILEPATH=/usr/lib/libgio-2.0.so
+
+//Path to a library.
+pkgcfg_lib_GTK4UNIXPRINT_glib-2.0:FILEPATH=/usr/lib/libglib-2.0.so
+
+//Path to a library.
+pkgcfg_lib_GTK4UNIXPRINT_gobject-2.0:FILEPATH=/usr/lib/libgobject-2.0.so
+
+//Path to a library.
+pkgcfg_lib_GTK4UNIXPRINT_graphene-1.0:FILEPATH=/usr/lib/libgraphene-1.0.so
+
+//Path to a library.
+pkgcfg_lib_GTK4UNIXPRINT_gtk-4:FILEPATH=/usr/lib/libgtk-4.so
+
+//Path to a library.
+pkgcfg_lib_GTK4UNIXPRINT_harfbuzz:FILEPATH=/usr/lib/libharfbuzz.so
+
+//Path to a library.
+pkgcfg_lib_GTK4UNIXPRINT_pango-1.0:FILEPATH=/usr/lib/libpango-1.0.so
+
+//Path to a library.
+pkgcfg_lib_GTK4UNIXPRINT_pangocairo-1.0:FILEPATH=/usr/lib/libpangocairo-1.0.so
+
+//Path to a library.
+pkgcfg_lib_GTK4UNIXPRINT_vulkan:FILEPATH=/usr/lib/libvulkan.so
+
+//Path to a library.
 pkgcfg_lib_GTK4_cairo:FILEPATH=/usr/lib/libcairo.so
 
 //Path to a library.
@@ -810,6 +846,41 @@ FIND_PACKAGE_MESSAGE_DETAILS_nlohmann_json:INTERNAL=[/mnt/Epsilon/GitHub/Lectern
 FIND_PACKAGE_MESSAGE_DETAILS_saucer:INTERNAL=[/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/libsaucer.a][/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/include][v()]
 //ADVANCED property for variable: GITCOMMAND
 GITCOMMAND-ADVANCED:INTERNAL=1
+GTK4UNIXPRINT_CFLAGS:INTERNAL=-I/usr/include/gtk-4.0/unix-print;-I/usr/include/gtk-4.0;-I/usr/include/pango-1.0;-I/usr/include/fribidi;-I/usr/include;-I/usr/include/harfbuzz;-I/usr/include/gdk-pixbuf-2.0;-I/usr/include/glycin-2;-I/usr/include/cairo;-I/usr/include/freetype2;-I/usr/include/libpng16;-I/usr/include/pixman-1;-I/usr/include/graphene-1.0;-I/usr/lib/graphene-1.0/include;-mfpmath=sse;-msse;-msse2;-I/usr/include/glib-2.0;-I/usr/lib/glib-2.0/include;-I/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/pkgconfig/../../include;-I/usr/include/libmount;-I/usr/include/blkid;-I/usr/include/sysprof-6;-pthread
+GTK4UNIXPRINT_CFLAGS_I:INTERNAL=
+GTK4UNIXPRINT_CFLAGS_OTHER:INTERNAL=-mfpmath=sse;-msse;-msse2;-pthread
+GTK4UNIXPRINT_FOUND:INTERNAL=1
+GTK4UNIXPRINT_INCLUDEDIR:INTERNAL=/usr/include
+GTK4UNIXPRINT_INCLUDE_DIRS:INTERNAL=/usr/include/gtk-4.0/unix-print;/usr/include/gtk-4.0;/usr/include/pango-1.0;/usr/include/fribidi;/usr/include;/usr/include/harfbuzz;/usr/include/gdk-pixbuf-2.0;/usr/include/glycin-2;/usr/include/cairo;/usr/include/freetype2;/usr/include/libpng16;/usr/include/pixman-1;/usr/include/graphene-1.0;/usr/lib/graphene-1.0/include;/usr/include/glib-2.0;/usr/lib/glib-2.0/include;/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/pkgconfig/../../include;/usr/include/libmount;/usr/include/blkid;/usr/include/sysprof-6
+GTK4UNIXPRINT_LDFLAGS:INTERNAL=-L/usr/lib;-lgtk-4;-lpangocairo-1.0;-lpango-1.0;-lharfbuzz;-lgdk_pixbuf-2.0;-lcairo-gobject;-lcairo;-lvulkan;-lgraphene-1.0;-lgio-2.0;-lgobject-2.0;-lglib-2.0
+GTK4UNIXPRINT_LDFLAGS_OTHER:INTERNAL=
+GTK4UNIXPRINT_LIBDIR:INTERNAL=
+GTK4UNIXPRINT_LIBRARIES:INTERNAL=gtk-4;pangocairo-1.0;pango-1.0;harfbuzz;gdk_pixbuf-2.0;cairo-gobject;cairo;vulkan;graphene-1.0;gio-2.0;gobject-2.0;glib-2.0
+GTK4UNIXPRINT_LIBRARY_DIRS:INTERNAL=/usr/lib
+GTK4UNIXPRINT_LIBS:INTERNAL=
+GTK4UNIXPRINT_LIBS_L:INTERNAL=
+GTK4UNIXPRINT_LIBS_OTHER:INTERNAL=
+GTK4UNIXPRINT_LIBS_PATHS:INTERNAL=
+GTK4UNIXPRINT_MODULE_NAME:INTERNAL=gtk4-unix-print
+GTK4UNIXPRINT_PREFIX:INTERNAL=/usr
+GTK4UNIXPRINT_STATIC_CFLAGS:INTERNAL=-I/usr/include/gtk-4.0/unix-print;-I/usr/include/gtk-4.0;-I/usr/include/pango-1.0;-I/usr/include/fribidi;-I/usr/include;-I/usr/include/harfbuzz;-I/usr/include/gdk-pixbuf-2.0;-I/usr/include/glycin-2;-I/usr/include/cairo;-I/usr/include/freetype2;-I/usr/include/libpng16;-I/usr/include/pixman-1;-I/usr/include/graphene-1.0;-I/usr/lib/graphene-1.0/include;-mfpmath=sse;-msse;-msse2;-I/usr/include/glib-2.0;-I/usr/lib/glib-2.0/include;-I/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/pkgconfig/../../include;-I/usr/include/libmount;-I/usr/include/blkid;-I/usr/include/sysprof-6;-pthread;-DXML_STATIC
+GTK4UNIXPRINT_STATIC_CFLAGS_I:INTERNAL=
+GTK4UNIXPRINT_STATIC_CFLAGS_OTHER:INTERNAL=-mfpmath=sse;-msse;-msse2;-pthread;-DXML_STATIC
+GTK4UNIXPRINT_STATIC_INCLUDE_DIRS:INTERNAL=/usr/include/gtk-4.0/unix-print;/usr/include/gtk-4.0;/usr/include/pango-1.0;/usr/include/fribidi;/usr/include;/usr/include/harfbuzz;/usr/include/gdk-pixbuf-2.0;/usr/include/glycin-2;/usr/include/cairo;/usr/include/freetype2;/usr/include/libpng16;/usr/include/pixman-1;/usr/include/graphene-1.0;/usr/lib/graphene-1.0/include;/usr/include/glib-2.0;/usr/lib/glib-2.0/include;/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/pkgconfig/../../include;/usr/include/libmount;/usr/include/blkid;/usr/include/sysprof-6
+GTK4UNIXPRINT_STATIC_LDFLAGS:INTERNAL=-L/usr/lib;-lgtk-4;-lpangocairo-1.0;-lm;-lpangoft2-1.0;-lm;-lpango-1.0;-lm;-lfribidi;-lthai;-ldatrie;-lXft;-lharfbuzz-gobject;-pthread;-lharfbuzz;-lm;-lgraphite2;-lgdk_pixbuf-2.0;-lm;-lglycin-2;-lseccomp;-lcairo-gobject;-lm;-ldl;-lcairo;-lm;-ldl;-lfontconfig;-pthread;-lm;-lexpat;-lm;-lfreetype;-ldl;-lbz2;-lpng16;-lm;-lm;-lbrotlidec;-lbrotlicommon;-lXext;-lXrender;-lX11;-lpthread;-lxcb-render;-lxcb-shm;-lxcb;-lXau;-lXdmcp;-lpixman-1;-lm;-pthread;-lvulkan;-lgraphene-1.0;-lm;-lgio-2.0;-lgobject-2.0;-lffi;-lgmodule-2.0;-pthread;-lglib-2.0;-latomic;-lm;-pthread;-lpcre2-8;-pthread;-lpthread;-L/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/pkgconfig/../../lib;-lz;-lmount;-lblkid;-lsystemd;-lsysprof-capture-4;-Wl,-z,nodelete;-pthread
+GTK4UNIXPRINT_STATIC_LDFLAGS_OTHER:INTERNAL=-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-Wl,-z,nodelete;-pthread
+GTK4UNIXPRINT_STATIC_LIBDIR:INTERNAL=
+GTK4UNIXPRINT_STATIC_LIBRARIES:INTERNAL=gtk-4;pangocairo-1.0;m;pangoft2-1.0;m;pango-1.0;m;fribidi;thai;datrie;Xft;harfbuzz-gobject;harfbuzz;m;graphite2;gdk_pixbuf-2.0;m;glycin-2;seccomp;cairo-gobject;m;dl;cairo;m;dl;fontconfig;m;expat;m;freetype;dl;bz2;png16;m;m;brotlidec;brotlicommon;Xext;Xrender;X11;pthread;xcb-render;xcb-shm;xcb;Xau;Xdmcp;pixman-1;m;vulkan;graphene-1.0;m;gio-2.0;gobject-2.0;ffi;gmodule-2.0;glib-2.0;atomic;m;pcre2-8;pthread;z;mount;blkid;systemd;sysprof-capture-4
+GTK4UNIXPRINT_STATIC_LIBRARY_DIRS:INTERNAL=/usr/lib;/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/pkgconfig/../../lib
+GTK4UNIXPRINT_STATIC_LIBS:INTERNAL=
+GTK4UNIXPRINT_STATIC_LIBS_L:INTERNAL=
+GTK4UNIXPRINT_STATIC_LIBS_OTHER:INTERNAL=
+GTK4UNIXPRINT_STATIC_LIBS_PATHS:INTERNAL=
+GTK4UNIXPRINT_VERSION:INTERNAL=4.24.1
+GTK4UNIXPRINT_gtk4-unix-print_INCLUDEDIR:INTERNAL=
+GTK4UNIXPRINT_gtk4-unix-print_LIBDIR:INTERNAL=
+GTK4UNIXPRINT_gtk4-unix-print_PREFIX:INTERNAL=
+GTK4UNIXPRINT_gtk4-unix-print_VERSION:INTERNAL=
 GTK4_CFLAGS:INTERNAL=-I/usr/include/gtk-4.0;-I/usr/include/pango-1.0;-I/usr/include/fribidi;-I/usr/include;-I/usr/include/harfbuzz;-I/usr/include/gdk-pixbuf-2.0;-I/usr/include/glycin-2;-I/usr/include/cairo;-I/usr/include/freetype2;-I/usr/include/libpng16;-I/usr/include/pixman-1;-I/usr/include/graphene-1.0;-I/usr/lib/graphene-1.0/include;-mfpmath=sse;-msse;-msse2;-I/usr/include/glib-2.0;-I/usr/lib/glib-2.0/include;-I/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/debug/lib/pkgconfig/../../../include;-I/usr/include/libmount;-I/usr/include/blkid;-I/usr/include/sysprof-6;-pthread
 GTK4_CFLAGS_I:INTERNAL=
 GTK4_CFLAGS_OTHER:INTERNAL=-mfpmath=sse;-msse;-msse2;-pthread
@@ -867,12 +938,12 @@ SAUCER_INCLUDE_DIR-ADVANCED:INTERNAL=1
 SITE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: VCPKG_VERBOSE
 VCPKG_VERBOSE-ADVANCED:INTERNAL=1
-WEBKITGTK_CFLAGS:INTERNAL=-I/usr/include/webkitgtk-6.0;-I/usr/include/gtk-4.0;-I/usr/include/pango-1.0;-I/usr/include/fribidi;-I/usr/include;-I/usr/include/harfbuzz;-I/usr/include/gdk-pixbuf-2.0;-I/usr/include/glycin-2;-I/usr/include/cairo;-I/usr/include/freetype2;-I/usr/include/libpng16;-I/usr/include/pixman-1;-I/usr/include/graphene-1.0;-I/usr/lib/graphene-1.0/include;-mfpmath=sse;-msse;-msse2;-I/usr/include/libsoup-3.0;-I/usr/include/libmount;-I/usr/include/blkid;-I/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/debug/lib/pkgconfig/../../../include;-I/usr/include/glib-2.0;-I/usr/lib/glib-2.0/include;-I/usr/include/sysprof-6;-pthread
+WEBKITGTK_CFLAGS:INTERNAL=-I/usr/include/webkitgtk-6.0;-I/usr/include/gtk-4.0;-I/usr/include/pango-1.0;-I/usr/include/fribidi;-I/usr/include;-I/usr/include/harfbuzz;-I/usr/include/gdk-pixbuf-2.0;-I/usr/include/glycin-2;-I/usr/include/cairo;-I/usr/include/freetype2;-I/usr/include/libpng16;-I/usr/include/pixman-1;-I/usr/include/graphene-1.0;-I/usr/lib/graphene-1.0/include;-mfpmath=sse;-msse;-msse2;-I/usr/include/libsoup-3.0;-I/usr/include/libmount;-I/usr/include/blkid;-I/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/pkgconfig/../../include;-I/usr/include/glib-2.0;-I/usr/lib/glib-2.0/include;-I/usr/include/sysprof-6;-pthread
 WEBKITGTK_CFLAGS_I:INTERNAL=
 WEBKITGTK_CFLAGS_OTHER:INTERNAL=-mfpmath=sse;-msse;-msse2;-pthread
 WEBKITGTK_FOUND:INTERNAL=1
 WEBKITGTK_INCLUDEDIR:INTERNAL=/usr/include
-WEBKITGTK_INCLUDE_DIRS:INTERNAL=/usr/include/webkitgtk-6.0;/usr/include/gtk-4.0;/usr/include/pango-1.0;/usr/include/fribidi;/usr/include;/usr/include/harfbuzz;/usr/include/gdk-pixbuf-2.0;/usr/include/glycin-2;/usr/include/cairo;/usr/include/freetype2;/usr/include/libpng16;/usr/include/pixman-1;/usr/include/graphene-1.0;/usr/lib/graphene-1.0/include;/usr/include/libsoup-3.0;/usr/include/libmount;/usr/include/blkid;/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/debug/lib/pkgconfig/../../../include;/usr/include/glib-2.0;/usr/lib/glib-2.0/include;/usr/include/sysprof-6
+WEBKITGTK_INCLUDE_DIRS:INTERNAL=/usr/include/webkitgtk-6.0;/usr/include/gtk-4.0;/usr/include/pango-1.0;/usr/include/fribidi;/usr/include;/usr/include/harfbuzz;/usr/include/gdk-pixbuf-2.0;/usr/include/glycin-2;/usr/include/cairo;/usr/include/freetype2;/usr/include/libpng16;/usr/include/pixman-1;/usr/include/graphene-1.0;/usr/lib/graphene-1.0/include;/usr/include/libsoup-3.0;/usr/include/libmount;/usr/include/blkid;/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/pkgconfig/../../include;/usr/include/glib-2.0;/usr/lib/glib-2.0/include;/usr/include/sysprof-6
 WEBKITGTK_LDFLAGS:INTERNAL=-L/usr/lib;-lwebkitgtk-6.0;-lgtk-4;-lpangocairo-1.0;-lpango-1.0;-lharfbuzz;-lgdk_pixbuf-2.0;-lcairo-gobject;-lcairo;-lvulkan;-lgraphene-1.0;-lsoup-3.0;-lgio-2.0;-lgmodule-2.0;-pthread;-ljavascriptcoregtk-6.0;-lgobject-2.0;-lglib-2.0
 WEBKITGTK_LDFLAGS_OTHER:INTERNAL=-pthread
 WEBKITGTK_LIBDIR:INTERNAL=/usr/lib
@@ -884,15 +955,15 @@ WEBKITGTK_LIBS_OTHER:INTERNAL=
 WEBKITGTK_LIBS_PATHS:INTERNAL=
 WEBKITGTK_MODULE_NAME:INTERNAL=webkitgtk-6.0
 WEBKITGTK_PREFIX:INTERNAL=/usr
-WEBKITGTK_STATIC_CFLAGS:INTERNAL=-I/usr/include/webkitgtk-6.0;-I/usr/include/gtk-4.0;-I/usr/include/pango-1.0;-I/usr/include/fribidi;-I/usr/include;-I/usr/include/harfbuzz;-I/usr/include/gdk-pixbuf-2.0;-I/usr/include/glycin-2;-I/usr/include/cairo;-I/usr/include/freetype2;-I/usr/include/libpng16;-I/usr/include/pixman-1;-I/usr/include/graphene-1.0;-I/usr/lib/graphene-1.0/include;-mfpmath=sse;-msse;-msse2;-I/usr/include/libsoup-3.0;-I/usr/include/libmount;-I/usr/include/blkid;-I/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/debug/lib/pkgconfig/../../../include;-I/usr/include/glib-2.0;-I/usr/lib/glib-2.0/include;-I/usr/include/sysprof-6;-pthread;-DXML_STATIC
+WEBKITGTK_STATIC_CFLAGS:INTERNAL=-I/usr/include/webkitgtk-6.0;-I/usr/include/gtk-4.0;-I/usr/include/pango-1.0;-I/usr/include/fribidi;-I/usr/include;-I/usr/include/harfbuzz;-I/usr/include/gdk-pixbuf-2.0;-I/usr/include/glycin-2;-I/usr/include/cairo;-I/usr/include/freetype2;-I/usr/include/libpng16;-I/usr/include/pixman-1;-I/usr/include/graphene-1.0;-I/usr/lib/graphene-1.0/include;-mfpmath=sse;-msse;-msse2;-I/usr/include/libsoup-3.0;-I/usr/include/libmount;-I/usr/include/blkid;-I/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/pkgconfig/../../include;-I/usr/include/glib-2.0;-I/usr/lib/glib-2.0/include;-I/usr/include/sysprof-6;-pthread;-DXML_STATIC
 WEBKITGTK_STATIC_CFLAGS_I:INTERNAL=
 WEBKITGTK_STATIC_CFLAGS_OTHER:INTERNAL=-mfpmath=sse;-msse;-msse2;-pthread;-DXML_STATIC
-WEBKITGTK_STATIC_INCLUDE_DIRS:INTERNAL=/usr/include/webkitgtk-6.0;/usr/include/gtk-4.0;/usr/include/pango-1.0;/usr/include/fribidi;/usr/include;/usr/include/harfbuzz;/usr/include/gdk-pixbuf-2.0;/usr/include/glycin-2;/usr/include/cairo;/usr/include/freetype2;/usr/include/libpng16;/usr/include/pixman-1;/usr/include/graphene-1.0;/usr/lib/graphene-1.0/include;/usr/include/libsoup-3.0;/usr/include/libmount;/usr/include/blkid;/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/debug/lib/pkgconfig/../../../include;/usr/include/glib-2.0;/usr/lib/glib-2.0/include;/usr/include/sysprof-6
-WEBKITGTK_STATIC_LDFLAGS:INTERNAL=-L/usr/lib;-lwebkitgtk-6.0;-lgtk-4;-lpangocairo-1.0;-lm;-lpangoft2-1.0;-lm;-lpango-1.0;-lm;-lfribidi;-lthai;-ldatrie;-lXft;-lharfbuzz-gobject;-pthread;-lharfbuzz;-lm;-lgraphite2;-lgdk_pixbuf-2.0;-lm;-lglycin-2;-lseccomp;-lcairo-gobject;-lm;-ldl;-lcairo;-lm;-ldl;-lfontconfig;-lm;-lexpat;-lm;-lfreetype;-ldl;-lbz2;-lpng16;-lm;-lm;-lXext;-lXrender;-lX11;-lpthread;-lxcb-render;-lxcb-shm;-lxcb;-lXau;-lXdmcp;-lpixman-1;-lm;-pthread;-lvulkan;-lgraphene-1.0;-lm;-pthread;-lsoup-3.0;-ldl;-lgio-2.0;-lgmodule-2.0;-pthread;-lmount;-lblkid;-lsystemd;-lsqlite3;-lm;-lz;-lpsl;-lbrotlidec;-lbrotlicommon;-lzstd;-lgssapi_krb5;-lkrb5;-lk5crypto;-lcom_err;-lkrb5support;-L/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/debug/lib/pkgconfig/../../lib;-lz;-lnghttp2;-ljavascriptcoregtk-6.0;-lgobject-2.0;-lglib-2.0;-latomic;-lm;-pthread;-lsysprof-capture-4;-Wl,-z,nodelete;-pthread;-lpcre2-8;-pthread;-lpthread;-lffi
+WEBKITGTK_STATIC_INCLUDE_DIRS:INTERNAL=/usr/include/webkitgtk-6.0;/usr/include/gtk-4.0;/usr/include/pango-1.0;/usr/include/fribidi;/usr/include;/usr/include/harfbuzz;/usr/include/gdk-pixbuf-2.0;/usr/include/glycin-2;/usr/include/cairo;/usr/include/freetype2;/usr/include/libpng16;/usr/include/pixman-1;/usr/include/graphene-1.0;/usr/lib/graphene-1.0/include;/usr/include/libsoup-3.0;/usr/include/libmount;/usr/include/blkid;/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/pkgconfig/../../include;/usr/include/glib-2.0;/usr/lib/glib-2.0/include;/usr/include/sysprof-6
+WEBKITGTK_STATIC_LDFLAGS:INTERNAL=-L/usr/lib;-lwebkitgtk-6.0;-lgtk-4;-lpangocairo-1.0;-lm;-lpangoft2-1.0;-lm;-lpango-1.0;-lm;-lfribidi;-lthai;-ldatrie;-lXft;-lharfbuzz-gobject;-pthread;-lharfbuzz;-lm;-lgraphite2;-lgdk_pixbuf-2.0;-lm;-lglycin-2;-lseccomp;-lcairo-gobject;-lm;-ldl;-lcairo;-lm;-ldl;-lfontconfig;-lm;-lexpat;-lm;-lfreetype;-ldl;-lbz2;-lpng16;-lm;-lm;-lXext;-lXrender;-lX11;-lpthread;-lxcb-render;-lxcb-shm;-lxcb;-lXau;-lXdmcp;-lpixman-1;-lm;-pthread;-lvulkan;-lgraphene-1.0;-lm;-pthread;-lsoup-3.0;-ldl;-lgio-2.0;-lgmodule-2.0;-pthread;-lmount;-lblkid;-lsystemd;-lsqlite3;-lm;-lz;-lpsl;-lbrotlidec;-lbrotlicommon;-lzstd;-lgssapi_krb5;-lkrb5;-lk5crypto;-lcom_err;-lkrb5support;-L/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/pkgconfig/../../lib;-lz;-lnghttp2;-ljavascriptcoregtk-6.0;-lgobject-2.0;-lglib-2.0;-latomic;-lm;-pthread;-lsysprof-capture-4;-Wl,-z,nodelete;-pthread;-lpcre2-8;-pthread;-lpthread;-lffi
 WEBKITGTK_STATIC_LDFLAGS_OTHER:INTERNAL=-pthread;-pthread;-pthread;-pthread;-pthread;-Wl,-z,nodelete;-pthread;-pthread
 WEBKITGTK_STATIC_LIBDIR:INTERNAL=
 WEBKITGTK_STATIC_LIBRARIES:INTERNAL=webkitgtk-6.0;gtk-4;pangocairo-1.0;m;pangoft2-1.0;m;pango-1.0;m;fribidi;thai;datrie;Xft;harfbuzz-gobject;harfbuzz;m;graphite2;gdk_pixbuf-2.0;m;glycin-2;seccomp;cairo-gobject;m;dl;cairo;m;dl;fontconfig;m;expat;m;freetype;dl;bz2;png16;m;m;Xext;Xrender;X11;pthread;xcb-render;xcb-shm;xcb;Xau;Xdmcp;pixman-1;m;vulkan;graphene-1.0;m;soup-3.0;dl;gio-2.0;gmodule-2.0;mount;blkid;systemd;sqlite3;m;z;psl;brotlidec;brotlicommon;zstd;gssapi_krb5;krb5;k5crypto;com_err;krb5support;z;nghttp2;javascriptcoregtk-6.0;gobject-2.0;glib-2.0;atomic;m;sysprof-capture-4;pcre2-8;pthread;ffi
-WEBKITGTK_STATIC_LIBRARY_DIRS:INTERNAL=/usr/lib;/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/debug/lib/pkgconfig/../../lib
+WEBKITGTK_STATIC_LIBRARY_DIRS:INTERNAL=/usr/lib;/mnt/Epsilon/GitHub/Lectern-Desktop/build-linux/vcpkg_installed/x64-linux/lib/pkgconfig/../../lib
 WEBKITGTK_STATIC_LIBS:INTERNAL=
 WEBKITGTK_STATIC_LIBS_L:INTERNAL=
 WEBKITGTK_STATIC_LIBS_OTHER:INTERNAL=
@@ -949,10 +1020,12 @@ _OPENSSL_openssl_PREFIX:INTERNAL=
 _OPENSSL_openssl_VERSION:INTERNAL=
 __pkg_config_arguments_ADWAITA:INTERNAL=IMPORTED_TARGET;libadwaita-1
 __pkg_config_arguments_GTK4:INTERNAL=IMPORTED_TARGET;gtk4
-__pkg_config_arguments_WEBKITGTK:INTERNAL=REQUIRED;IMPORTED_TARGET;webkitgtk-6.0
+__pkg_config_arguments_GTK4UNIXPRINT:INTERNAL=IMPORTED_TARGET;gtk4-unix-print
+__pkg_config_arguments_WEBKITGTK:INTERNAL=IMPORTED_TARGET;webkitgtk-6.0
 __pkg_config_arguments__OPENSSL:INTERNAL=QUIET;openssl
 __pkg_config_checked_ADWAITA:INTERNAL=1
 __pkg_config_checked_GTK4:INTERNAL=1
+__pkg_config_checked_GTK4UNIXPRINT:INTERNAL=1
 __pkg_config_checked_WEBKITGTK:INTERNAL=1
 __pkg_config_checked__OPENSSL:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_ADWAITA_adwaita-1
@@ -981,6 +1054,30 @@ pkgcfg_lib_ADWAITA_pango-1.0-ADVANCED:INTERNAL=1
 pkgcfg_lib_ADWAITA_pangocairo-1.0-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_ADWAITA_vulkan
 pkgcfg_lib_ADWAITA_vulkan-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GTK4UNIXPRINT_cairo
+pkgcfg_lib_GTK4UNIXPRINT_cairo-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GTK4UNIXPRINT_cairo-gobject
+pkgcfg_lib_GTK4UNIXPRINT_cairo-gobject-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GTK4UNIXPRINT_gdk_pixbuf-2.0
+pkgcfg_lib_GTK4UNIXPRINT_gdk_pixbuf-2.0-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GTK4UNIXPRINT_gio-2.0
+pkgcfg_lib_GTK4UNIXPRINT_gio-2.0-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GTK4UNIXPRINT_glib-2.0
+pkgcfg_lib_GTK4UNIXPRINT_glib-2.0-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GTK4UNIXPRINT_gobject-2.0
+pkgcfg_lib_GTK4UNIXPRINT_gobject-2.0-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GTK4UNIXPRINT_graphene-1.0
+pkgcfg_lib_GTK4UNIXPRINT_graphene-1.0-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GTK4UNIXPRINT_gtk-4
+pkgcfg_lib_GTK4UNIXPRINT_gtk-4-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GTK4UNIXPRINT_harfbuzz
+pkgcfg_lib_GTK4UNIXPRINT_harfbuzz-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GTK4UNIXPRINT_pango-1.0
+pkgcfg_lib_GTK4UNIXPRINT_pango-1.0-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GTK4UNIXPRINT_pangocairo-1.0
+pkgcfg_lib_GTK4UNIXPRINT_pangocairo-1.0-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GTK4UNIXPRINT_vulkan
+pkgcfg_lib_GTK4UNIXPRINT_vulkan-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_GTK4_cairo
 pkgcfg_lib_GTK4_cairo-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_GTK4_cairo-gobject
@@ -1043,5 +1140,5 @@ pkgcfg_lib__OPENSSL_crypto-ADVANCED:INTERNAL=1
 pkgcfg_lib__OPENSSL_dl-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib__OPENSSL_ssl
 pkgcfg_lib__OPENSSL_ssl-ADVANCED:INTERNAL=1
-prefix_result:INTERNAL=/usr/lib
+prefix_result:INTERNAL=
 
