@@ -184,6 +184,15 @@ View *fOpen(const std::shared_ptr<saucer::application> &app,
     return raw;
 }
 
+void fBroadcastScript(const std::string &script)
+{
+    std::lock_guard<std::mutex> lock(fRegistry().mutex);
+    for (auto &view : fRegistry().views)
+    {
+        view->execute(script);
+    }
+}
+
 void fCloseAll()
 {
     std::lock_guard<std::mutex> lock(fRegistry().mutex);
