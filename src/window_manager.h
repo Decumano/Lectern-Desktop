@@ -64,4 +64,7 @@ size_t fCount();
 /// Closes every window, which lets the application's run loop finish.
 void fCloseAll();
 
+/// Runs `script` in every open window. Safe from any thread.
+void fBroadcastScript(const std::string &script);
+
 }  // namespace lectern::windows

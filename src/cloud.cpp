@@ -18,6 +18,7 @@
 
 #include "diff.h"
 #include "paths.h"
+#include "sync_socket.h"
 #include "util.h"
 #include "workfolder.h"
 
@@ -33,7 +34,6 @@ namespace {
 /// every synced work folder, and the server side matches on it too, so
 /// renaming it would orphan existing sync state.
 constexpr const char *cSyncDir = ".officesuite-sync";
-constexpr auto cPollInterval = 45s;
 
 /// Serializes sync passes: `fNudgeSync`, the background loop, `fSyncNow` and
 /// `connect` can all fire concurrently, and two passes reconciling the same
@@ -44,6 +44,36 @@ std::mutex &fSyncLock()
     return lock;
 }
 
+/// Told, after a pass that wrote files into the work folder (a change from the
+/// server, merged or not), which ones - so the app can show the new text in
+/// whatever editor has that file open. Set by main(); absent in the tools.
+std::mutex g_files_changed_mutex;
+FilesChangedHandler g_files_changed_handler;
+
+void fNotifyFilesChanged(const std::vector<std::string> &rel_paths)
+{
+    if (rel_paths.empty())
+    {
+        return;
+    }
+    FilesChangedHandler handler;
+    {
+        std::lock_guard<std::mutex> lock(g_files_changed_mutex);
+        handler = g_files_changed_handler;
+    }
+    if (handler)
+    {
+        try
+        {
+            handler(rel_paths);
+        }
+        catch (const std::exception &error)
+        {
+            spdlog::debug("sync: files-changed handler failed: {}", error.what());
+        }
+    }
+}
+
 // ── Config (which server/account/folder we're connected to) ──
 
 struct CloudConfig
@@ -52,12 +82,17 @@ struct CloudConfig
     std::string email;
     std::string api_token;
     std::string root;
+    /// Names this installation to the server, so it can skip us when it tells
+    /// the account's devices about a change we made ourselves. Generated once.
+    std::string device_id;
 };
 
 fs::path fConfigPath()
 {
     return paths::fAppConfigDir() / "cloud.json";
 }
+
+void fSaveConfig(const CloudConfig &config);
 
 std::optional<CloudConfig> fLoadConfig()
 {
@@ -77,10 +112,17 @@ std::optional<CloudConfig> fLoadConfig()
     config.email = parsed.value("email", "");
     config.api_token = parsed.value("api_token", "");
     config.root = parsed.value("root", "");
+    config.device_id = parsed.value("device_id", "");
     if (config.server_url.empty() || config.api_token.empty() ||
         config.root.empty())
     {
         return std::nullopt;
+    }
+
+    if (config.device_id.empty())
+    {
+        config.device_id = util::fRandomHex(16);
+        fSaveConfig(config);
     }
     return config;
 }
@@ -91,7 +133,8 @@ void fSaveConfig(const CloudConfig &config)
                             json{{"server_url", config.server_url},
                                  {"email", config.email},
                                  {"api_token", config.api_token},
-                                 {"root", config.root}}
+                                 {"root", config.root},
+                                 {"device_id", config.device_id}}
                                 .dump(2));
 }
 
@@ -359,7 +402,8 @@ bool fValidRemoteRelPath(const std::string &rel_path)
 
 cpr::Header fAuthHeader(const CloudConfig &config)
 {
-    return cpr::Header{{"Authorization", "Bearer " + config.api_token}};
+    return cpr::Header{{"Authorization", "Bearer " + config.api_token},
+                       {"X-Lectern-Device", config.device_id}};
 }
 
 void fFlattenRemote(const json &entries,
@@ -569,7 +613,8 @@ void fSyncOnePath(const CloudConfig &config,
                    const std::string &rel_path,
                    SyncState &state,
                    const std::map<std::string, std::string> &remote_hashes,
-                   const std::map<std::string, uint64_t> &tombstones)
+                   const std::map<std::string, uint64_t> &tombstones,
+                   std::vector<std::string> &pulled)
 {
     const fs::path local_full = fs::path(config.root) / rel_path;
 
@@ -642,6 +687,7 @@ void fSyncOnePath(const CloudConfig &config,
                     fs::remove(local_full, ec);
                     fRemoveBase(config.root, rel_path);
                     state.files.erase(rel_path);
+                    pulled.push_back(rel_path);
                     return;
                 }
             }
@@ -667,12 +713,14 @@ void fSyncOnePath(const CloudConfig &config,
             util::fWriteFileAtomic(local_full, content);
             fWriteBase(config.root, rel_path, content);
             state.files[rel_path] = *remote_hash;
+            pulled.push_back(rel_path);
         }
         else if (base_hash)
         {
             fs::remove(local_full, ec);
             fRemoveBase(config.root, rel_path);
             state.files.erase(rel_path);
+            pulled.push_back(rel_path);
         }
         return;
     }
@@ -706,6 +754,7 @@ void fSyncOnePath(const CloudConfig &config,
                 fRemoteWrite(config, rel_path, merge.text);
                 fWriteBase(config.root, rel_path, merge.text);
                 state.files[rel_path] = util::fSha256Hex(merge.text);
+                pulled.push_back(rel_path);
             }
             else
             {
@@ -856,9 +905,10 @@ void fSyncFolders(const CloudConfig &config,
 
 std::vector<std::string> fSyncOnce(const CloudConfig &config)
 {
-    std::lock_guard<std::mutex> guard(fSyncLock());
+    std::unique_lock<std::mutex> guard(fSyncLock());
     SyncState state = fLoadState(config.root);
     std::vector<std::string> failures;
+    std::vector<std::string> pulled;
 
     std::set<std::string> remote_dirs;
     const auto remote_hashes = fRemoteList(config, &remote_dirs);
@@ -903,7 +953,7 @@ std::vector<std::string> fSyncOnce(const CloudConfig &config)
     {
         try
         {
-            fSyncOnePath(config, rel_path, state, remote_hashes, tombstones);
+            fSyncOnePath(config, rel_path, state, remote_hashes, tombstones, pulled);
         }
         catch (const std::exception &error)
         {
@@ -926,6 +976,104 @@ std::vector<std::string> fSyncOnce(const CloudConfig &config)
 
     state.last_synced_at = static_cast<uint64_t>(util::fNowMs());
     fSaveState(config.root, state);
+    guard.unlock();
+    fNotifyFilesChanged(pulled);
+    return failures;
+}
+
+/// The hash of one file on the server, nullopt if there is none. Cheap: the
+/// server hashes it and sends no content.
+std::optional<std::string> fRemoteHash(const CloudConfig &config, const std::string &rel_path)
+{
+    const auto response = cpr::Get(cpr::Url{config.server_url + "/api/workspace/stat"},
+                                   cpr::Parameters{{"path", rel_path}},
+                                   fAuthHeader(config),
+                                   cpr::Timeout{30000});
+    if (response.status_code == 404)
+    {
+        return std::nullopt;
+    }
+    if (response.status_code < 200 || response.status_code >= 300)
+    {
+        throw std::runtime_error("stat failed: " + std::to_string(response.status_code));
+    }
+    const auto stat = json::parse(response.text, nullptr, false);
+    if (!stat.is_object() || !stat.contains("hash") || !stat["hash"].is_string())
+    {
+        return std::nullopt;
+    }
+    return stat["hash"].get<std::string>();
+}
+
+/// Reconciles only the named files: what a save or a server announcement is
+/// about. A pass over the whole folder lists the server's tree and hashes every
+/// local file, which is far too much work for each pause in someone's typing.
+/// Falls back to the full pass for anything that isn't a plain file.
+std::vector<std::string> fSyncPaths(const CloudConfig &config,
+                                     const std::vector<std::string> &rel_paths)
+{
+    std::vector<std::string> failures;
+    std::vector<std::string> pulled;
+    bool fall_back = false;
+
+    {
+        std::lock_guard<std::mutex> guard(fSyncLock());
+        SyncState state = fLoadState(config.root);
+
+        std::map<std::string, std::string> remote_hashes;
+        const std::map<std::string, uint64_t> no_tombstones;
+        std::vector<std::string> wanted;
+
+        for (const auto &rel : rel_paths)
+        {
+            if (!fValidRemoteRelPath(rel) || fExcludedFromSync(rel))
+            {
+                continue;
+            }
+            if (state.conflicts.count(rel) == 0 &&
+                fs::is_directory(fs::path(config.root) / rel))
+            {
+                wanted.clear();
+                wanted.push_back("");  // a folder: needs the full pass
+                break;
+            }
+            wanted.push_back(rel);
+        }
+
+        const bool needs_full = !wanted.empty() && wanted.front().empty();
+        if (!needs_full)
+        {
+            for (const auto &rel : wanted)
+            {
+                try
+                {
+                    if (const auto hash = fRemoteHash(config, rel))
+                    {
+                        remote_hashes[rel] = *hash;
+                    }
+                    fSyncOnePath(config, rel, state, remote_hashes, no_tombstones, pulled);
+                }
+                catch (const std::exception &error)
+                {
+                    failures.push_back(rel + " — " + error.what());
+                    spdlog::warn("sync: {} failed: {}", rel, error.what());
+                }
+            }
+            state.last_synced_at = static_cast<uint64_t>(util::fNowMs());
+            fSaveState(config.root, state);
+        }
+        else
+        {
+            fall_back = true;
+        }
+    }
+
+    if (fall_back)
+    {
+        return fSyncOnce(config);  // after the lock above is released: it takes it itself
+    }
+
+    fNotifyFilesChanged(pulled);
     return failures;
 }
 
@@ -1003,7 +1151,7 @@ void fResolveConflictImpl(const CloudConfig &config,
     fSaveState(config.root, state);
 }
 
-// ── Background loop ──
+// ── Live connection (replaces the old polling loop) ──
 
 std::mutex g_failures_mutex;
 std::vector<std::string> g_last_failures;
@@ -1015,67 +1163,35 @@ void fRememberFailures(const std::vector<std::string> &failures)
     g_last_failures = failures;
 }
 
-std::mutex g_loop_mutex;
-std::condition_variable g_loop_cv;
-std::thread g_loop_thread;
-bool g_loop_running = false;
-bool g_loop_stop = false;
-
-void fStartBackgroundLoop()
+/// One pass of reconciliation, as run by the socket's worker thread: the named
+/// files, or the whole folder when none are named.
+void fReconcileNow(const std::vector<std::string> &rel_paths)
 {
-    std::lock_guard<std::mutex> lock(g_loop_mutex);
-    if (g_loop_running)
+    const auto config = fLoadConfig();
+    if (!config)
     {
-        // A loop from a previous connection is still alive; it re-reads the
-        // config every tick, so it will pick up the new connection on its own.
-        return;
+        return;  // disconnected while the request was queued
     }
-    g_loop_running = true;
-    g_loop_stop = false;
+    fRememberFailures(rel_paths.empty() ? fSyncOnce(*config) : fSyncPaths(*config, rel_paths));
+}
 
-    // A std::thread destroyed while still joinable calls std::terminate. The
-    // app calls shutdown() on the way out, but std::exit — which the updater
-    // uses to hand off to an installer — and an early error return would both
-    // skip it and abort instead. This guard runs at static destruction on
-    // every exit path that runs destructors at all.
-    static const struct LoopGuard
-    {
-        ~LoopGuard()
-        {
-            fShutdown();
-        }
-    } guard;
-
-    g_loop_thread = std::thread([] {
-        while (true)
-        {
-            {
-                std::unique_lock<std::mutex> lock(g_loop_mutex);
-                if (g_loop_cv.wait_for(
-                        lock, cPollInterval, [] { return g_loop_stop; }))
-                {
-                    break;
-                }
-            }
-
+/// The live connection. It is a function-local static so its destructor joins
+/// the threads on every exit path that runs destructors at all: a std::thread
+/// destroyed while still joinable calls std::terminate, and std::exit (which the
+/// updater uses to hand off to an installer) skips fShutdown().
+SyncSocket &fSocket()
+{
+    static SyncSocket socket(SyncSocket::Hooks{
+        [] () -> std::optional<SyncEndpoint> {
             const auto config = fLoadConfig();
             if (!config)
             {
-                break;  // disconnected
+                return std::nullopt;
             }
-            try
-            {
-                fRememberFailures(fSyncOnce(*config));
-            }
-            catch (const std::exception &error)
-            {
-                spdlog::debug("sync pass failed: {}", error.what());
-            }
-        }
-
-        std::lock_guard<std::mutex> lock(g_loop_mutex);
-        g_loop_running = false;
-    });
+            return SyncEndpoint{config->server_url, config->api_token, config->device_id};
+        },
+        &fReconcileNow});
+    return socket;
 }
 
 /// The status object the frontend renders. `syncErrors` is an addition the
@@ -1097,6 +1213,7 @@ json fStatusFromConfig(const CloudConfig &config)
                 {"email", config.email},
                 {"lastSyncedAt", state.last_synced_at},
                 {"conflictCount", state.conflicts.size()},
+                {"liveConnection", fSocket().fLive()},
                 {"syncErrors", errors}};
 }
 
@@ -1120,44 +1237,37 @@ std::string fTrimTrailingSlashes(std::string value)
 
 }  // namespace
 
-void fNudgeSync()
+void fNudgeSync(const std::string &root, const std::vector<std::string> &rel_paths)
 {
     const auto config = fLoadConfig();
     if (!config)
     {
         return;
     }
-    std::thread([config = *config] {
-        try
-        {
-            fRememberFailures(fSyncOnce(config));
-        }
-        catch (const std::exception &error)
-        {
-            spdlog::debug("nudge sync failed: {}", error.what());
-        }
-    }).detach();
+    // Announces the save to the server; the push itself happens when the server
+    // acknowledges, and not at all while it is unreachable. Paths only mean
+    // something relative to the synced folder, so a write elsewhere counts as
+    // "something changed".
+    fSocket().fAnnounceLocalChange(root == config->root ? rel_paths : std::vector<std::string>{});
+}
+
+void fSetFilesChangedHandler(FilesChangedHandler handler)
+{
+    std::lock_guard<std::mutex> lock(g_files_changed_mutex);
+    g_files_changed_handler = std::move(handler);
 }
 
 void fResumeOnStartup()
 {
     if (fLoadConfig())
     {
-        fStartBackgroundLoop();
+        fSocket().fStart();  // greeting -> acknowledged -> pull theirs, push ours
     }
 }
 
 void fShutdown()
 {
-    {
-        std::lock_guard<std::mutex> lock(g_loop_mutex);
-        g_loop_stop = true;
-    }
-    g_loop_cv.notify_all();
-    if (g_loop_thread.joinable())
-    {
-        g_loop_thread.join();
-    }
+    fSocket().fStop();
 }
 
 json fConnect(const std::string &server_url,
@@ -1173,6 +1283,7 @@ json fConnect(const std::string &server_url,
     paths::fCheckRoot(root);
     config.root = root;
     config.api_token = fLogin(config.server_url, email, password);
+    config.device_id = util::fRandomHex(16);
 
     fSaveConfig(config);
 
@@ -1197,13 +1308,14 @@ json fConnect(const std::string &server_url,
         throw;
     }
 
-    fStartBackgroundLoop();
+    fSocket().fStart();
     return fStatusFromConfig(config);
 }
 
 void fDisconnect()
 {
     fClearConfig();
+    fSocket().fStop();
 }
 
 json fStatus()

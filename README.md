@@ -249,6 +249,44 @@ slow; vcpkg binaries are cached into the Actions cache, so later runs reuse
 them. And the Windows job builds twice — once dynamically for the installers,
 once statically for the portable exe — which the same cache absorbs.
 
+## How cloud sync is triggered
+
+There is no timer. The app keeps one WebSocket to the server's `/api/sync/ws`
+(`src/sync_socket.cpp`; the rules are in `src/sync_protocol.cpp`, which has no
+sockets and is unit-tested). On start it greets the server and, **once the
+server answers**, pulls what changed and pushes what it has. From then on the
+server announces its changes, and the app announces its own each time you save;
+the push happens when the server acknowledges the announcement. File contents
+still move over HTTP and are merged exactly as before.
+
+The second condition: nothing is pulled or pushed unless the server answered,
+so a server that is down, restarting or wedged is noticed (an unanswered
+greeting, announcement or 25 s heartbeat drops the connection) instead of being
+written at. Changes saved meanwhile simply wait, and go up with the first
+reconcile after the next acknowledged greeting. After a server restart the
+server also asks every reconnecting client for its changes. The only repeating
+activity while the server is unreachable is the reconnect, which backs off from
+1 s to 30 s.
+
+### Editing the same file as someone else
+
+An open document updates live. When the engine writes a file into the work folder
+(a change from the server), it tells the page which one
+(`window.fOnCloudFilesChanged`), and the page folds the new text into the editor
+with a three-way merge (`frontend/modules/live-merge.js`): edits to different
+paragraphs combine, edits to different words of one paragraph combine, the caret
+stays where it was, and the rendered text refreshes. While a file is open, typing
+is saved after 0.3 s instead of 0.8 s, and every save first merges in anything
+that arrived meanwhile, so one person's save can't overwrite another's.
+
+Announcements name the files they are about, so a save or a change is reconciled
+by asking the server about just those files rather than listing the whole
+workspace; only a greeting, a restarted server or a folder operation looks at
+everything.
+
+Needs libcurl built with WebSocket support: `vcpkg.json` asks for
+`curl[websockets]`.
+
 ## When cloud sync won't connect
 
 `lectern-cloud-probe` runs the same code path `cloud_connect` runs — same HTTP

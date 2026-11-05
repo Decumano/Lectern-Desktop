@@ -6,6 +6,10 @@
   "dependencies": [
     "saucer",
     "cpr",
+    {
+      "name": "curl",
+      "features": ["websockets"]
+    },
     "nlohmann-json",
     "libsodium",
     "spdlog",

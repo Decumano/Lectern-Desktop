@@ -318,7 +318,7 @@ namespace
                     [&]
                     {
                         util::fWriteFileAtomic(paths::fResolveWorkPath(root, rel_path), content);
-                        cloud::fNudgeSync();
+                        cloud::fNudgeSync(root, {rel_path});
 
                         return json(nullptr);
                     }
@@ -362,7 +362,7 @@ namespace
                             throw std::runtime_error("malformed file data");
 
                         util::fWriteFileAtomic(paths::fResolveWorkPath(root, rel_path), *bytes);
-                        cloud::fNudgeSync();
+                        cloud::fNudgeSync(root, {rel_path});
 
                         return json(nullptr);
                     }
@@ -401,7 +401,7 @@ namespace
                         if (ec)
                             throw std::runtime_error(ec.message());
 
-                        cloud::fNudgeSync();
+                        cloud::fNudgeSync(root, {});  // a folder: the whole tree
 
                         return json(nullptr);
                     }
@@ -430,7 +430,7 @@ namespace
                         if (ec)
                             throw std::runtime_error(ec.message());
                         
-                        cloud::fNudgeSync();
+                        cloud::fNudgeSync(root, is_dir ? std::vector<std::string>{} : std::vector<std::string>{rel_path});
 
                         return json(nullptr);
                     }
@@ -451,6 +451,7 @@ namespace
                         const fs::path to = paths::fResolveWorkPath(root, to_rel_path);
 
                         std::error_code ec;
+                        const bool was_dir = fs::is_directory(from, ec);
                         const fs::path parent = to.parent_path();
 
                         if (!parent.empty())
@@ -461,7 +462,8 @@ namespace
                         if (ec)
                             throw std::runtime_error(ec.message());
                         
-                        cloud::fNudgeSync();
+                        cloud::fNudgeSync(root, was_dir ? std::vector<std::string>{}
+                                                        : std::vector<std::string>{from_rel_path, to_rel_path});
 
                         return json(nullptr);
                     }
@@ -712,6 +714,20 @@ int main(int argc, char *argv[])
                         .frame = saucer::web_frame::top,
                         .permanent = true
                     }
+                );
+            }
+        );
+
+        // When the sync engine writes files into the work folder (a change from
+        // the server), tell every window, so an open document shows the new text.
+        cloud::fSetFilesChangedHandler
+        (
+            [](const std::vector<std::string> &changed)
+            {
+                windows::fBroadcastScript
+                (
+                    "if (window.fOnCloudFilesChanged) window.fOnCloudFilesChanged(" +
+                    json(changed).dump() + ");"
                 );
             }
         );

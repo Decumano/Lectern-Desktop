@@ -63,6 +63,8 @@ add_library(lectern_desktop_core STATIC
   src/dialogs.cpp
   src/diff.cpp
   src/cloud.cpp
+  src/sync_protocol.cpp
+  src/sync_socket.cpp
   src/updater.cpp
 )
 
@@ -193,7 +195,7 @@ endif()
 include(CTest)
 if(BUILD_TESTING)
   find_package(Catch2 3 CONFIG REQUIRED)
-  add_executable(lectern-desktop-tests tests/tests.cpp)
+  add_executable(lectern-desktop-tests tests/tests.cpp tests/sync_tests.cpp)
   target_link_libraries(lectern-desktop-tests
     PRIVATE lectern_desktop_core Catch2::Catch2WithMain)
   add_test(NAME lectern-desktop-tests COMMAND lectern-desktop-tests)
