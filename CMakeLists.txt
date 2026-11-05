@@ -82,7 +82,8 @@ target_link_libraries(lectern_desktop_core PUBLIC
 
 if(WIN32)
   # IFileDialog for the folder picker, ShellExecute for `reveal`.
-  target_link_libraries(lectern_desktop_core PUBLIC Ole32 Shell32 Shlwapi)
+  # ws2_32 for WSAPoll in the live-sync socket loop.
+  target_link_libraries(lectern_desktop_core PUBLIC Ole32 Shell32 Shlwapi ws2_32)
 elseif(NOT APPLE)
   # GTK 4 is already in the process on Linux — WebKitGTK links it — so using
   # it for the dialogs costs nothing and gains everything: GtkFileDialog goes

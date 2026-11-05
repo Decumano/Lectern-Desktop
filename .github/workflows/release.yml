@@ -87,7 +87,12 @@ jobs:
             rpm file desktop-file-utils
           # vcpkg's own dependencies for building its Linux ports.
           sudo apt-get install -y --no-install-recommends \
-            autoconf automake libtool python3-jinja2
+            autoconf autoconf-archive automake libtool python3-jinja2
+
+      # vcpkg builds autotools ports (libsodium, gperf) from source on macOS.
+      - name: Install macOS build dependencies
+        if: matrix.name == 'macos'
+        run: brew install autoconf autoconf-archive automake libtool
 
       - name: Install NSIS (Windows installer generator)
         if: matrix.name == 'windows'
