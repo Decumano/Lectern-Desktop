@@ -1,4 +1,4 @@
-# Builds installers for Windows, Linux and macOS, signs them where credentials
+# Builds installers for Windows and Linux (macOS is currently disabled), signs them where credentials
 # are configured, publishes them as a GitHub Release, and writes the signed
 # update manifest the in-app updater reads.
 #
@@ -47,8 +47,11 @@ jobs:
           # saucer 6 requires. 22.04 only has webkit2gtk-4.1 (GTK 3).
           - platform: ubuntu-24.04
             name: linux
-          - platform: macos-latest
-            name: macos
+          # macOS is not built: saucer's dependency poolparty needs
+          # std::move_only_function, which Apple's libc++ (Xcode 26.6) lacks.
+          # Re-add `- platform: macos-latest / name: macos` once that is
+          # solved (e.g. Homebrew LLVM). The macOS steps below stay in place;
+          # they are skipped while no macos job exists.
     runs-on: ${{ matrix.platform }}
 
     steps:
