@@ -94,6 +94,18 @@ jobs:
         if: matrix.name == 'macos'
         run: brew install autoconf autoconf-archive automake libtool
 
+      # saucer refuses GCC older than 14 and Ubuntu 24.04 defaults to 13. vcpkg
+      # builds with /usr/bin/c++, so repoint it rather than rely on CXX.
+      - name: Use GCC 14
+        if: matrix.name == 'linux'
+        run: |
+          sudo apt-get install -y --no-install-recommends gcc-14 g++-14
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
+          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-14 100
+          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-14 100
+          c++ --version
+
       - name: Install NSIS (Windows installer generator)
         if: matrix.name == 'windows'
         run: choco install nsis --no-progress -y
