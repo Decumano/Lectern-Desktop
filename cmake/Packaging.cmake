@@ -20,7 +20,10 @@ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
 set(CPACK_PACKAGE_HOMEPAGE_URL
     "https://github.com/Decumano/Lectern-Desktop-Cpp")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "Lectern")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+# WiX rejects a license file with no extension, and ours is plain `LICENSE`.
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/LICENSE"
+               "${CMAKE_BINARY_DIR}/LICENSE.txt" COPYONLY)
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_BINARY_DIR}/LICENSE.txt")
 set(CPACK_PACKAGE_EXECUTABLES "lectern" "Lectern")
 set(CPACK_STRIP_FILES ON)
 

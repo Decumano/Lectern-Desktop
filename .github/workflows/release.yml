@@ -104,10 +104,19 @@ jobs:
           # Pinned so a vcpkg registry change can't silently alter what ships.
           vcpkgGitCommitId: "4e39a8622e56a113c89228e4e13944dce8654da7"
 
+      # vcpkg's stock saucer drags in a source-built GTK (which breaks against
+      # the system WebKitGTK) and trips -Werror on GCC; the overlay is what
+      # local builds use. Windows builds the stock port fine.
+      - name: Create the saucer overlay port
+        if: matrix.name != 'windows'
+        run: |
+          bash scripts/make-saucer-overlay.sh "$VCPKG_ROOT" "$RUNNER_TEMP/vcpkg-overlay"
+          echo "OVERLAY_ARG=-DVCPKG_OVERLAY_PORTS=$RUNNER_TEMP/vcpkg-overlay" >> "$GITHUB_ENV"
+
       - name: Configure
         shell: bash
         run: |
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release $OVERLAY_ARG \
             -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
             -DLECTERN_VERSION="$VERSION" \
             -DLECTERN_UPDATE_PUBLIC_KEY="${{ secrets.LECTERN_UPDATE_PUBLIC_KEY }}" \
