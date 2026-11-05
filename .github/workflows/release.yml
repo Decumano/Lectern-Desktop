@@ -86,7 +86,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             build-essential cmake ninja-build pkg-config curl zip unzip tar \
-            libgtk-4-dev libwebkitgtk-6.0-dev libssl-dev \
+            libgtk-4-dev libadwaita-1-dev libwebkitgtk-6.0-dev libssl-dev \
             rpm file desktop-file-utils
           # vcpkg's own dependencies for building its Linux ports.
           sudo apt-get install -y --no-install-recommends \
