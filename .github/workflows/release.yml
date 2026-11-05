@@ -199,7 +199,7 @@ jobs:
           # Must happen before cpack: the .dmg is built from this bundle, so
           # signing afterwards would leave an unsigned app inside a signed image.
           if [ -z "$MACOS_IDENTITY" ]; then exit 0; fi
-          ./scripts/sign-macos.sh app "build/Lectern.app"
+          bash scripts/sign-macos.sh app "build/Lectern.app"
 
       - name: Package
         shell: bash
@@ -211,7 +211,7 @@ jobs:
         run: |
           sudo apt-get install -y --no-install-recommends libfuse2t64 || \
             sudo apt-get install -y --no-install-recommends libfuse2
-          ./scripts/build-appimage.sh build "$VERSION" "$PWD/build"
+          bash scripts/build-appimage.sh build "$VERSION" "$PWD/build"
 
       # ── Single-file portable build (Windows) ──
       #
@@ -281,7 +281,7 @@ jobs:
         run: |
           if [ -z "$MACOS_IDENTITY" ]; then exit 0; fi
           DMG="$(find build -maxdepth 1 -name '*.dmg' | head -1)"
-          ./scripts/sign-macos.sh dmg "$DMG"
+          bash scripts/sign-macos.sh dmg "$DMG"
 
       - name: Collect the installers
         shell: bash
@@ -361,7 +361,7 @@ jobs:
             exit 0
           fi
           chmod +x tool/lectern-updater-tool
-          ./scripts/make-update-manifest.sh \
+          bash scripts/make-update-manifest.sh \
             "${GITHUB_REF_NAME#v}" \
             dist \
             "https://github.com/${{ github.repository }}/releases/download/${GITHUB_REF_NAME}" \
