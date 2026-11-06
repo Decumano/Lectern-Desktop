@@ -88,7 +88,7 @@ while test "$#" -gt 0; do
 
   --protocols)
     # shellcheck disable=SC2043
-    for protocol in DICT FILE FTP FTPS GOPHER GOPHERS HTTP HTTPS IMAP IMAPS IPFS IPNS MQTT MQTTS POP3 POP3S RTSP SMTP SMTPS TELNET TFTP; do
+    for protocol in DICT FILE FTP FTPS GOPHER GOPHERS HTTP HTTPS IMAP IMAPS IPFS IPNS MQTT MQTTS POP3 POP3S RTSP SMTP SMTPS TELNET TFTP WS WSS; do
       echo "$protocol"
     done
     ;;

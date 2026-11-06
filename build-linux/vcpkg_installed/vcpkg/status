@@ -54,7 +54,7 @@ Version: 8.23.0
 Depends: vcpkg-cmake, vcpkg-cmake-config, zlib
 Architecture: x64-linux
 Multi-Arch: same
-Abi: b4027a9c0aa5587032f159d6fd8c5da1c119d27bf41bf707ca2325a751c8a2fd
+Abi: 367998aeeb364670f6322a59ad8b7abc3df975f43036c76cda2aadf4d2089af0
 Description: A library for transferring data with URLs
 Default-Features: ssl
 Status: install ok installed
@@ -79,7 +79,7 @@ Version: 1.15.1
 Depends: curl, vcpkg-cmake, vcpkg-cmake-config
 Architecture: x64-linux
 Multi-Arch: same
-Abi: 0ca8e49e91219e702d92ab1b0cd28300af3aeda2e97437b41d15556234a68a8f
+Abi: 96fb8143eb7e9fb2617af95b0058cdafdec01c800d010e5d10828375267df89f
 Description: C++ Requests is a simple wrapper around libcurl inspired by the excellent Python Requests project.
 Default-Features: ssl
 Status: install ok installed
@@ -289,5 +289,12 @@ Feature: tz-offset
 Architecture: x64-linux
 Multi-Arch: same
 Description: Omit %z timezone offset (use on platforms without tm_gmtoff)
+Status: install ok installed
+
+Package: curl
+Feature: websockets
+Architecture: x64-linux
+Multi-Arch: same
+Description: WebSocket support
 Status: install ok installed
 

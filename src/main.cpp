@@ -285,7 +285,8 @@ namespace
                         return workfolder::fWalkWorkDir(paths::fCheckRoot(root), "");
                     }
                 );
-            }
+            },
+            saucer::launch::async
         );
 
         webview.expose
@@ -305,7 +306,8 @@ namespace
                         return json(*content);
                     }
                 );
-            }
+            },
+            saucer::launch::async
         );
 
         webview.expose
@@ -323,7 +325,8 @@ namespace
                         return json(nullptr);
                     }
                 );
-            }
+            },
+            saucer::launch::async
         );
 
         // Binary files travel as base64, transformed for JSON
@@ -344,7 +347,8 @@ namespace
                         return json(util::fBase64Encode(std::string_view(*content)));
                     }
                 );
-            }
+            },
+            saucer::launch::async
         );
 
         webview.expose
@@ -367,7 +371,8 @@ namespace
                         return json(nullptr);
                     }
                 );
-            }
+            },
+            saucer::launch::async
         );
 
         webview.expose

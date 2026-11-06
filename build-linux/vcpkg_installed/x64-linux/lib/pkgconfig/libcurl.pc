@@ -26,7 +26,7 @@ prefix=${pcfiledir}/../..
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
-supported_protocols="DICT FILE FTP FTPS GOPHER GOPHERS HTTP HTTPS IMAP IMAPS IPFS IPNS MQTT MQTTS POP3 POP3S RTSP SMTP SMTPS TELNET TFTP"
+supported_protocols="DICT FILE FTP FTPS GOPHER GOPHERS HTTP HTTPS IMAP IMAPS IPFS IPNS MQTT MQTTS POP3 POP3S RTSP SMTP SMTPS TELNET TFTP WS WSS"
 supported_features="alt-svc AsynchDNS HSTS HTTPS-proxy IPv6 Largefile libz SSL threadsafe UnixSockets"
 
 Name: libcurl
