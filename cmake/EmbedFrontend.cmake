@@ -11,6 +11,13 @@
 # Call `lectern_embed_frontend(<target> <frontend-dir>)` after the target
 # exists. src/embedded.cpp is the reader.
 
+# enable_language() only works from the directory scope that includes this file,
+# not from inside a function: called there, CMake fails at generate time with
+# "Missing variable is: CMAKE_ASM_COMPILE_OBJECT".
+if(LECTERN_EMBED_FRONTEND AND NOT WIN32)
+  enable_language(ASM)
+endif()
+
 function(lectern_embed_frontend target frontend_dir)
   if(NOT EXISTS "${frontend_dir}/index.html")
     message(FATAL_ERROR
@@ -48,8 +55,6 @@ function(lectern_embed_frontend target frontend_dir)
     target_sources(${target} PRIVATE "${rc}")
     set_source_files_properties("${rc}" PROPERTIES OBJECT_DEPENDS "${pack}")
   else()
-    enable_language(ASM)
-
     set(asm "${CMAKE_CURRENT_BINARY_DIR}/generated/frontend_pack.S")
     file(GENERATE OUTPUT "${asm}" CONTENT
 "// Generated. Embeds the frontend pack; see cmake/EmbedFrontend.cmake.

@@ -16,7 +16,6 @@ dist-ssr
 .vscode/
 .claude/
 .git/
-.github/
 !.vscode/extensions.json
 .idea
 .DS_Store
