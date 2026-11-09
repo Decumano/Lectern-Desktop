@@ -56,4 +56,14 @@ void fResolveConflict(const std::string &rel_path, const std::string &choice);
 nlohmann::json fListFonts();
 std::string fFontDataUrl(const std::string &font_id);
 
+/// One request to the connected server's sharing or comments API, made with the
+/// account the app is connected as (the page has no session of its own to send).
+/// `method` is GET, POST or DELETE; `path` is what follows "/api", query string
+/// included, and may only reach /shares, /links and /comments. Returns
+/// {"status": <http code>, "body": <response text>}: a refusal from the server
+/// is a result for the page to read, not an exception.
+nlohmann::json fApi(const std::string &method,
+                    const std::string &path,
+                    const std::string &body);
+
 }  // namespace lectern::cloud

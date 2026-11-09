@@ -44,6 +44,7 @@ inline constexpr const char *cTauriShim = R"js(
     cloud_resolve_conflict: ['relPath', 'choice'],
     cloud_list_fonts: [],
     cloud_font_data_url: ['fontId'],
+    cloud_api: ['method', 'path', 'body'],
 
     open_secondary_window: ['label', 'url', 'title', 'width', 'height', 'x', 'y']
   };

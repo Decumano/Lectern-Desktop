@@ -624,6 +624,22 @@ namespace
 
         webview.expose
         (
+            "cloud_api",
+            [](std::string method, std::string path, std::string body) -> Answer
+            {
+                return fAnswer
+                (
+                    [&]
+                    {
+                        return cloud::fApi(method, path, body);
+                    }
+                );
+            },
+            saucer::launch::async
+        );
+
+        webview.expose
+        (
             "cloud_font_data_url",
             [](std::string font_id) -> Answer
             {

@@ -1479,4 +1479,74 @@ std::string fFontDataUrl(const std::string &font_id)
            util::fBase64Encode(response.text);
 }
 
+json fApi(const std::string &method,
+          const std::string &path,
+          const std::string &body)
+{
+    // Only the endpoints the page has a reason to reach: this call carries the
+    // account's token, so it must not become a way to read or change anything
+    // else on the server (the workspace, the account, other people's data).
+    const auto allowed = [&path]
+    {
+        for (const char *prefix : {"/shares", "/links", "/comments"})
+        {
+            const std::string name(prefix);
+            if (path.compare(0, name.size(), name) != 0)
+            {
+                continue;
+            }
+            if (path.size() == name.size())
+            {
+                return true;
+            }
+            const char next = path[name.size()];
+            return next == '/' || next == '?';
+        }
+        return false;
+    }();
+
+    if (!allowed || path.find("..") != std::string::npos ||
+        path.find_first_of("\r\n \\") != std::string::npos ||
+        path.find("//") != std::string::npos)
+    {
+        throw std::runtime_error("this request is not allowed");
+    }
+    if (method != "GET" && method != "POST" && method != "DELETE")
+    {
+        throw std::runtime_error("this request is not allowed");
+    }
+
+    const auto config = fLoadConfig();
+    if (!config)
+    {
+        throw std::runtime_error("not connected");
+    }
+
+    const cpr::Url url{config->server_url + "/api" + path};
+    cpr::Header headers = fAuthHeader(*config);
+    cpr::Response response;
+
+    if (method == "POST")
+    {
+        headers["Content-Type"] = "application/json";
+        response = cpr::Post(url, headers, cpr::Body{body}, cpr::Timeout{30000});
+    }
+    else if (method == "DELETE")
+    {
+        response = cpr::Delete(url, headers, cpr::Timeout{30000});
+    }
+    else
+    {
+        response = cpr::Get(url, headers, cpr::Timeout{30000});
+    }
+
+    if (response.status_code == 0)
+    {
+        throw std::runtime_error("could not reach the server: " +
+                                 response.error.message);
+    }
+
+    return json{{"status", response.status_code}, {"body", response.text}};
+}
+
 }  // namespace lectern::cloud
